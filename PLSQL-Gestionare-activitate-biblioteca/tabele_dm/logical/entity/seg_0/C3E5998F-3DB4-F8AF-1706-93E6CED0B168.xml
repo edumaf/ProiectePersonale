@@ -1,0 +1,64 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Entity class="oracle.dbtools.crest.model.design.logical.Entity" directorySegmentName="seg_0" id="C3E5998F-3DB4-F8AF-1706-93E6CED0B168" name="Autori">
+<createdBy>Nicoleta</createdBy>
+<createdTime>2020-12-08 12:20:58 UTC</createdTime>
+<ownerDesignName>tabele_dm</ownerDesignName>
+<engineerTo>
+<item key="4CF2C1CB-7A07-42C6-5A06-6BFE21724C5E" value="true"/>
+</engineerTo>
+<adequatelyNormalized>NO</adequatelyNormalized>
+<expectedVolumes>0</expectedVolumes>
+<fwdEngineeringStrategyName>Single Table</fwdEngineeringStrategyName>
+<growthPercent>0</growthPercent>
+<growthType>Year</growthType>
+<maxVolumes>9999999</maxVolumes>
+<minVolumes>0</minVolumes>
+<normalForm>Third</normalForm>
+<attributes itemClass="oracle.dbtools.crest.model.design.logical.Attribute">
+<Attribute name="id_autor" id="43637202-BF38-6C67-EA7D-C2274040F63C">
+<createdBy>Nicoleta</createdBy>
+<createdTime>2020-12-08 12:21:08 UTC</createdTime>
+<ownerDesignName>tabele_dm</ownerDesignName>
+<engineerTo>
+<item key="4CF2C1CB-7A07-42C6-5A06-6BFE21724C5E" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<dataTypePrecision>3</dataTypePrecision>
+<ownDataTypeParameters>,3,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="nume_autor" id="9414AB9C-E513-8E34-EA20-7F003C9192F1">
+<createdBy>Nicoleta</createdBy>
+<createdTime>2020-12-08 12:21:15 UTC</createdTime>
+<ownerDesignName>tabele_dm</ownerDesignName>
+<engineerTo>
+<item key="4CF2C1CB-7A07-42C6-5A06-6BFE21724C5E" value="true"/>
+</engineerTo>
+<constraintName>autori_nume_autor_ck</constraintName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>40</dataTypeSize>
+<checkConstraint>
+<implementationDef dbType="Generic Constraint" definition="length(nume_autor)&gt;1 AND regexp_like(nume_autor,&apos;[A-z]&apos;)"/>
+</checkConstraint>
+<ownDataTypeParameters>40,,</ownDataTypeParameters>
+</Attribute>
+</attributes>
+<identifiers itemClass="oracle.dbtools.crest.model.design.logical.CandidateKey">
+<identifier id="58C000ED-B760-09DA-DEB3-E3BCA259E97E" name="Autori PK">
+<createdBy>Nicoleta</createdBy>
+<createdTime>2020-12-08 13:16:16 UTC</createdTime>
+<ownerDesignName>tabele_dm</ownerDesignName>
+<shouldEngineer>false</shouldEngineer>
+<engineerTo>
+<item key="4CF2C1CB-7A07-42C6-5A06-6BFE21724C5E" value="false"/>
+</engineerTo>
+<pk>true</pk>
+<usedAttributes>
+<attributeRef>43637202-BF38-6C67-EA7D-C2274040F63C</attributeRef>
+</usedAttributes>
+</identifier>
+</identifiers>
+</Entity>

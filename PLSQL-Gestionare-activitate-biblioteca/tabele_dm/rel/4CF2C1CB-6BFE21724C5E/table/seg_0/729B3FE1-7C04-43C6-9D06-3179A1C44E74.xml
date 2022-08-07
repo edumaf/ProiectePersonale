@@ -1,0 +1,70 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="729B3FE1-7C04-43C6-9D06-3179A1C44E74" name="Biblioteca">
+<createdBy>mafav</createdBy>
+<createdTime>2022-05-29 13:34:56 UTC</createdTime>
+<generatorID>7DE2A599-96CE-5729-A87B-6DEA1B2BE8AD</generatorID>
+<ownerDesignName>tabele_dm</ownerDesignName>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="id_biblioteca" id="3BBACAD0-CCD6-EAAF-2744-582FC348AB71">
+<createdBy>mafav</createdBy>
+<createdTime>2022-05-29 13:34:56 UTC</createdTime>
+<generatorID>AC2E4598-10C0-2331-1637-233B62267CF7</generatorID>
+<ownerDesignName>tabele_dm</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<dataTypePrecision>2</dataTypePrecision>
+<ownDataTypeParameters>,2,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="nume_biblioteca" id="287F8A1B-2429-74D0-61D5-A00AEE87A0FC">
+<createdBy>mafav</createdBy>
+<createdTime>2022-05-29 13:34:56 UTC</createdTime>
+<generatorID>4FC0DE38-CA2C-E64D-C5E7-AAB668D2E93C</generatorID>
+<ownerDesignName>tabele_dm</ownerDesignName>
+<constraintName>biblioteca_nume_biblioteca_ck</constraintName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>70</dataTypeSize>
+<checkConstraint>
+<implementationDef dbType="Generic Constraint" definition="length(nume_biblioteca)&gt;1 AND regexp_like(nume_biblioteca,&apos;[A-z0-9]&apos;)"/>
+</checkConstraint>
+<ownDataTypeParameters>70,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="oras" id="83704A64-2B14-F2B2-DA64-C910F452B7E7">
+<createdBy>mafav</createdBy>
+<createdTime>2022-05-29 13:34:56 UTC</createdTime>
+<generatorID>4477EDB6-4C2C-034B-D27B-478DC25DD40F</generatorID>
+<ownerDesignName>tabele_dm</ownerDesignName>
+<constraintName>biblioteca_oras_ck</constraintName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>10</dataTypeSize>
+<checkConstraint>
+<implementationDef dbType="Generic Constraint" definition="length(oras)&gt;1 AND regexp_like(oras,&apos;[A-z]&apos;)"/>
+</checkConstraint>
+<ownDataTypeParameters>10,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="53C929E9-8699-0C76-4638-981E68D27746" name="Biblioteca_PK">
+<createdBy>mafav</createdBy>
+<createdTime>2022-05-29 13:34:56 UTC</createdTime>
+<generatorID>0030C701-A59B-80F3-4384-4B127673DFF4</generatorID>
+<ownerDesignName>tabele_dm</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="3BBACAD0-CCD6-EAAF-2744-582FC348AB71"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

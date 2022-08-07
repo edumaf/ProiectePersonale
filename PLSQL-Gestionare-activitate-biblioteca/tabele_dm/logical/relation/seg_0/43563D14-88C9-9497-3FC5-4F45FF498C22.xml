@@ -1,0 +1,19 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Relation class="oracle.dbtools.crest.model.design.logical.Relation" name="abonat_detalii_carti" directorySegmentName="seg_0" id="43563D14-88C9-9497-3FC5-4F45FF498C22">
+<createdBy>Nicoleta</createdBy>
+<createdTime>2020-12-11 08:39:54 UTC</createdTime>
+<ownerDesignName>tabele_dm</ownerDesignName>
+<engineerTo>
+<item key="4CF2C1CB-7A07-42C6-5A06-6BFE21724C5E" value="true"/>
+</engineerTo>
+<sourcePk>B13CECF3-54F5-F888-BBE8-960D73CDC16E</sourcePk>
+<identifying>false</identifying>
+<optionalSource>false</optionalSource>
+<optionalTarget>true</optionalTarget>
+<sourceCardinality>1</sourceCardinality>
+<sourceEntity>05E74E02-D1C4-75E1-1EE6-82ED7050DD59</sourceEntity>
+<targetCardinalityString>*</targetCardinalityString>
+<targetEntity>22B2AF57-FD8B-050E-70FC-AB17D2F5173E</targetEntity>
+<transferable>true</transferable>
+<deleteRule>NO ACTION</deleteRule>
+</Relation>

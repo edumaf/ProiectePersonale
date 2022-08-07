@@ -1,0 +1,54 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="DCBCF46C-53DE-4789-527F-BA1B0BB58900" name="Autori">
+<createdBy>mafav</createdBy>
+<createdTime>2022-05-29 13:34:56 UTC</createdTime>
+<generatorID>C3E5998F-3DB4-F8AF-1706-93E6CED0B168</generatorID>
+<ownerDesignName>tabele_dm</ownerDesignName>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="id_autor" id="B91699B0-B1ED-2526-C18A-51FEFD5E0C6A">
+<createdBy>mafav</createdBy>
+<createdTime>2022-05-29 13:34:56 UTC</createdTime>
+<generatorID>43637202-BF38-6C67-EA7D-C2274040F63C</generatorID>
+<ownerDesignName>tabele_dm</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<dataTypePrecision>3</dataTypePrecision>
+<ownDataTypeParameters>,3,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="nume_autor" id="26382779-FED5-9ED9-E5A7-37A75C328C38">
+<createdBy>mafav</createdBy>
+<createdTime>2022-05-29 13:34:56 UTC</createdTime>
+<generatorID>9414AB9C-E513-8E34-EA20-7F003C9192F1</generatorID>
+<ownerDesignName>tabele_dm</ownerDesignName>
+<constraintName>autori_nume_autor_ck</constraintName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>40</dataTypeSize>
+<checkConstraint>
+<implementationDef dbType="Generic Constraint" definition="length(nume_autor)&gt;1 AND regexp_like(nume_autor,&apos;[A-z]&apos;)"/>
+</checkConstraint>
+<ownDataTypeParameters>40,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="9F845924-4014-E954-4079-E4696E832DB4" name="Autori_PK">
+<createdBy>mafav</createdBy>
+<createdTime>2022-05-29 13:34:56 UTC</createdTime>
+<generatorID>58C000ED-B760-09DA-DEB3-E3BCA259E97E</generatorID>
+<ownerDesignName>tabele_dm</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="B91699B0-B1ED-2526-C18A-51FEFD5E0C6A"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

@@ -1,0 +1,17 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<FKIndexAssociation class="oracle.dbtools.crest.model.design.relational.FKIndexAssociation" directorySegmentName="seg_0" id="0ED03C6E-B464-8299-AD62-41799B768744" containerWithKeyObject="FEDF4673-5067-8EF6-BF3B-C5508301C70A" localFKIndex="A700E62C-E120-73E2-0B27-E6B85915E1C5" name="biblioteca_detalii">
+<createdBy>mafav</createdBy>
+<createdTime>2022-05-29 13:34:56 UTC</createdTime>
+<generatorID>DD8BDB9E-B289-4622-0839-D530ED12200B</generatorID>
+<ownerDesignName>tabele_dm</ownerDesignName>
+<referredTableLongName>Biblioteca</referredTableLongName>
+<deleteRule>NO ACTION</deleteRule>
+<referredTableID>729B3FE1-7C04-43C6-9D06-3179A1C44E74</referredTableID>
+<keyObject>53C929E9-8699-0C76-4638-981E68D27746</keyObject>
+<referredKeyID>53C929E9-8699-0C76-4638-981E68D27746</referredKeyID>
+<mandatory>true</mandatory>
+<refColNames>id_biblioteca</refColNames>
+<transferable>true</transferable>
+<rely>false</rely>
+<columnDependencyConstraintGenerateInDDL>true</columnDependencyConstraintGenerateInDDL>
+</FKIndexAssociation>

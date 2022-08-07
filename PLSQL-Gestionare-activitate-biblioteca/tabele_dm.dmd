@@ -1,0 +1,8 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<OSDM_Design class="oracle.dbtools.crest.model.design.Design" name="tabele_dm" id="6DBE02E4-AB9C-94E8-66B5-604024FBF7F7" version="3.5">
+<createdBy>Nicoleta</createdBy>
+<createdTime>2020-11-27 08:15:35 UTC</createdTime>
+<ownerDesignName>tabele</ownerDesignName>
+<capitalNames>false</capitalNames>
+<designId>6DBE02E4-AB9C-94E8-66B5-604024FBF7F7</designId>
+</OSDM_Design>

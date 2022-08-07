@@ -1,0 +1,17 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<FKIndexAssociation class="oracle.dbtools.crest.model.design.relational.FKIndexAssociation" directorySegmentName="seg_0" id="B0A3A08A-F0E4-EC9A-CF6B-09EA2C745764" containerWithKeyObject="C580B8B4-7133-2E8B-17C8-DD6920A5E054" localFKIndex="21421E3B-305E-F3CB-1330-5827704FD8BD" name="abonat_abonament">
+<createdBy>mafav</createdBy>
+<createdTime>2022-05-29 13:34:56 UTC</createdTime>
+<generatorID>94726E51-DE47-293D-C3BC-A0C797A47EB2</generatorID>
+<ownerDesignName>tabele_dm</ownerDesignName>
+<referredTableLongName>Abonat</referredTableLongName>
+<deleteRule>NO ACTION</deleteRule>
+<referredTableID>43AA9EB8-1819-F618-6289-BC5C12DB53B8</referredTableID>
+<keyObject>763AB8D0-0593-4C4B-64FC-C9E8393CB93D</keyObject>
+<referredKeyID>763AB8D0-0593-4C4B-64FC-C9E8393CB93D</referredKeyID>
+<mandatory>true</mandatory>
+<refColNames>id_abonat</refColNames>
+<transferable>true</transferable>
+<rely>false</rely>
+<columnDependencyConstraintGenerateInDDL>true</columnDependencyConstraintGenerateInDDL>
+</FKIndexAssociation>

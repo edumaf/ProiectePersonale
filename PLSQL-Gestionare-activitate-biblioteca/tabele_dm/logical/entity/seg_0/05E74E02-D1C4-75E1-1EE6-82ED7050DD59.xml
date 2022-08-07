@@ -1,0 +1,136 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Entity class="oracle.dbtools.crest.model.design.logical.Entity" directorySegmentName="seg_0" id="05E74E02-D1C4-75E1-1EE6-82ED7050DD59" name="Abonat">
+<createdBy>Nicoleta</createdBy>
+<createdTime>2020-11-27 08:19:22 UTC</createdTime>
+<ownerDesignName>tabele_dm</ownerDesignName>
+<engineerTo>
+<item key="4CF2C1CB-7A07-42C6-5A06-6BFE21724C5E" value="true"/>
+</engineerTo>
+<adequatelyNormalized>NO</adequatelyNormalized>
+<expectedVolumes>0</expectedVolumes>
+<fwdEngineeringStrategyName>Single Table</fwdEngineeringStrategyName>
+<growthPercent>0</growthPercent>
+<growthType>Year</growthType>
+<maxVolumes>9999999</maxVolumes>
+<minVolumes>0</minVolumes>
+<normalForm>Third</normalForm>
+<attributes itemClass="oracle.dbtools.crest.model.design.logical.Attribute">
+<Attribute name="id_abonat" id="A0D05542-F347-3FFC-2B4C-98DC940C014A">
+<createdBy>Nicoleta</createdBy>
+<createdTime>2020-11-27 08:19:27 UTC</createdTime>
+<ownerDesignName>tabele_dm</ownerDesignName>
+<engineerTo>
+<item key="4CF2C1CB-7A07-42C6-5A06-6BFE21724C5E" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<dataTypePrecision>3</dataTypePrecision>
+<ownDataTypeParameters>,3,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="nume_abonat" id="C2A96FD9-0448-3BC9-6EC3-1F98D6208AFE">
+<createdBy>Nicoleta</createdBy>
+<createdTime>2020-11-27 08:19:36 UTC</createdTime>
+<ownerDesignName>tabele_dm</ownerDesignName>
+<engineerTo>
+<item key="4CF2C1CB-7A07-42C6-5A06-6BFE21724C5E" value="true"/>
+</engineerTo>
+<constraintName>abonat_nume_abonat_ck</constraintName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>40</dataTypeSize>
+<checkConstraint>
+<implementationDef dbType="Generic Constraint" definition="length(nume_abonat)&gt;1 AND regexp_like(nume_abonat,&apos;[A-z]&apos;)"/>
+</checkConstraint>
+<ownDataTypeParameters>40,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="telefon_abonat" id="AF4F6B8F-D2CD-A1C2-E766-7DAEAEA382AA">
+<createdBy>Nicoleta</createdBy>
+<createdTime>2020-11-27 08:19:48 UTC</createdTime>
+<ownerDesignName>tabele_dm</ownerDesignName>
+<engineerTo>
+<item key="4CF2C1CB-7A07-42C6-5A06-6BFE21724C5E" value="true"/>
+</engineerTo>
+<constraintName>abonat_telefon_abonat_ck</constraintName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>10</dataTypeSize>
+<ownDataTypeParameters>10,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="email_abonat" id="689DB1AE-1324-2515-DD60-DE80F3FEE064">
+<createdBy>Nicoleta</createdBy>
+<createdTime>2020-11-27 08:19:56 UTC</createdTime>
+<ownerDesignName>tabele_dm</ownerDesignName>
+<engineerTo>
+<item key="4CF2C1CB-7A07-42C6-5A06-6BFE21724C5E" value="true"/>
+</engineerTo>
+<constraintName>abonat_email_abonat_ck</constraintName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>40</dataTypeSize>
+<checkConstraint>
+<implementationDef dbType="Generic Constraint" definition="regexp_like(email_abonat, &apos;[a-z0-9._%-]+@[a-z0-9.%-]+\.[a-z]{2,4}&apos;)"/>
+</checkConstraint>
+<ownDataTypeParameters>40,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="id_biblioteca" id="889CA12D-F97C-2F8F-9C5C-99B544C470EF">
+<createdBy>Nicoleta</createdBy>
+<createdTime>2020-12-09 16:15:24 UTC</createdTime>
+<generatorID>20E1D880-7706-DB21-5A97-9035915EFC68</generatorID>
+<ownerDesignName>tabele_dm</ownerDesignName>
+<engineerTo>
+<item key="4CF2C1CB-7A07-42C6-5A06-6BFE21724C5E" value="true"/>
+</engineerTo>
+<referedAttribute>AC2E4598-10C0-2331-1637-233B62267CF7</referedAttribute>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<dataTypePrecision>2</dataTypePrecision>
+<ownDataTypeParameters>,2,</ownDataTypeParameters>
+</Attribute>
+</attributes>
+<identifiers itemClass="oracle.dbtools.crest.model.design.logical.CandidateKey">
+<identifier id="B13CECF3-54F5-F888-BBE8-960D73CDC16E" name="Abonamente PK">
+<createdBy>Nicoleta</createdBy>
+<createdTime>2020-11-27 08:19:35 UTC</createdTime>
+<ownerDesignName>tabele_dm</ownerDesignName>
+<shouldEngineer>false</shouldEngineer>
+<engineerTo>
+<item key="4CF2C1CB-7A07-42C6-5A06-6BFE21724C5E" value="false"/>
+</engineerTo>
+<pk>true</pk>
+<usedAttributes>
+<attributeRef>A0D05542-F347-3FFC-2B4C-98DC940C014A</attributeRef>
+</usedAttributes>
+</identifier>
+<identifier id="73B54C25-C394-7EED-69A3-DB0F2EA065FC" name="telefon_abonat">
+<createdBy>Nicoleta</createdBy>
+<createdTime>2020-12-09 17:20:10 UTC</createdTime>
+<ownerDesignName>tabele_dm</ownerDesignName>
+<shouldEngineer>false</shouldEngineer>
+<engineerTo>
+<item key="4CF2C1CB-7A07-42C6-5A06-6BFE21724C5E" value="false"/>
+</engineerTo>
+<newElementsIDs>AF4F6B8F-D2CD-A1C2-E766-7DAEAEA382AA</newElementsIDs>
+<usedAttributes>
+<attributeRef>AF4F6B8F-D2CD-A1C2-E766-7DAEAEA382AA</attributeRef>
+</usedAttributes>
+</identifier>
+<identifier id="40A6AB60-A371-77D6-4FB4-C878F98412C7" name="email_abonat">
+<createdBy>Nicoleta</createdBy>
+<createdTime>2020-12-09 17:20:28 UTC</createdTime>
+<ownerDesignName>tabele_dm</ownerDesignName>
+<shouldEngineer>false</shouldEngineer>
+<engineerTo>
+<item key="4CF2C1CB-7A07-42C6-5A06-6BFE21724C5E" value="false"/>
+</engineerTo>
+<newElementsIDs>689DB1AE-1324-2515-DD60-DE80F3FEE064</newElementsIDs>
+<usedAttributes>
+<attributeRef>689DB1AE-1324-2515-DD60-DE80F3FEE064</attributeRef>
+</usedAttributes>
+</identifier>
+</identifiers>
+</Entity>

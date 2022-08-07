@@ -1,0 +1,21 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Relation class="oracle.dbtools.crest.model.design.logical.Relation" name="biblioteca_abonament_FK" directorySegmentName="seg_0" id="20E1D880-7706-DB21-5A97-9035915EFC68">
+<createdBy>Nicoleta</createdBy>
+<createdTime>2020-12-09 16:13:11 UTC</createdTime>
+<ownerDesignName>tabele_dm</ownerDesignName>
+<engineerTo>
+<item key="4CF2C1CB-7A07-42C6-5A06-6BFE21724C5E" value="true"/>
+</engineerTo>
+<sourcePk>0030C701-A59B-80F3-4384-4B127673DFF4</sourcePk>
+<identifying>false</identifying>
+<nameOnSource>are mai multe</nameOnSource>
+<nameOnTarget>e detinut de</nameOnTarget>
+<optionalSource>true</optionalSource>
+<optionalTarget>false</optionalTarget>
+<sourceCardinality>1</sourceCardinality>
+<sourceEntity>7DE2A599-96CE-5729-A87B-6DEA1B2BE8AD</sourceEntity>
+<targetCardinalityString>*</targetCardinalityString>
+<targetEntity>05E74E02-D1C4-75E1-1EE6-82ED7050DD59</targetEntity>
+<transferable>true</transferable>
+<deleteRule>NO ACTION</deleteRule>
+</Relation>

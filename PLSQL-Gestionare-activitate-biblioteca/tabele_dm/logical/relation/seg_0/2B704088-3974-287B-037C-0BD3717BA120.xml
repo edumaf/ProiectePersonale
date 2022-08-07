@@ -1,0 +1,21 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Relation class="oracle.dbtools.crest.model.design.logical.Relation" name="biblioteca_carti_FK" directorySegmentName="seg_0" id="2B704088-3974-287B-037C-0BD3717BA120">
+<createdBy>Nicoleta</createdBy>
+<createdTime>2020-12-09 16:22:00 UTC</createdTime>
+<ownerDesignName>tabele_dm</ownerDesignName>
+<engineerTo>
+<item key="4CF2C1CB-7A07-42C6-5A06-6BFE21724C5E" value="true"/>
+</engineerTo>
+<sourcePk>0030C701-A59B-80F3-4384-4B127673DFF4</sourcePk>
+<identifying>false</identifying>
+<nameOnSource>detine mai multe</nameOnSource>
+<nameOnTarget>sunt ale</nameOnTarget>
+<optionalSource>true</optionalSource>
+<optionalTarget>false</optionalTarget>
+<sourceCardinality>1</sourceCardinality>
+<sourceEntity>7DE2A599-96CE-5729-A87B-6DEA1B2BE8AD</sourceEntity>
+<targetCardinalityString>*</targetCardinalityString>
+<targetEntity>0E6B10DB-225C-A0F7-AC1B-B4B8ADFCF46A</targetEntity>
+<transferable>true</transferable>
+<deleteRule>NO ACTION</deleteRule>
+</Relation>

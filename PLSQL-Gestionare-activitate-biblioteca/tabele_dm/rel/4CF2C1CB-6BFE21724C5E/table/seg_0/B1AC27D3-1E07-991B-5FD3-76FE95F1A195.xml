@@ -1,0 +1,130 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="B1AC27D3-1E07-991B-5FD3-76FE95F1A195" name="Detalii_Carti">
+<createdBy>mafav</createdBy>
+<createdTime>2022-05-29 13:34:56 UTC</createdTime>
+<generatorID>22B2AF57-FD8B-050E-70FC-AB17D2F5173E</generatorID>
+<ownerDesignName>tabele_dm</ownerDesignName>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="status" id="50EB4CAC-9A45-82EE-BE3B-FF04062BA4FD">
+<createdBy>mafav</createdBy>
+<createdTime>2022-05-29 13:34:56 UTC</createdTime>
+<generatorID>3AA47419-7430-D65B-8AE9-DCABC433601C</generatorID>
+<ownerDesignName>tabele_dm</ownerDesignName>
+<constraintName>detalii_carti_status_CK</constraintName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>10</dataTypeSize>
+<listOfValues>
+<valueDef value="disponibila" description=""/>
+<valueDef value="imprumutata" description=""/>
+</listOfValues>
+<ownDataTypeParameters>10,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="data_rezervare" id="3A80798F-2584-C7B9-D029-892BF808AE4B">
+<createdBy>mafav</createdBy>
+<createdTime>2022-05-29 13:34:56 UTC</createdTime>
+<generatorID>113C9109-BE6C-D471-7264-B0693F1FA264</generatorID>
+<ownerDesignName>tabele_dm</ownerDesignName>
+<constraintName>data_rezervare_ck</constraintName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT007</logicalDatatype>
+<checkConstraint>
+<implementationDef dbType="Generic Constraint" definition="data_rezervare&lt;data_returnare"/>
+</checkConstraint>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="id_carte" id="FE901851-E168-F336-3B78-8FA120A7A038">
+<createdBy>mafav</createdBy>
+<createdTime>2022-05-29 13:34:56 UTC</createdTime>
+<generatorID>F903F9A3-FEE3-9C34-4385-FF1E5499E045</generatorID>
+<ownerDesignName>tabele_dm</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<dataTypePrecision>2</dataTypePrecision>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<previousColumn>false</previousColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="92EFE1DB-CB6A-E5C1-A050-671888FF9EB2" referredColumn="1A8CF3D1-FF7C-F4EB-BD7E-D2FD93164DE6"/>
+</associations>
+</Column>
+<Column name="id_abonat" id="111BAF9A-C1E4-E5F6-D285-7C2B7EA7A60C">
+<createdBy>mafav</createdBy>
+<createdTime>2022-05-29 13:34:56 UTC</createdTime>
+<generatorID>B9CD3BA2-DCFB-5C37-277B-70DB83194095</generatorID>
+<ownerDesignName>tabele_dm</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<dataTypePrecision>3</dataTypePrecision>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<previousColumn>false</previousColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="5E9D004E-21EF-A216-4177-A8F0452200D5" referredColumn="792C97BB-B580-28DA-09C9-261E828ECA7A"/>
+</associations>
+</Column>
+<Column name="data_returnare" id="56421E3D-199F-C923-A896-62C9C0961D7F">
+<createdBy>mafav</createdBy>
+<createdTime>2022-05-29 13:34:56 UTC</createdTime>
+<generatorID>C8E0B36B-CDC7-E304-2E59-2B7C91C1BDEF</generatorID>
+<ownerDesignName>tabele_dm</ownerDesignName>
+<constraintName>data_returnare_ck</constraintName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT007</logicalDatatype>
+<checkConstraint>
+<implementationDef dbType="Generic Constraint" definition="data_returnare&gt;data_rezervare"/>
+</checkConstraint>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="A7FC3922-AC63-1DE9-BA70-BEB5A76A1326" name="Detalii_Carti_PK">
+<createdBy>mafav</createdBy>
+<createdTime>2022-05-29 13:34:56 UTC</createdTime>
+<generatorID>78C69F31-1AA8-0C99-15EA-E3D897ACB721</generatorID>
+<ownerDesignName>tabele_dm</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="FE901851-E168-F336-3B78-8FA120A7A038"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="157DE84E-944A-8D26-136A-6A690D5C69A9" name="abonat_detalii_carti">
+<createdBy>mafav</createdBy>
+<createdTime>2022-05-29 13:34:56 UTC</createdTime>
+<generatorID>43563D14-88C9-9497-3FC5-4F45FF498C22</generatorID>
+<ownerDesignName>tabele_dm</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="111BAF9A-C1E4-E5F6-D285-7C2B7EA7A60C"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="E0A0E9C0-6664-C43C-CAF1-9DBC71D0A6E8" name="carti_detalii">
+<createdBy>mafav</createdBy>
+<createdTime>2022-05-29 13:34:57 UTC</createdTime>
+<generatorID>6BA7F630-0644-394E-3166-7E86F8F4CCF8</generatorID>
+<ownerDesignName>tabele_dm</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="FE901851-E168-F336-3B78-8FA120A7A038"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

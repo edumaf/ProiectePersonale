@@ -1,0 +1,22 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Relation class="oracle.dbtools.crest.model.design.logical.Relation" name="biblioteca_detalii" directorySegmentName="seg_0" id="DD8BDB9E-B289-4622-0839-D530ED12200B">
+<createdBy>Nicoleta</createdBy>
+<createdTime>2020-12-09 16:17:49 UTC</createdTime>
+<ownerDesignName>tabele_dm</ownerDesignName>
+<engineerTo>
+<item key="4CF2C1CB-7A07-42C6-5A06-6BFE21724C5E" value="true"/>
+</engineerTo>
+<sourcePk>0030C701-A59B-80F3-4384-4B127673DFF4</sourcePk>
+<dominantRole>7DE2A599-96CE-5729-A87B-6DEA1B2BE8AD</dominantRole>
+<identifying>true</identifying>
+<nameOnSource>are</nameOnSource>
+<nameOnTarget>sunt ale</nameOnTarget>
+<optionalSource>true</optionalSource>
+<optionalTarget>false</optionalTarget>
+<sourceCardinality>1</sourceCardinality>
+<sourceEntity>7DE2A599-96CE-5729-A87B-6DEA1B2BE8AD</sourceEntity>
+<targetCardinalityString>1</targetCardinalityString>
+<targetEntity>431D8B81-1E82-7064-B0CD-9D7747F381BC</targetEntity>
+<transferable>true</transferable>
+<deleteRule>NO ACTION</deleteRule>
+</Relation>

@@ -1,0 +1,113 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Entity class="oracle.dbtools.crest.model.design.logical.Entity" directorySegmentName="seg_0" id="956A2448-5061-2592-5329-48283C8B6DEF" name="Abonament">
+<createdBy>Nicoleta</createdBy>
+<createdTime>2020-12-09 16:26:07 UTC</createdTime>
+<ownerDesignName>tabele_dm</ownerDesignName>
+<engineerTo>
+<item key="4CF2C1CB-7A07-42C6-5A06-6BFE21724C5E" value="true"/>
+</engineerTo>
+<adequatelyNormalized>NO</adequatelyNormalized>
+<expectedVolumes>0</expectedVolumes>
+<fwdEngineeringStrategyName>Single Table</fwdEngineeringStrategyName>
+<growthPercent>0</growthPercent>
+<growthType>Year</growthType>
+<maxVolumes>9999999</maxVolumes>
+<minVolumes>0</minVolumes>
+<normalForm>Third</normalForm>
+<attributes itemClass="oracle.dbtools.crest.model.design.logical.Attribute">
+<Attribute name="id_abonament" id="5D9EDEAE-6634-2756-8F30-C916E3B93AEE">
+<createdBy>Nicoleta</createdBy>
+<createdTime>2020-12-09 16:26:48 UTC</createdTime>
+<ownerDesignName>tabele_dm</ownerDesignName>
+<engineerTo>
+<item key="4CF2C1CB-7A07-42C6-5A06-6BFE21724C5E" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<dataTypePrecision>4</dataTypePrecision>
+<ownDataTypeParameters>,4,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="tip_abonament" id="BFAE4945-CFAC-8566-FF78-AB6B718D64E9">
+<createdBy>Nicoleta</createdBy>
+<createdTime>2020-12-09 16:32:03 UTC</createdTime>
+<ownerDesignName>tabele_dm</ownerDesignName>
+<engineerTo>
+<item key="4CF2C1CB-7A07-42C6-5A06-6BFE21724C5E" value="true"/>
+</engineerTo>
+<constraintName>abonament_tip_abonament_ck</constraintName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>10</dataTypeSize>
+<listOfValues>
+<valueDef value="elev" description=""/>
+<valueDef value="standard" description=""/>
+<valueDef value="student" description=""/>
+</listOfValues>
+<ownDataTypeParameters>10,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="data_incepere" id="C5BE1190-9700-AF9A-11C1-80BDE5261E96">
+<createdBy>Nicoleta</createdBy>
+<createdTime>2020-12-09 16:26:14 UTC</createdTime>
+<ownerDesignName>tabele_dm</ownerDesignName>
+<engineerTo>
+<item key="4CF2C1CB-7A07-42C6-5A06-6BFE21724C5E" value="true"/>
+</engineerTo>
+<constraintName>abonament_data_incepere_ck</constraintName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT007</logicalDatatype>
+<checkConstraint>
+<implementationDef dbType="Generic Constraint" definition="data_incepere&lt;data_expirare"/>
+</checkConstraint>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="data_expirare" id="77297710-58E0-08EC-A1C7-A9496B07E3FD">
+<createdBy>Nicoleta</createdBy>
+<createdTime>2020-12-09 16:26:25 UTC</createdTime>
+<ownerDesignName>tabele_dm</ownerDesignName>
+<engineerTo>
+<item key="4CF2C1CB-7A07-42C6-5A06-6BFE21724C5E" value="true"/>
+</engineerTo>
+<constraintName>abonament_data_expirare_ck</constraintName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT007</logicalDatatype>
+<checkConstraint>
+<implementationDef dbType="Generic Constraint" definition="data_expirare&gt;data_incepere"/>
+</checkConstraint>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="id_abonat" id="6425D47E-A80E-6C85-8F4B-97A1585AF406">
+<createdBy>Nicoleta</createdBy>
+<createdTime>2020-12-09 16:28:05 UTC</createdTime>
+<generatorID>94726E51-DE47-293D-C3BC-A0C797A47EB2</generatorID>
+<ownerDesignName>tabele_dm</ownerDesignName>
+<engineerTo>
+<item key="4CF2C1CB-7A07-42C6-5A06-6BFE21724C5E" value="true"/>
+</engineerTo>
+<referedAttribute>A0D05542-F347-3FFC-2B4C-98DC940C014A</referedAttribute>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<dataTypePrecision>3</dataTypePrecision>
+<ownDataTypeParameters>,3,</ownDataTypeParameters>
+</Attribute>
+</attributes>
+<identifiers itemClass="oracle.dbtools.crest.model.design.logical.CandidateKey">
+<identifier id="FCD5A002-3297-02AC-FA29-80054A6404BA" name="Abonament PK">
+<createdBy>Nicoleta</createdBy>
+<createdTime>2020-12-09 17:00:49 UTC</createdTime>
+<ownerDesignName>tabele_dm</ownerDesignName>
+<shouldEngineer>false</shouldEngineer>
+<engineerTo>
+<item key="4CF2C1CB-7A07-42C6-5A06-6BFE21724C5E" value="false"/>
+</engineerTo>
+<pk>true</pk>
+<usedAttributes>
+<attributeRef>5D9EDEAE-6634-2756-8F30-C916E3B93AEE</attributeRef>
+</usedAttributes>
+</identifier>
+</identifiers>
+</Entity>

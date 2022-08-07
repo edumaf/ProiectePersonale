@@ -1,0 +1,123 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Entity class="oracle.dbtools.crest.model.design.logical.Entity" directorySegmentName="seg_0" id="431D8B81-1E82-7064-B0CD-9D7747F381BC" name="Detalii_Biblioteca">
+<createdBy>Nicoleta</createdBy>
+<createdTime>2020-11-27 08:17:03 UTC</createdTime>
+<ownerDesignName>tabele_dm</ownerDesignName>
+<engineerTo>
+<item key="4CF2C1CB-7A07-42C6-5A06-6BFE21724C5E" value="true"/>
+</engineerTo>
+<adequatelyNormalized>NO</adequatelyNormalized>
+<expectedVolumes>0</expectedVolumes>
+<fwdEngineeringStrategyName>Single Table</fwdEngineeringStrategyName>
+<growthPercent>0</growthPercent>
+<growthType>Year</growthType>
+<maxVolumes>9999999</maxVolumes>
+<minVolumes>0</minVolumes>
+<normalForm>Third</normalForm>
+<attributes itemClass="oracle.dbtools.crest.model.design.logical.Attribute">
+<Attribute name="email_biblioteca" id="E6670287-6D37-6F5B-9941-AD8BA46B2F5D">
+<createdBy>Nicoleta</createdBy>
+<createdTime>2020-11-27 08:17:30 UTC</createdTime>
+<ownerDesignName>tabele_dm</ownerDesignName>
+<engineerTo>
+<item key="4CF2C1CB-7A07-42C6-5A06-6BFE21724C5E" value="true"/>
+</engineerTo>
+<constraintName>detalii_biblioteca_email_ck</constraintName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>40</dataTypeSize>
+<checkConstraint>
+<implementationDef dbType="Generic Constraint" definition="regexp_like(email_biblioteca, &apos;[a-z0-9._%-]+@[a-z0-9.%-]+\.[a-z]{2,4}&apos;)"/>
+</checkConstraint>
+<ownDataTypeParameters>40,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="telefon_biblioteca" id="B2A86414-48E7-9B93-E5B8-94525C967B47">
+<createdBy>Nicoleta</createdBy>
+<createdTime>2020-11-27 08:17:37 UTC</createdTime>
+<ownerDesignName>tabele_dm</ownerDesignName>
+<engineerTo>
+<item key="4CF2C1CB-7A07-42C6-5A06-6BFE21724C5E" value="true"/>
+</engineerTo>
+<constraintName>detalii_biblioteca_telefon_ck</constraintName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>10</dataTypeSize>
+<ownDataTypeParameters>10,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="program" id="8776D87B-072E-ADDD-31F0-27C99675F39A">
+<createdBy>Nicoleta</createdBy>
+<createdTime>2020-11-27 08:17:45 UTC</createdTime>
+<ownerDesignName>tabele_dm</ownerDesignName>
+<engineerTo>
+<item key="4CF2C1CB-7A07-42C6-5A06-6BFE21724C5E" value="true"/>
+</engineerTo>
+<constraintName>detalii_biblioteca_program</constraintName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>20</dataTypeSize>
+<checkConstraint>
+<implementationDef dbType="Generic Constraint" definition="length(program)&gt;1"/>
+</checkConstraint>
+<ownDataTypeParameters>20,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="id_biblioteca" id="4D6B53B1-0104-F6EA-F974-3968E0068445">
+<createdBy>Nicoleta</createdBy>
+<createdTime>2020-12-09 16:17:49 UTC</createdTime>
+<generatorID>DD8BDB9E-B289-4622-0839-D530ED12200B</generatorID>
+<ownerDesignName>tabele_dm</ownerDesignName>
+<engineerTo>
+<item key="4CF2C1CB-7A07-42C6-5A06-6BFE21724C5E" value="true"/>
+</engineerTo>
+<referedAttribute>AC2E4598-10C0-2331-1637-233B62267CF7</referedAttribute>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<dataTypePrecision>2</dataTypePrecision>
+<ownDataTypeParameters>,2,</ownDataTypeParameters>
+</Attribute>
+</attributes>
+<identifiers itemClass="oracle.dbtools.crest.model.design.logical.CandidateKey">
+<identifier id="FA0AEE6F-B2E8-6643-F33C-18DB68F1C486" name="Detalii_Biblioteca PK">
+<createdBy>Nicoleta</createdBy>
+<createdTime>2020-11-27 08:17:28 UTC</createdTime>
+<ownerDesignName>tabele_dm</ownerDesignName>
+<shouldEngineer>false</shouldEngineer>
+<engineerTo>
+<item key="4CF2C1CB-7A07-42C6-5A06-6BFE21724C5E" value="false"/>
+</engineerTo>
+<pk>true</pk>
+<usedAttributes>
+<attributeRef>4D6B53B1-0104-F6EA-F974-3968E0068445</attributeRef>
+</usedAttributes>
+</identifier>
+<identifier id="851D2D33-68EC-9E25-3ADA-EB4847D61A7B" name="telefon_biblioteca">
+<createdBy>Nicoleta</createdBy>
+<createdTime>2020-12-09 17:23:46 UTC</createdTime>
+<ownerDesignName>tabele_dm</ownerDesignName>
+<shouldEngineer>false</shouldEngineer>
+<engineerTo>
+<item key="4CF2C1CB-7A07-42C6-5A06-6BFE21724C5E" value="false"/>
+</engineerTo>
+<newElementsIDs>B2A86414-48E7-9B93-E5B8-94525C967B47</newElementsIDs>
+<usedAttributes>
+<attributeRef>B2A86414-48E7-9B93-E5B8-94525C967B47</attributeRef>
+</usedAttributes>
+</identifier>
+<identifier id="E914D864-9B9B-0F5B-2FF0-7A4B09BA0B05" name="email_biblioteca">
+<createdBy>Nicoleta</createdBy>
+<createdTime>2020-12-09 17:24:56 UTC</createdTime>
+<ownerDesignName>tabele_dm</ownerDesignName>
+<shouldEngineer>false</shouldEngineer>
+<engineerTo>
+<item key="4CF2C1CB-7A07-42C6-5A06-6BFE21724C5E" value="false"/>
+</engineerTo>
+<newElementsIDs>E6670287-6D37-6F5B-9941-AD8BA46B2F5D</newElementsIDs>
+<usedAttributes>
+<attributeRef>E6670287-6D37-6F5B-9941-AD8BA46B2F5D</attributeRef>
+</usedAttributes>
+</identifier>
+</identifiers>
+</Entity>

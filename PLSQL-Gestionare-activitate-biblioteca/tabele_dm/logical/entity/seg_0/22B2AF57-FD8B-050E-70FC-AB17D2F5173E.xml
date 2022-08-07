@@ -1,0 +1,116 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Entity class="oracle.dbtools.crest.model.design.logical.Entity" directorySegmentName="seg_0" id="22B2AF57-FD8B-050E-70FC-AB17D2F5173E" name="Detalii_Carti">
+<createdBy>Nicoleta</createdBy>
+<createdTime>2020-11-27 08:24:49 UTC</createdTime>
+<ownerDesignName>tabele_dm</ownerDesignName>
+<engineerTo>
+<item key="4CF2C1CB-7A07-42C6-5A06-6BFE21724C5E" value="true"/>
+</engineerTo>
+<adequatelyNormalized>NO</adequatelyNormalized>
+<expectedVolumes>0</expectedVolumes>
+<fwdEngineeringStrategyName>Single Table</fwdEngineeringStrategyName>
+<growthPercent>0</growthPercent>
+<growthType>Year</growthType>
+<maxVolumes>9999999</maxVolumes>
+<minVolumes>0</minVolumes>
+<normalForm>Third</normalForm>
+<attributes itemClass="oracle.dbtools.crest.model.design.logical.Attribute">
+<Attribute name="status" id="3AA47419-7430-D65B-8AE9-DCABC433601C">
+<createdBy>Nicoleta</createdBy>
+<createdTime>2020-11-27 08:25:36 UTC</createdTime>
+<ownerDesignName>tabele_dm</ownerDesignName>
+<engineerTo>
+<item key="4CF2C1CB-7A07-42C6-5A06-6BFE21724C5E" value="true"/>
+</engineerTo>
+<constraintName>detalii_carti_status_CK</constraintName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>10</dataTypeSize>
+<listOfValues>
+<valueDef value="disponibila" description=""/>
+<valueDef value="imprumutata" description=""/>
+</listOfValues>
+<ownDataTypeParameters>10,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="data_rezervare" id="113C9109-BE6C-D471-7264-B0693F1FA264">
+<createdBy>Nicoleta</createdBy>
+<createdTime>2020-11-27 08:25:47 UTC</createdTime>
+<ownerDesignName>tabele_dm</ownerDesignName>
+<engineerTo>
+<item key="4CF2C1CB-7A07-42C6-5A06-6BFE21724C5E" value="true"/>
+</engineerTo>
+<constraintName>data_rezervare_ck</constraintName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT007</logicalDatatype>
+<checkConstraint>
+<implementationDef dbType="Generic Constraint" definition="data_rezervare&lt;data_returnare"/>
+</checkConstraint>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="id_carte" id="F903F9A3-FEE3-9C34-4385-FF1E5499E045">
+<createdBy>Nicoleta</createdBy>
+<createdTime>2020-12-09 16:19:25 UTC</createdTime>
+<generatorID>6BA7F630-0644-394E-3166-7E86F8F4CCF8</generatorID>
+<ownerDesignName>tabele_dm</ownerDesignName>
+<engineerTo>
+<item key="4CF2C1CB-7A07-42C6-5A06-6BFE21724C5E" value="true"/>
+</engineerTo>
+<referedAttribute>F8D1B069-293D-22C2-8E62-A1A2A58A0897</referedAttribute>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<dataTypePrecision>2</dataTypePrecision>
+<ownDataTypeParameters>,2,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="id_abonat" id="B9CD3BA2-DCFB-5C37-277B-70DB83194095">
+<createdBy>Nicoleta</createdBy>
+<createdTime>2020-12-11 08:39:54 UTC</createdTime>
+<generatorID>43563D14-88C9-9497-3FC5-4F45FF498C22</generatorID>
+<ownerDesignName>tabele_dm</ownerDesignName>
+<engineerTo>
+<item key="4CF2C1CB-7A07-42C6-5A06-6BFE21724C5E" value="true"/>
+</engineerTo>
+<nullsAllowed>true</nullsAllowed>
+<referedAttribute>A0D05542-F347-3FFC-2B4C-98DC940C014A</referedAttribute>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<dataTypePrecision>3</dataTypePrecision>
+<ownDataTypeParameters>,3,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="data_returnare" id="C8E0B36B-CDC7-E304-2E59-2B7C91C1BDEF">
+<createdBy>mafav</createdBy>
+<createdTime>2022-05-29 12:18:10 UTC</createdTime>
+<ownerDesignName>tabele_dm</ownerDesignName>
+<engineerTo>
+<item key="4CF2C1CB-7A07-42C6-5A06-6BFE21724C5E" value="true"/>
+</engineerTo>
+<constraintName>data_returnare_ck</constraintName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT007</logicalDatatype>
+<checkConstraint>
+<implementationDef dbType="Generic Constraint" definition="data_returnare&gt;data_rezervare"/>
+</checkConstraint>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+</attributes>
+<identifiers itemClass="oracle.dbtools.crest.model.design.logical.CandidateKey">
+<identifier id="78C69F31-1AA8-0C99-15EA-E3D897ACB721" name="Detalii_Carti PK">
+<createdBy>Nicoleta</createdBy>
+<createdTime>2020-11-27 08:25:43 UTC</createdTime>
+<ownerDesignName>tabele_dm</ownerDesignName>
+<engineerTo>
+<item key="4CF2C1CB-7A07-42C6-5A06-6BFE21724C5E" value="true"/>
+</engineerTo>
+<pk>true</pk>
+<usedAttributes>
+<attributeRef>F903F9A3-FEE3-9C34-4385-FF1E5499E045</attributeRef>
+</usedAttributes>
+</identifier>
+</identifiers>
+</Entity>

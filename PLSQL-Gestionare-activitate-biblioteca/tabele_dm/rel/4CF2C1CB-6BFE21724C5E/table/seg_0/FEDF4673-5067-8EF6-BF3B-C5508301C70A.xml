@@ -1,0 +1,120 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="FEDF4673-5067-8EF6-BF3B-C5508301C70A" name="Detalii_Biblioteca">
+<createdBy>mafav</createdBy>
+<createdTime>2022-05-29 13:34:56 UTC</createdTime>
+<generatorID>431D8B81-1E82-7064-B0CD-9D7747F381BC</generatorID>
+<ownerDesignName>tabele_dm</ownerDesignName>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="email_biblioteca" id="6EC47087-6CA6-2EFC-8B63-CC8F3589924B">
+<createdBy>mafav</createdBy>
+<createdTime>2022-05-29 13:34:56 UTC</createdTime>
+<generatorID>E6670287-6D37-6F5B-9941-AD8BA46B2F5D</generatorID>
+<ownerDesignName>tabele_dm</ownerDesignName>
+<constraintName>detalii_biblioteca_email_ck</constraintName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>40</dataTypeSize>
+<checkConstraint>
+<implementationDef dbType="Generic Constraint" definition="regexp_like(email_biblioteca, &apos;[a-z0-9._%-]+@[a-z0-9.%-]+\.[a-z]{2,4}&apos;)"/>
+</checkConstraint>
+<ownDataTypeParameters>40,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="telefon_biblioteca" id="D44A2E0C-C0F6-613C-5911-72CE0F9C59DA">
+<createdBy>mafav</createdBy>
+<createdTime>2022-05-29 13:34:56 UTC</createdTime>
+<generatorID>B2A86414-48E7-9B93-E5B8-94525C967B47</generatorID>
+<ownerDesignName>tabele_dm</ownerDesignName>
+<constraintName>detalii_biblioteca_telefon_ck</constraintName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>10</dataTypeSize>
+<ownDataTypeParameters>10,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="program" id="F307A597-D2A3-9216-2584-A1E159A0F56E">
+<createdBy>mafav</createdBy>
+<createdTime>2022-05-29 13:34:56 UTC</createdTime>
+<generatorID>8776D87B-072E-ADDD-31F0-27C99675F39A</generatorID>
+<ownerDesignName>tabele_dm</ownerDesignName>
+<constraintName>detalii_biblioteca_program</constraintName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>20</dataTypeSize>
+<checkConstraint>
+<implementationDef dbType="Generic Constraint" definition="length(program)&gt;1"/>
+</checkConstraint>
+<ownDataTypeParameters>20,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="id_biblioteca" id="5EEEBCBA-026B-E2A7-9092-975AC2D3AE75">
+<createdBy>mafav</createdBy>
+<createdTime>2022-05-29 13:34:56 UTC</createdTime>
+<generatorID>4D6B53B1-0104-F6EA-F974-3968E0068445</generatorID>
+<ownerDesignName>tabele_dm</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<dataTypePrecision>2</dataTypePrecision>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<previousColumn>false</previousColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="0ED03C6E-B464-8299-AD62-41799B768744" referredColumn="3BBACAD0-CCD6-EAAF-2744-582FC348AB71"/>
+</associations>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="E6241D82-E1EB-0802-A307-26F8084DB0F0" name="Detalii_Biblioteca_PK">
+<createdBy>mafav</createdBy>
+<createdTime>2022-05-29 13:34:56 UTC</createdTime>
+<generatorID>FA0AEE6F-B2E8-6643-F33C-18DB68F1C486</generatorID>
+<ownerDesignName>tabele_dm</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="5EEEBCBA-026B-E2A7-9092-975AC2D3AE75"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="B680138D-9B3A-A5E6-4633-47674A901EE8" name="telefon_biblioteca">
+<createdBy>mafav</createdBy>
+<createdTime>2022-05-29 13:34:56 UTC</createdTime>
+<generatorID>851D2D33-68EC-9E25-3ADA-EB4847D61A7B</generatorID>
+<ownerDesignName>tabele_dm</ownerDesignName>
+<indexState>Unique Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="D44A2E0C-C0F6-613C-5911-72CE0F9C59DA"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="AB842BEA-F1D7-AC35-C15D-A0738A7C26B6" name="email_biblioteca">
+<createdBy>mafav</createdBy>
+<createdTime>2022-05-29 13:34:56 UTC</createdTime>
+<generatorID>E914D864-9B9B-0F5B-2FF0-7A4B09BA0B05</generatorID>
+<ownerDesignName>tabele_dm</ownerDesignName>
+<indexState>Unique Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="6EC47087-6CA6-2EFC-8B63-CC8F3589924B"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="A700E62C-E120-73E2-0B27-E6B85915E1C5" name="biblioteca_detalii">
+<createdBy>mafav</createdBy>
+<createdTime>2022-05-29 13:34:56 UTC</createdTime>
+<generatorID>DD8BDB9E-B289-4622-0839-D530ED12200B</generatorID>
+<ownerDesignName>tabele_dm</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="5EEEBCBA-026B-E2A7-9092-975AC2D3AE75"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

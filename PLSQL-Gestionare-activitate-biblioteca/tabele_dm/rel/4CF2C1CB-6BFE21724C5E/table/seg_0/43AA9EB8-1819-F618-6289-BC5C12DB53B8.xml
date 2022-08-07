@@ -1,0 +1,132 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="43AA9EB8-1819-F618-6289-BC5C12DB53B8" name="Abonat">
+<createdBy>mafav</createdBy>
+<createdTime>2022-05-29 13:34:56 UTC</createdTime>
+<generatorID>05E74E02-D1C4-75E1-1EE6-82ED7050DD59</generatorID>
+<ownerDesignName>tabele_dm</ownerDesignName>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="id_abonat" id="792C97BB-B580-28DA-09C9-261E828ECA7A">
+<createdBy>mafav</createdBy>
+<createdTime>2022-05-29 13:34:56 UTC</createdTime>
+<generatorID>A0D05542-F347-3FFC-2B4C-98DC940C014A</generatorID>
+<ownerDesignName>tabele_dm</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<dataTypePrecision>3</dataTypePrecision>
+<ownDataTypeParameters>,3,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="nume_abonat" id="8D9600A6-AFB8-6508-8C5C-E8C6F2997A2A">
+<createdBy>mafav</createdBy>
+<createdTime>2022-05-29 13:34:56 UTC</createdTime>
+<generatorID>C2A96FD9-0448-3BC9-6EC3-1F98D6208AFE</generatorID>
+<ownerDesignName>tabele_dm</ownerDesignName>
+<constraintName>abonat_nume_abonat_ck</constraintName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>40</dataTypeSize>
+<checkConstraint>
+<implementationDef dbType="Generic Constraint" definition="length(nume_abonat)&gt;1 AND regexp_like(nume_abonat,&apos;[A-z]&apos;)"/>
+</checkConstraint>
+<ownDataTypeParameters>40,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="telefon_abonat" id="A6C0CC12-38EC-96C9-6F37-020D4CE1388F">
+<createdBy>mafav</createdBy>
+<createdTime>2022-05-29 13:34:56 UTC</createdTime>
+<generatorID>AF4F6B8F-D2CD-A1C2-E766-7DAEAEA382AA</generatorID>
+<ownerDesignName>tabele_dm</ownerDesignName>
+<constraintName>abonat_telefon_abonat_ck</constraintName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>10</dataTypeSize>
+<ownDataTypeParameters>10,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="email_abonat" id="52451974-0FA9-01E4-C14B-5B1C915D20B2">
+<createdBy>mafav</createdBy>
+<createdTime>2022-05-29 13:34:56 UTC</createdTime>
+<generatorID>689DB1AE-1324-2515-DD60-DE80F3FEE064</generatorID>
+<ownerDesignName>tabele_dm</ownerDesignName>
+<constraintName>abonat_email_abonat_ck</constraintName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>40</dataTypeSize>
+<checkConstraint>
+<implementationDef dbType="Generic Constraint" definition="regexp_like(email_abonat, &apos;[a-z0-9._%-]+@[a-z0-9.%-]+\.[a-z]{2,4}&apos;)"/>
+</checkConstraint>
+<ownDataTypeParameters>40,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="id_biblioteca" id="F97BBE4A-36ED-1DB7-AF9B-4579DEBC1DE9">
+<createdBy>mafav</createdBy>
+<createdTime>2022-05-29 13:34:56 UTC</createdTime>
+<generatorID>889CA12D-F97C-2F8F-9C5C-99B544C470EF</generatorID>
+<ownerDesignName>tabele_dm</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<dataTypePrecision>2</dataTypePrecision>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<previousColumn>false</previousColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="37E136A1-FF65-72EB-92F9-8CB3C6EAD9B3" referredColumn="3BBACAD0-CCD6-EAAF-2744-582FC348AB71"/>
+</associations>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="763AB8D0-0593-4C4B-64FC-C9E8393CB93D" name="Abonamente_PK">
+<createdBy>mafav</createdBy>
+<createdTime>2022-05-29 13:34:56 UTC</createdTime>
+<generatorID>B13CECF3-54F5-F888-BBE8-960D73CDC16E</generatorID>
+<ownerDesignName>tabele_dm</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="792C97BB-B580-28DA-09C9-261E828ECA7A"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="49089BB7-45F6-7287-E38D-25A95F29CDEB" name="telefon_abonat">
+<createdBy>mafav</createdBy>
+<createdTime>2022-05-29 13:34:56 UTC</createdTime>
+<generatorID>73B54C25-C394-7EED-69A3-DB0F2EA065FC</generatorID>
+<ownerDesignName>tabele_dm</ownerDesignName>
+<indexState>Unique Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="A6C0CC12-38EC-96C9-6F37-020D4CE1388F"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="00685840-EC50-92A5-491E-2E767FB2972D" name="email_abonat">
+<createdBy>mafav</createdBy>
+<createdTime>2022-05-29 13:34:56 UTC</createdTime>
+<generatorID>40A6AB60-A371-77D6-4FB4-C878F98412C7</generatorID>
+<ownerDesignName>tabele_dm</ownerDesignName>
+<indexState>Unique Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="52451974-0FA9-01E4-C14B-5B1C915D20B2"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="D74EB33F-9060-D186-E681-131AF9D4EA72" name="biblioteca_abonament_FK">
+<createdBy>mafav</createdBy>
+<createdTime>2022-05-29 13:34:56 UTC</createdTime>
+<generatorID>20E1D880-7706-DB21-5A97-9035915EFC68</generatorID>
+<ownerDesignName>tabele_dm</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="F97BBE4A-36ED-1DB7-AF9B-4579DEBC1DE9"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

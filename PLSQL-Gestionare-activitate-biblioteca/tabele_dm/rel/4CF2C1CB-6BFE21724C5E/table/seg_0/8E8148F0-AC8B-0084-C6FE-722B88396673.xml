@@ -1,0 +1,114 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="8E8148F0-AC8B-0084-C6FE-722B88396673" name="Carti">
+<createdBy>mafav</createdBy>
+<createdTime>2022-05-29 13:34:56 UTC</createdTime>
+<generatorID>0E6B10DB-225C-A0F7-AC1B-B4B8ADFCF46A</generatorID>
+<ownerDesignName>tabele_dm</ownerDesignName>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="id_carte" id="1A8CF3D1-FF7C-F4EB-BD7E-D2FD93164DE6">
+<createdBy>mafav</createdBy>
+<createdTime>2022-05-29 13:34:56 UTC</createdTime>
+<generatorID>F8D1B069-293D-22C2-8E62-A1A2A58A0897</generatorID>
+<ownerDesignName>tabele_dm</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<dataTypePrecision>2</dataTypePrecision>
+<ownDataTypeParameters>,2,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="id_biblioteca" id="66EF01FB-C9CE-C038-3358-0C20CC607EB5">
+<createdBy>mafav</createdBy>
+<createdTime>2022-05-29 13:34:56 UTC</createdTime>
+<generatorID>35FC03B1-3DD8-FD42-2A0C-1A7AF7AE3E47</generatorID>
+<ownerDesignName>tabele_dm</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<dataTypePrecision>2</dataTypePrecision>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<previousColumn>false</previousColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="E0F5E773-D9B1-A7D6-DC7A-607BD89726E4" referredColumn="3BBACAD0-CCD6-EAAF-2744-582FC348AB71"/>
+</associations>
+</Column>
+<Column name="gen_carte" id="C357833E-07F6-6D0B-738E-B72307A5F0B0">
+<createdBy>mafav</createdBy>
+<createdTime>2022-05-29 13:34:56 UTC</createdTime>
+<generatorID>A51C5697-D017-E0CC-BB74-E6C81981D221</generatorID>
+<ownerDesignName>tabele_dm</ownerDesignName>
+<constraintName>carti_gen_carte_ck</constraintName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>10</dataTypeSize>
+<checkConstraint>
+<implementationDef dbType="Generic Constraint" definition="length(gen_carte)&gt;1 AND regexp_like(gen_carte,&apos;[A-z]&apos;)"/>
+</checkConstraint>
+<ownDataTypeParameters>10,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="nume_carte" id="E497D05D-6802-62D4-2D4B-61BB30C991C3">
+<createdBy>mafav</createdBy>
+<createdTime>2022-05-29 13:34:56 UTC</createdTime>
+<generatorID>E035B283-DEA4-7242-4749-7853FAD447E6</generatorID>
+<ownerDesignName>tabele_dm</ownerDesignName>
+<constraintName>carti_nume_carte</constraintName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>50</dataTypeSize>
+<checkConstraint>
+<implementationDef dbType="Generic Constraint" definition="length(nume_carte)&gt;1 AND regexp_like(nume_carte,&apos;[A-z]&apos;)"/>
+</checkConstraint>
+<ownDataTypeParameters>50,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="an_aparitie" id="06499540-EDD2-70BD-3ABB-948E32558C41">
+<createdBy>mafav</createdBy>
+<createdTime>2022-05-29 13:34:56 UTC</createdTime>
+<generatorID>D16F94B3-9279-BB46-4618-9F42513FDB26</generatorID>
+<ownerDesignName>tabele_dm</ownerDesignName>
+<constraintName>carti_an_aparitie_ck</constraintName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<dataTypePrecision>4</dataTypePrecision>
+<checkConstraint>
+<implementationDef dbType="Generic Constraint" definition="regexp_like(an_aparitie,&apos;[0-9]&apos;)"/>
+</checkConstraint>
+<ownDataTypeParameters>,4,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="DAE4BAE0-0C1F-ABC5-0965-30D87FDE5B69" name="Carti_PK">
+<createdBy>mafav</createdBy>
+<createdTime>2022-05-29 13:34:56 UTC</createdTime>
+<generatorID>F596A54C-DD8A-FD92-5464-42937C0BF25E</generatorID>
+<ownerDesignName>tabele_dm</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="1A8CF3D1-FF7C-F4EB-BD7E-D2FD93164DE6"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="129821A3-2673-9E80-EDD7-74B3DB65E771" name="biblioteca_carti_FK">
+<createdBy>mafav</createdBy>
+<createdTime>2022-05-29 13:34:56 UTC</createdTime>
+<generatorID>2B704088-3974-287B-037C-0BD3717BA120</generatorID>
+<ownerDesignName>tabele_dm</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="66EF01FB-C9CE-C038-3358-0C20CC607EB5"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>
