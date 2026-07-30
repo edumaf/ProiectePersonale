@@ -3,6 +3,14 @@
 Mobile app (React Native + Expo) that identifies wild mushrooms from a photo
 and tells foragers whether they're safe to eat. English-first MVP.
 
+**Pinned to Expo SDK 54**, not the latest, on purpose: as of writing, the
+public Expo Go app on the iOS App Store is stuck on SDK 54 pending Apple's
+review of newer versions, so a project on a newer SDK can't be opened in
+plain Expo Go on iPhone at all. Don't bump `expo` past `~54.0.0` (or run a
+blanket `expo install --fix` against a newer SDK) without checking
+https://expo.dev/go first - it'll silently lock out anyone testing via the
+App Store build of Expo Go.
+
 ## Status: Build steps 1-3 + 6 - shell, species data, backend, AI assistant
 
 Navigation shell (step 1) and the species database + seed data (step 2) are

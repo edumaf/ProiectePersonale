@@ -1,4 +1,6 @@
-import * as FileSystem from 'expo-file-system';
+// expo-file-system's default export is the new File/Directory API (SDK 54+);
+// readAsStringAsync/EncodingType still live under the legacy subpath.
+import * as FileSystem from 'expo-file-system/legacy';
 import { supabase } from './supabase';
 import { Collection, ScanPhoto, ScanResult } from '../types/models';
 
