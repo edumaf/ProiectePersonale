@@ -6,7 +6,7 @@ import { RootStackParamList } from '../navigation/types';
 import { Card } from '../components/Card';
 import { EdibilityBadge } from '../components/EdibilityBadge';
 import { PrimaryButton } from '../components/PrimaryButton';
-import { getSpeciesById } from '../data/mockSpecies';
+import { getSpeciesById } from '../data/species';
 import { colors, spacing, type } from '../theme';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'SpeciesDetail'>;
@@ -20,7 +20,7 @@ export function SpeciesDetailScreen({ route, navigation }: Props) {
   return (
     <SafeAreaView style={styles.safe} edges={['bottom']}>
       <ScrollView contentContainerStyle={styles.content}>
-        <Image source={{ uri: species.photoUrl }} style={styles.photo} />
+        <Image source={{ uri: species.photoUrls[0] }} style={styles.photo} />
         <View style={styles.header}>
           <Text style={[type.h1, { color: colors.ink }]}>{species.commonName}</Text>
           <Text style={[type.latin, { color: colors.charcoal, marginTop: 2 }]}>{species.latinName}</Text>

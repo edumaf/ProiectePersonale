@@ -7,7 +7,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { MainTabParamList, RootStackParamList } from '../navigation/types';
 import { Card } from '../components/Card';
 import { mockScans } from '../data/mockScans';
-import { getSpeciesById } from '../data/mockSpecies';
+import { getSpeciesById } from '../data/species';
 import { defaultPoisonControl } from '../data/poisonControl';
 import { colors, spacing, type } from '../theme';
 

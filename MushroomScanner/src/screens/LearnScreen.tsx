@@ -6,7 +6,7 @@ import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { MainTabParamList, RootStackParamList } from '../navigation/types';
 import { EdibilityBadge } from '../components/EdibilityBadge';
-import { mockSpecies } from '../data/mockSpecies';
+import { speciesList } from '../data/species';
 import { colors, edibilityPresentation, EdibilityStatus, spacing, type } from '../theme';
 
 type Props = CompositeScreenProps<
@@ -27,7 +27,7 @@ export function LearnScreen({ navigation }: Props) {
   const [activeFilter, setActiveFilter] = useState<EdibilityStatus | 'all'>('all');
 
   const filtered = useMemo(
-    () => (activeFilter === 'all' ? mockSpecies : mockSpecies.filter((s) => s.edibilityStatus === activeFilter)),
+    () => (activeFilter === 'all' ? speciesList : speciesList.filter((s) => s.edibilityStatus === activeFilter)),
     [activeFilter]
   );
 
@@ -62,7 +62,7 @@ export function LearnScreen({ navigation }: Props) {
             style={styles.row}
             onPress={() => navigation.navigate('SpeciesDetail', { speciesId: item.id })}
           >
-            <Image source={{ uri: item.photoUrl }} style={styles.thumb} />
+            <Image source={{ uri: item.photoUrls[0] }} style={styles.thumb} />
             <View style={styles.info}>
               <Text style={[type.bodyMedium, { color: colors.ink }]}>{item.commonName}</Text>
               <Text style={[type.latin, { color: colors.fog, fontSize: 13 }]}>{item.latinName}</Text>

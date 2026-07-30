@@ -6,7 +6,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { MainTabParamList, RootStackParamList } from '../navigation/types';
 import { EdibilityBadge } from '../components/EdibilityBadge';
 import { mockScans } from '../data/mockScans';
-import { getSpeciesById } from '../data/mockSpecies';
+import { getSpeciesById } from '../data/species';
 import { colors, spacing, type } from '../theme';
 
 type Props = CompositeScreenProps<
@@ -36,7 +36,7 @@ export function ScanHistoryScreen({ navigation }: Props) {
               style={styles.row}
               onPress={() => navigation.navigate('Result', { scanId: item.id })}
             >
-              <Image source={{ uri: item.photoUrl }} style={styles.thumb} />
+              <Image source={{ uri: item.photos[0].url }} style={styles.thumb} />
               <View style={styles.info}>
                 <Text style={[type.bodyMedium, { color: colors.ink }]}>
                   {species ? species.commonName : 'Unidentified'}

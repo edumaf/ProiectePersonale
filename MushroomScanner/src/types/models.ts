@@ -13,13 +13,22 @@ export interface Species {
   habitat: string;
   season: string;
   region: string;
-  photoUrl: string;
+  /** Reference photos, ordered; first is the cover image. */
+  photoUrls: string[];
   confidenceNotes?: string;
+}
+
+export type ScanAngle = 'cap' | 'gills' | 'stem_base';
+
+export interface ScanPhoto {
+  angle: ScanAngle;
+  url: string;
 }
 
 export interface ScanResult {
   id: string;
-  photoUrl: string;
+  /** Photos captured for this scan, ordered; first is the cover image. */
+  photos: ScanPhoto[];
   speciesId: string | null;
   confidencePercent: number;
   timestamp: string;

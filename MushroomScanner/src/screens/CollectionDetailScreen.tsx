@@ -3,7 +3,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/types';
 import { mockCollections, mockScans } from '../data/mockScans';
-import { getSpeciesById } from '../data/mockSpecies';
+import { getSpeciesById } from '../data/species';
 import { EdibilityBadge } from '../components/EdibilityBadge';
 import { colors, spacing, type } from '../theme';
 
@@ -32,7 +32,7 @@ export function CollectionDetailScreen({ route, navigation }: Props) {
               style={styles.tile}
               onPress={() => navigation.navigate('Result', { scanId: item.id })}
             >
-              <Image source={{ uri: item.photoUrl }} style={styles.thumb} />
+              <Image source={{ uri: item.photos[0].url }} style={styles.thumb} />
               <Text style={[type.bodyMedium, styles.thumbLabel]} numberOfLines={1}>
                 {species ? species.commonName : 'Unidentified'}
               </Text>
