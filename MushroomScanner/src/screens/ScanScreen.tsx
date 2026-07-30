@@ -10,6 +10,8 @@ import { MainTabParamList, RootStackParamList } from '../navigation/types';
 import { PrimaryButton } from '../components/PrimaryButton';
 import { mockScans } from '../data/mockScans';
 import { ScanAngle } from '../types/models';
+import { useAuth } from '../lib/auth';
+import { identifyPhotos, insertScan, uploadScanPhotos } from '../lib/scans';
 import { colors, radius, spacing, type } from '../theme';
 
 type Props = CompositeScreenProps<
@@ -29,12 +31,16 @@ const angleSteps: Array<{ angle: ScanAngle; title: string; hint: string; require
   { angle: 'stem_base', title: 'Stem base', hint: 'Dig gently - a hidden volva (sac) is a deadly-Amanita sign', required: false },
 ];
 
-// The identification call itself (multimodal LLM vision request over all
-// captured angles) is wired up in build step 3; for now completing the
-// capture jumps to a mock result after a short fake delay.
+// Real path (signed in): upload photos to Storage, call the identify edge
+// function (multimodal Claude vision request over all captured angles),
+// insert the scans row, navigate to the real result. Demo path (not
+// signed in / Supabase not configured): same UI, but "Identify" jumps to
+// a fixed mock result after a short fake delay instead.
 export function ScanScreen({ navigation }: Props) {
+  const { session } = useAuth();
   const [status, setStatus] = useState<Status>('idle');
   const [photos, setPhotos] = useState<Partial<Record<ScanAngle, string>>>({});
+  const [errorMessage, setErrorMessage] = useState('');
 
   async function captureAngle(angle: ScanAngle, source: 'camera' | 'library') {
     const permission =
@@ -52,13 +58,35 @@ export function ScanScreen({ navigation }: Props) {
     setPhotos((prev) => ({ ...prev, [angle]: result.assets[0].uri }));
   }
 
-  function identify() {
+  async function identify() {
+    setErrorMessage('');
     setStatus('loading');
-    setTimeout(() => {
+
+    const captured = (Object.entries(photos) as Array<[ScanAngle, string]>).map(([angle, uri]) => ({ angle, uri }));
+
+    if (!session) {
+      setTimeout(() => {
+        setStatus('idle');
+        setPhotos({});
+        navigation.navigate('Result', { scanId: mockScans[0].id });
+      }, 1200);
+      return;
+    }
+
+    try {
+      const localScanId = `${Date.now()}`;
+      const [result, uploadedPhotos] = await Promise.all([
+        identifyPhotos(captured),
+        uploadScanPhotos(session.user.id, localScanId, captured),
+      ]);
+      const scan = await insertScan(session.user.id, uploadedPhotos, result);
       setStatus('idle');
       setPhotos({});
-      navigation.navigate('Result', { scanId: mockScans[0].id });
-    }, 1200);
+      navigation.navigate('Result', { scanId: scan.id });
+    } catch (err) {
+      setStatus('idle');
+      setErrorMessage(err instanceof Error ? err.message : 'Identification failed - try again.');
+    }
   }
 
   const hasRequiredPhotos = angleSteps.filter((s) => s.required).every((s) => photos[s.angle]);
@@ -122,6 +150,8 @@ export function ScanScreen({ navigation }: Props) {
           );
         })}
 
+        {errorMessage ? <Text style={[type.caption, styles.errorText]}>{errorMessage}</Text> : null}
+
         <PrimaryButton
           label={capturedCount > 0 ? `Identify (${capturedCount} photo${capturedCount > 1 ? 's' : ''})` : 'Identify'}
           onPress={identify}
@@ -160,4 +190,5 @@ const styles = StyleSheet.create({
   libraryLink: { color: colors.moss, marginTop: spacing.xs },
   loadingPreview: { width: 220, height: 220, borderRadius: 16 },
   loadingText: { color: colors.charcoal, marginTop: spacing.sm },
+  errorText: { color: colors.deadly, marginBottom: spacing.sm, textAlign: 'center' },
 });

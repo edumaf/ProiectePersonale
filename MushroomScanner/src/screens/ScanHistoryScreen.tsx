@@ -5,7 +5,7 @@ import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { MainTabParamList, RootStackParamList } from '../navigation/types';
 import { EdibilityBadge } from '../components/EdibilityBadge';
-import { mockScans } from '../data/mockScans';
+import { useAppData } from '../hooks/useAppData';
 import { getSpeciesById } from '../data/species';
 import { colors, spacing, type } from '../theme';
 
@@ -20,11 +20,13 @@ function formatDate(iso: string) {
 
 // Chronological log of every scan, independent of collections.
 export function ScanHistoryScreen({ navigation }: Props) {
-  const sorted = [...mockScans].sort((a, b) => (a.timestamp < b.timestamp ? 1 : -1));
+  const { scans, isDemo } = useAppData();
+  const sorted = [...scans].sort((a, b) => (a.timestamp < b.timestamp ? 1 : -1));
 
   return (
     <SafeAreaView style={styles.safe} edges={['top']}>
       <Text style={[type.display, styles.title]}>Scan History</Text>
+      {isDemo && <Text style={[type.caption, styles.demoTag]}>Showing demo data.</Text>}
       <FlatList
         data={sorted}
         keyExtractor={(s) => s.id}
@@ -55,6 +57,7 @@ export function ScanHistoryScreen({ navigation }: Props) {
 const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: colors.cream },
   title: { color: colors.ink, paddingHorizontal: spacing.lg, paddingTop: spacing.md },
+  demoTag: { color: colors.fog, paddingHorizontal: spacing.lg, marginTop: spacing.xs },
   list: { padding: spacing.lg, paddingBottom: spacing.xxl },
   row: { flexDirection: 'row', marginBottom: spacing.md },
   thumb: { width: 64, height: 64, borderRadius: 10, marginRight: spacing.md },

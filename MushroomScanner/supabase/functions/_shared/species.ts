@@ -1,0 +1,845 @@
+// Generated from db/seed/species.json by db/seed/generate-sql.mjs.
+// Do not edit by hand - edit species.json and regenerate instead.
+
+export const speciesCatalog = [
+  {
+    "id": "chanterelle",
+    "commonName": "Chanterelle",
+    "latinName": "Cantharellus cibarius",
+    "edibilityStatus": "edible",
+    "requiresCooking": false,
+    "lookalikeSpeciesIds": [
+      "false-chanterelle",
+      "jack-o-lantern"
+    ],
+    "poisoningHistory": "No significant poisoning history; one of Europe's most widely foraged edibles.",
+    "habitat": "Mixed and coniferous forest, often near oak, beech, or pine",
+    "season": "Summer to autumn",
+    "region": "Europe, North America",
+    "photoUrls": [
+      "https://picsum.photos/seed/chanterelle/800/800"
+    ],
+    "confidenceNotes": "True gills are shallow, forked, and run down the stem (not true gills but ridges); distinct apricot smell. Solid flesh throughout, unlike hollow-stemmed look-alikes."
+  },
+  {
+    "id": "false-chanterelle",
+    "commonName": "False Chanterelle",
+    "latinName": "Hygrophoropsis aurantiaca",
+    "edibilityStatus": "inedible",
+    "requiresCooking": false,
+    "lookalikeSpeciesIds": [
+      "chanterelle"
+    ],
+    "toxicityNotes": "Not deadly, but has caused gastrointestinal upset in some people and is generally considered not worth eating.",
+    "poisoningHistory": "Occasional mild GI illness reported; not associated with severe or fatal poisoning.",
+    "habitat": "Coniferous woodland, on decaying wood or needle litter",
+    "season": "Summer to late autumn",
+    "region": "Europe, North America",
+    "photoUrls": [
+      "https://picsum.photos/seed/false-chanterelle/800/800"
+    ],
+    "confidenceNotes": "Has true, thin, closely-spaced gills (vs. the chanterelle's blunt forked ridges) and a deeper orange color."
+  },
+  {
+    "id": "jack-o-lantern",
+    "commonName": "Jack-o'-Lantern",
+    "latinName": "Omphalotus illudens",
+    "edibilityStatus": "toxic",
+    "requiresCooking": false,
+    "lookalikeSpeciesIds": [
+      "chanterelle"
+    ],
+    "toxicityNotes": "Causes severe cramping, vomiting, and diarrhea. Gills are famously bioluminescent (faintly glow in complete darkness), unlike any chanterelle.",
+    "poisoningHistory": "A common cause of non-fatal but severe GI poisoning where foragers mistake it for chanterelles.",
+    "habitat": "Dense clusters at the base of hardwood trees or on buried roots/stumps",
+    "season": "Late summer to autumn",
+    "region": "Europe, North America",
+    "photoUrls": [
+      "https://picsum.photos/seed/jack-o-lantern/800/800"
+    ],
+    "confidenceNotes": "Grows in dense clumps from wood, has true thin gills, and lacks the chanterelle's apricot smell - chanterelles grow singly or scattered from soil."
+  },
+  {
+    "id": "death-cap",
+    "commonName": "Death Cap",
+    "latinName": "Amanita phalloides",
+    "edibilityStatus": "deadly",
+    "requiresCooking": false,
+    "lookalikeSpeciesIds": [
+      "field-mushroom",
+      "horse-mushroom"
+    ],
+    "toxicityNotes": "Contains amatoxins that cause severe, often irreversible liver and kidney damage. Symptoms are delayed 6-24 hours, often after damage is already underway. No amount of cooking, drying, or freezing makes it safe.",
+    "poisoningHistory": "Responsible for the majority of fatal mushroom poisonings worldwide, according to mycological and poison-control literature.",
+    "habitat": "Deciduous woodland, especially near oak",
+    "season": "Late summer to autumn",
+    "region": "Europe, widely introduced elsewhere",
+    "photoUrls": [
+      "https://picsum.photos/seed/death-cap/800/800"
+    ],
+    "confidenceNotes": "Always check the stem base: a white, sack-like volva (often underground) plus white gills and a ring are key warning signs shared with other deadly Amanita species."
+  },
+  {
+    "id": "destroying-angel",
+    "commonName": "Destroying Angel",
+    "latinName": "Amanita virosa",
+    "edibilityStatus": "deadly",
+    "requiresCooking": false,
+    "lookalikeSpeciesIds": [
+      "field-mushroom",
+      "horse-mushroom",
+      "giant-puffball"
+    ],
+    "toxicityNotes": "Pure white, contains the same amatoxins as the Death Cap. As dangerous, and easily mistaken for young field or horse mushrooms before the cap opens, or for an unopened puffball if not cut in half.",
+    "poisoningHistory": "Documented fatalities across Europe and North America; consistently listed alongside Death Cap as the most dangerous foraging mistake.",
+    "habitat": "Coniferous and mixed woodland",
+    "season": "Summer to autumn",
+    "region": "Europe, North America",
+    "photoUrls": [
+      "https://picsum.photos/seed/destroying-angel/800/800"
+    ],
+    "confidenceNotes": "Always cut any round white 'puffball' in half before eating: a developing Amanita shows a visible mushroom outline inside, a true puffball is uniform white flesh throughout."
+  },
+  {
+    "id": "morel",
+    "commonName": "Morel",
+    "latinName": "Morchella esculenta",
+    "edibilityStatus": "edible_cooked",
+    "requiresCooking": true,
+    "prepInstructions": "Cook thoroughly - never eat raw. Sauteing or boiling for several minutes destroys the mild hydrazine-related toxins present in raw morels.",
+    "lookalikeSpeciesIds": [
+      "false-morel"
+    ],
+    "poisoningHistory": "Generally safe when cooked; raw or undercooked consumption has caused gastrointestinal illness.",
+    "habitat": "Disturbed ground, old orchards, recently burned forest",
+    "season": "Spring",
+    "region": "Europe, North America",
+    "photoUrls": [
+      "https://picsum.photos/seed/morel/800/800"
+    ],
+    "confidenceNotes": "Cap is honeycombed with pits and ridges and is fully hollow, including where it joins the stem - cut it lengthwise to check."
+  },
+  {
+    "id": "false-morel",
+    "commonName": "False Morel",
+    "latinName": "Gyromitra esculenta",
+    "edibilityStatus": "toxic",
+    "requiresCooking": false,
+    "prepInstructions": "Traditionally parboiled with the water discarded in some Nordic regions, but toxin content is unpredictable and the parboiling water's fumes are themselves hazardous - not recommended for consumption.",
+    "lookalikeSpeciesIds": [
+      "morel"
+    ],
+    "toxicityNotes": "Contains gyromitrin, which the body converts to a toxic compound in the same chemical family as rocket fuel (monomethylhydrazine). Toxicity varies unpredictably by specimen, region, and preparation.",
+    "poisoningHistory": "Documented fatalities in Europe, particularly historically in Scandinavia and Eastern Europe from consumption without proper preparation.",
+    "habitat": "Sandy soil under conifers, especially after fire",
+    "season": "Spring",
+    "region": "Northern Europe, North America",
+    "photoUrls": [
+      "https://picsum.photos/seed/false-morel/800/800"
+    ],
+    "confidenceNotes": "Cap is a reddish-brown, wrinkled 'brain' shape rather than a regular honeycomb, and the interior is chambered/cottony rather than cleanly hollow like a true morel."
+  },
+  {
+    "id": "porcini",
+    "commonName": "Porcini",
+    "latinName": "Boletus edulis",
+    "edibilityStatus": "edible",
+    "requiresCooking": false,
+    "lookalikeSpeciesIds": [
+      "bitter-bolete",
+      "satans-bolete"
+    ],
+    "poisoningHistory": "Widely and safely consumed across Europe; no notable poisoning history.",
+    "habitat": "Coniferous and deciduous forest",
+    "season": "Summer to autumn",
+    "region": "Europe, North America",
+    "photoUrls": [
+      "https://picsum.photos/seed/porcini/800/800"
+    ],
+    "confidenceNotes": "White pore surface when young (aging to olive-yellow), a fine white network pattern on the upper stem, and flesh that does not change color when cut."
+  },
+  {
+    "id": "bitter-bolete",
+    "commonName": "Bitter Bolete",
+    "latinName": "Tylopilus felleus",
+    "edibilityStatus": "inedible",
+    "requiresCooking": false,
+    "lookalikeSpeciesIds": [
+      "porcini"
+    ],
+    "toxicityNotes": "Not toxic, but intensely bitter - a single specimen can ruin an entire dish. The bitterness does not cook out.",
+    "poisoningHistory": "No poisoning risk; the harm is culinary, not medical. Frequently picked by mistake in place of porcini.",
+    "habitat": "Coniferous and deciduous forest, often near stumps",
+    "season": "Summer to autumn",
+    "region": "Europe, North America",
+    "photoUrls": [
+      "https://picsum.photos/seed/bitter-bolete/800/800"
+    ],
+    "confidenceNotes": "Pink (not white) pore surface at maturity, a coarse dark network on the stem instead of porcini's fine white one, and flesh that browns/pinks when cut. Taste a tiny piece and spit it out - if it's bitter, it's this species."
+  },
+  {
+    "id": "satans-bolete",
+    "commonName": "Satan's Bolete",
+    "latinName": "Rubroboletus satanas",
+    "edibilityStatus": "toxic",
+    "requiresCooking": false,
+    "lookalikeSpeciesIds": [
+      "porcini",
+      "bay-bolete"
+    ],
+    "toxicityNotes": "Causes severe gastrointestinal symptoms. Red pore surface and flesh that turns blue rapidly when cut distinguish it from porcini and bay bolete.",
+    "poisoningHistory": "A well-documented cause of severe, though rarely fatal, GI poisoning in Central and Southern Europe.",
+    "habitat": "Calcareous soil under broadleaf trees, especially oak and beech",
+    "season": "Summer to early autumn",
+    "region": "Southern and Central Europe",
+    "photoUrls": [
+      "https://picsum.photos/seed/satans-bolete/800/800"
+    ],
+    "confidenceNotes": "Distinctive red-to-orange pore surface and a bulbous, red-netted stem; flesh bruises blue within seconds of cutting."
+  },
+  {
+    "id": "bay-bolete",
+    "commonName": "Bay Bolete",
+    "latinName": "Imleria badia",
+    "edibilityStatus": "edible",
+    "requiresCooking": false,
+    "lookalikeSpeciesIds": [
+      "satans-bolete"
+    ],
+    "poisoningHistory": "No significant poisoning history; a popular edible throughout Europe.",
+    "habitat": "Coniferous and mixed woodland",
+    "season": "Summer to autumn",
+    "region": "Europe",
+    "photoUrls": [
+      "https://picsum.photos/seed/bay-bolete/800/800"
+    ],
+    "confidenceNotes": "Chestnut-brown cap, yellowish pore surface that bruises blue-green (but not as dramatically as Satan's Bolete), and a smooth, unnetworked stem."
+  },
+  {
+    "id": "birch-bolete",
+    "commonName": "Birch Bolete",
+    "latinName": "Leccinum scabrum",
+    "edibilityStatus": "edible",
+    "requiresCooking": false,
+    "lookalikeSpeciesIds": [],
+    "poisoningHistory": "No significant poisoning history.",
+    "habitat": "Exclusively under birch trees",
+    "season": "Summer to autumn",
+    "region": "Europe, North America",
+    "photoUrls": [
+      "https://picsum.photos/seed/birch-bolete/800/800"
+    ],
+    "confidenceNotes": "Stem covered in small dark scales ('scabers'); only grows near birch, which narrows identification considerably."
+  },
+  {
+    "id": "orange-birch-bolete",
+    "commonName": "Orange Birch Bolete",
+    "latinName": "Leccinum versipelle",
+    "edibilityStatus": "edible_cooked",
+    "requiresCooking": true,
+    "prepInstructions": "Cook well before eating - like other Leccinum boletes it can cause mild GI upset if undercooked.",
+    "lookalikeSpeciesIds": [],
+    "poisoningHistory": "Occasional mild GI upset if undercooked; otherwise a popular edible.",
+    "habitat": "Exclusively under birch trees",
+    "season": "Summer to autumn",
+    "region": "Northern and Central Europe",
+    "photoUrls": [
+      "https://picsum.photos/seed/orange-birch-bolete/800/800"
+    ],
+    "confidenceNotes": "Bright orange cap and scabered stem that darkens sharply when cut."
+  },
+  {
+    "id": "hedgehog-mushroom",
+    "commonName": "Hedgehog Mushroom",
+    "latinName": "Hydnum repandum",
+    "edibilityStatus": "edible",
+    "requiresCooking": false,
+    "lookalikeSpeciesIds": [],
+    "poisoningHistory": "No significant poisoning history; the tooth-fungus family has no seriously toxic look-alikes in Europe.",
+    "habitat": "Mixed woodland, on soil",
+    "season": "Summer to autumn",
+    "region": "Europe, North America",
+    "photoUrls": [
+      "https://picsum.photos/seed/hedgehog-mushroom/800/800"
+    ],
+    "confidenceNotes": "Distinctive soft spines instead of gills or pores on the underside of the cap - unmistakable once checked."
+  },
+  {
+    "id": "black-trumpet",
+    "commonName": "Black Trumpet",
+    "latinName": "Craterellus cornucopioides",
+    "edibilityStatus": "edible",
+    "requiresCooking": false,
+    "lookalikeSpeciesIds": [],
+    "poisoningHistory": "No significant poisoning history; prized edible with no dangerous European look-alikes.",
+    "habitat": "Deciduous woodland, especially near oak and beech, in shaded damp spots",
+    "season": "Summer to autumn",
+    "region": "Europe, North America",
+    "photoUrls": [
+      "https://picsum.photos/seed/black-trumpet/800/800"
+    ],
+    "confidenceNotes": "Thin, dark grey-brown, trumpet-shaped and hollow throughout; easy to overlook against leaf litter."
+  },
+  {
+    "id": "cauliflower-fungus",
+    "commonName": "Cauliflower Fungus",
+    "latinName": "Sparassis crispa",
+    "edibilityStatus": "edible",
+    "requiresCooking": false,
+    "lookalikeSpeciesIds": [],
+    "poisoningHistory": "No significant poisoning history.",
+    "habitat": "Base of pine trees",
+    "season": "Late summer to autumn",
+    "region": "Europe, North America",
+    "photoUrls": [
+      "https://picsum.photos/seed/cauliflower-fungus/800/800"
+    ],
+    "confidenceNotes": "Large, pale, brain-like mass of flattened ribbons growing at a pine base - visually distinctive."
+  },
+  {
+    "id": "giant-puffball",
+    "commonName": "Giant Puffball",
+    "latinName": "Calvatia gigantea",
+    "edibilityStatus": "edible",
+    "requiresCooking": false,
+    "prepInstructions": "Only eat when young: the flesh must be pure white and firm throughout when cut in half. Any yellowing, discoloration, or a visible mushroom shape inside means it's past safe eating or is a different species entirely.",
+    "lookalikeSpeciesIds": [
+      "destroying-angel"
+    ],
+    "toxicityNotes": "The puffball itself is safe when young and pure white inside, but immature (egg-stage) specimens of deadly Amanita species can superficially resemble a small puffball from the outside.",
+    "poisoningHistory": "Poisonings attributed to this species are almost always cases of a deadly Amanita 'egg' mistaken for a small puffball because it wasn't cut open first.",
+    "habitat": "Meadows, pastures, and forest edges",
+    "season": "Late summer to autumn",
+    "region": "Europe, North America",
+    "photoUrls": [
+      "https://picsum.photos/seed/giant-puffball/800/800"
+    ],
+    "confidenceNotes": "Always slice any puffball-like find in half top to bottom before eating: uniform white flesh throughout is a true puffball; any internal outline of a cap, gills, or stem means it is something else entirely - do not eat it."
+  },
+  {
+    "id": "field-mushroom",
+    "commonName": "Field Mushroom",
+    "latinName": "Agaricus campestris",
+    "edibilityStatus": "edible",
+    "requiresCooking": false,
+    "lookalikeSpeciesIds": [
+      "yellow-stainer",
+      "destroying-angel",
+      "death-cap"
+    ],
+    "poisoningHistory": "Safe and widely eaten, but responsible for indirect poisonings when confused with deadly Amanita species or the Yellow Stainer.",
+    "habitat": "Grassy meadows and pastures",
+    "season": "Summer to autumn",
+    "region": "Europe, North America",
+    "photoUrls": [
+      "https://picsum.photos/seed/field-mushroom/800/800"
+    ],
+    "confidenceNotes": "Always check the stem base for a volva (sack) - a true field mushroom has none. Gills are pink, darkening to chocolate-brown with age, never pure white."
+  },
+  {
+    "id": "horse-mushroom",
+    "commonName": "Horse Mushroom",
+    "latinName": "Agaricus arvensis",
+    "edibilityStatus": "edible",
+    "requiresCooking": false,
+    "lookalikeSpeciesIds": [
+      "yellow-stainer",
+      "destroying-angel",
+      "death-cap"
+    ],
+    "poisoningHistory": "Safe and widely eaten, but subject to the same confusion risks as the Field Mushroom.",
+    "habitat": "Grassy meadows, pastures, and woodland edges",
+    "season": "Summer to autumn",
+    "region": "Europe, North America",
+    "photoUrls": [
+      "https://picsum.photos/seed/horse-mushroom/800/800"
+    ],
+    "confidenceNotes": "Larger than the Field Mushroom with a faint aniseed smell; check for a volva at the base and pink-to-brown (never white) gills."
+  },
+  {
+    "id": "yellow-stainer",
+    "commonName": "Yellow Stainer",
+    "latinName": "Agaricus xanthodermus",
+    "edibilityStatus": "toxic",
+    "requiresCooking": false,
+    "lookalikeSpeciesIds": [
+      "field-mushroom",
+      "horse-mushroom"
+    ],
+    "toxicityNotes": "Causes gastrointestinal upset (nausea, vomiting, cramping) in most people who eat it, though a minority tolerate it - not worth the risk.",
+    "poisoningHistory": "One of the most common causes of mushroom-related GI illness call-outs in the UK and Europe, almost always from confusion with field or horse mushrooms.",
+    "habitat": "Grassy areas, gardens, woodland edges",
+    "season": "Summer to autumn",
+    "region": "Europe, North America",
+    "photoUrls": [
+      "https://picsum.photos/seed/yellow-stainer/800/800"
+    ],
+    "confidenceNotes": "Cut or bruise the base of the stem: a bright chrome-yellow stain plus an unpleasant, ink-like or chemical smell (especially on cooking) are the giveaways - a genuine field mushroom does not do this."
+  },
+  {
+    "id": "parasol-mushroom",
+    "commonName": "Parasol Mushroom",
+    "latinName": "Macrolepiota procera",
+    "edibilityStatus": "edible_cooked",
+    "requiresCooking": true,
+    "prepInstructions": "Best cooked; the large cap is traditionally breaded and fried. Only eat the cap - the fibrous stem is not palatable.",
+    "lookalikeSpeciesIds": [
+      "shaggy-parasol",
+      "deadly-dapperling"
+    ],
+    "poisoningHistory": "Safe and popular when correctly identified; danger comes almost entirely from confusion with small deadly Lepiota species.",
+    "habitat": "Grassy fields, pastures, woodland edges",
+    "season": "Summer to autumn",
+    "region": "Europe",
+    "photoUrls": [
+      "https://picsum.photos/seed/parasol-mushroom/800/800"
+    ],
+    "confidenceNotes": "Grows large (cap can exceed 20cm) on a tall, slender, snakeskin-patterned stem with a free-moving double ring. Size alone rules out the much smaller Deadly Dapperling."
+  },
+  {
+    "id": "shaggy-parasol",
+    "commonName": "Shaggy Parasol",
+    "latinName": "Chlorophyllum rhacodes",
+    "edibilityStatus": "edible_cooked",
+    "requiresCooking": true,
+    "prepInstructions": "Cook thoroughly and try only a small amount the first time - a meaningful minority of people react with GI upset even when properly cooked.",
+    "lookalikeSpeciesIds": [
+      "parasol-mushroom",
+      "deadly-dapperling"
+    ],
+    "poisoningHistory": "Causes gastrointestinal reactions in a notable fraction of eaters even when cooked; considered edible but with a documented intolerance rate.",
+    "habitat": "Gardens, parks, woodland edges, often in rings",
+    "season": "Summer to autumn",
+    "region": "Europe, North America",
+    "photoUrls": [
+      "https://picsum.photos/seed/shaggy-parasol/800/800"
+    ],
+    "confidenceNotes": "Shorter and stockier than the true Parasol, with flesh that reddens when cut; ring is not free-moving on the stem like the Parasol's."
+  },
+  {
+    "id": "deadly-dapperling",
+    "commonName": "Deadly Dapperling",
+    "latinName": "Lepiota brunneoincarnata",
+    "edibilityStatus": "deadly",
+    "requiresCooking": false,
+    "lookalikeSpeciesIds": [
+      "parasol-mushroom",
+      "shaggy-parasol"
+    ],
+    "toxicityNotes": "Contains the same amatoxins as the Death Cap. Small size means a handful of specimens can deliver a fatal dose.",
+    "poisoningHistory": "Documented fatalities in Southern and Central Europe, typically from foragers mistaking young specimens for edible Lepiota/Macrolepiota species.",
+    "habitat": "Grassy areas, gardens, parks",
+    "season": "Summer to autumn",
+    "region": "Southern and Central Europe",
+    "photoUrls": [
+      "https://picsum.photos/seed/deadly-dapperling/800/800"
+    ],
+    "confidenceNotes": "Much smaller than a true Parasol (cap rarely exceeds 5cm) with a reddish-brown scaly cap - size is the fastest red flag."
+  },
+  {
+    "id": "saffron-milkcap",
+    "commonName": "Saffron Milkcap",
+    "latinName": "Lactarius deliciosus",
+    "edibilityStatus": "edible",
+    "requiresCooking": false,
+    "lookalikeSpeciesIds": [
+      "woolly-milkcap"
+    ],
+    "poisoningHistory": "No significant poisoning history; popular edible especially in Southern Europe.",
+    "habitat": "Coniferous forest, especially under pine",
+    "season": "Autumn",
+    "region": "Europe",
+    "photoUrls": [
+      "https://picsum.photos/seed/saffron-milkcap/800/800"
+    ],
+    "confidenceNotes": "Bleeds a distinctive orange 'milk' when cut that slowly turns green; concentric orange zoning on the cap."
+  },
+  {
+    "id": "woolly-milkcap",
+    "commonName": "Woolly Milkcap",
+    "latinName": "Lactarius torminosus",
+    "edibilityStatus": "toxic",
+    "requiresCooking": false,
+    "toxicityNotes": "Causes significant gastrointestinal irritation raw or lightly cooked. Some Nordic and Eastern European traditions salt-cure it for weeks before eating, but this is a specialist process, not general cooking, and mistakes are dangerous.",
+    "lookalikeSpeciesIds": [
+      "saffron-milkcap"
+    ],
+    "poisoningHistory": "Regularly causes GI illness when eaten without the traditional lengthy salt-curing process.",
+    "habitat": "Birch woodland",
+    "season": "Autumn",
+    "region": "Northern and Central Europe",
+    "photoUrls": [
+      "https://picsum.photos/seed/woolly-milkcap/800/800"
+    ],
+    "confidenceNotes": "Pale pink cap with a shaggy, woolly, inrolled edge; bleeds white (not orange) milk, unlike the Saffron Milkcap."
+  },
+  {
+    "id": "charcoal-burner",
+    "commonName": "Charcoal Burner",
+    "latinName": "Russula cyanoxantha",
+    "edibilityStatus": "edible",
+    "requiresCooking": false,
+    "lookalikeSpeciesIds": [
+      "emetic-russula"
+    ],
+    "poisoningHistory": "No significant poisoning history; one of the few Russulas confidently recommended to beginners because its gills feel soft and flexible rather than brittle.",
+    "habitat": "Deciduous and mixed woodland",
+    "season": "Summer to autumn",
+    "region": "Europe",
+    "photoUrls": [
+      "https://picsum.photos/seed/charcoal-burner/800/800"
+    ],
+    "confidenceNotes": "Cap color is variably purple-green-grey; uniquely among Russulas, its gills feel greasy/flexible rather than chalky and brittle."
+  },
+  {
+    "id": "emetic-russula",
+    "commonName": "Emetic Russula (Sickener)",
+    "latinName": "Russula emetica",
+    "edibilityStatus": "toxic",
+    "requiresCooking": false,
+    "toxicityNotes": "Causes rapid-onset vomiting and diarrhea, as the common name suggests. Symptoms are unpleasant but generally self-limiting.",
+    "lookalikeSpeciesIds": [
+      "charcoal-burner"
+    ],
+    "poisoningHistory": "A frequent cause of mild-to-moderate GI illness across Europe; the wider Russula genus contains many similar-looking toxic species best avoided without expert identification.",
+    "habitat": "Coniferous woodland, often near pine, in sphagnum moss",
+    "season": "Summer to autumn",
+    "region": "Europe, North America",
+    "photoUrls": [
+      "https://picsum.photos/seed/emetic-russula/800/800"
+    ],
+    "confidenceNotes": "Bright cherry-red cap and an intensely peppery, acrid taste (spit out, don't swallow, when taste-testing) distinguish it, but the Russula genus overall is notoriously difficult even for experienced foragers."
+  },
+  {
+    "id": "wood-blewit",
+    "commonName": "Wood Blewit",
+    "latinName": "Lepista nuda",
+    "edibilityStatus": "edible_cooked",
+    "requiresCooking": true,
+    "prepInstructions": "Cook thoroughly; causes GI upset in some people when eaten raw or undercooked.",
+    "lookalikeSpeciesIds": [
+      "livid-pinkgill"
+    ],
+    "poisoningHistory": "Generally safe when cooked and correctly identified; the real risk is misidentifying the toxic Livid Pinkgill as a blewit.",
+    "habitat": "Leaf litter in deciduous and mixed woodland, gardens, compost heaps",
+    "season": "Autumn to early winter",
+    "region": "Europe, North America",
+    "photoUrls": [
+      "https://picsum.photos/seed/wood-blewit/800/800"
+    ],
+    "confidenceNotes": "Distinctive lilac-violet coloring throughout the cap, gills, and stem when young, fading with age; spore print is pale pink-buff."
+  },
+  {
+    "id": "livid-pinkgill",
+    "commonName": "Livid Pinkgill",
+    "latinName": "Entoloma sinuatum",
+    "edibilityStatus": "toxic",
+    "requiresCooking": false,
+    "toxicityNotes": "Causes severe gastrointestinal illness including prolonged vomiting and diarrhea.",
+    "lookalikeSpeciesIds": [
+      "wood-blewit",
+      "st-georges-mushroom"
+    ],
+    "poisoningHistory": "One of the most common causes of serious (non-fatal) mushroom poisoning in Europe, typically from confusion with St George's Mushroom or Wood Blewit.",
+    "habitat": "Deciduous woodland, especially near oak",
+    "season": "Late spring to autumn",
+    "region": "Europe",
+    "photoUrls": [
+      "https://picsum.photos/seed/livid-pinkgill/800/800"
+    ],
+    "confidenceNotes": "Large, pale, greyish-yellow cap with a mealy smell; spore print is salmon-pink, distinguishing it from the white-spored St George's Mushroom."
+  },
+  {
+    "id": "st-georges-mushroom",
+    "commonName": "St George's Mushroom",
+    "latinName": "Calocybe gambosa",
+    "edibilityStatus": "edible",
+    "requiresCooking": false,
+    "lookalikeSpeciesIds": [
+      "livid-pinkgill",
+      "deadly-fibrecap"
+    ],
+    "poisoningHistory": "Safe when correctly identified; named for traditionally appearing around St George's Day (23 April) in spring.",
+    "habitat": "Grassland, pastures, woodland edges",
+    "season": "Spring",
+    "region": "Europe",
+    "photoUrls": [
+      "https://picsum.photos/seed/st-georges-mushroom/800/800"
+    ],
+    "confidenceNotes": "One of the few common edible mushrooms fruiting in spring, which narrows the field considerably - but always confirm against the Deadly Fibrecap, which shares its season."
+  },
+  {
+    "id": "deadly-fibrecap",
+    "commonName": "Deadly Fibrecap",
+    "latinName": "Inocybe erubescens",
+    "edibilityStatus": "toxic",
+    "requiresCooking": false,
+    "toxicityNotes": "Contains high levels of muscarine, causing profuse sweating, salivation, and blurred vision; can be dangerous or fatal for people with heart or respiratory conditions.",
+    "lookalikeSpeciesIds": [
+      "st-georges-mushroom"
+    ],
+    "poisoningHistory": "A recurring cause of spring poisonings in Europe when confused with St George's Mushroom.",
+    "habitat": "Chalky soil in parks, gardens, and woodland edges",
+    "season": "Spring to early summer",
+    "region": "Europe",
+    "photoUrls": [
+      "https://picsum.photos/seed/deadly-fibrecap/800/800"
+    ],
+    "confidenceNotes": "Cap and flesh bruise and age to a reddish-pink, and it has a fibrous rather than smooth cap surface - unlike St George's Mushroom, which stays creamy white."
+  },
+  {
+    "id": "honey-fungus",
+    "commonName": "Honey Fungus",
+    "latinName": "Armillaria mellea",
+    "edibilityStatus": "edible_cooked",
+    "requiresCooking": true,
+    "prepInstructions": "Cook thoroughly and discard the tough stems - raw or undercooked honey fungus causes gastrointestinal upset. Only eat the caps.",
+    "lookalikeSpeciesIds": [
+      "funeral-bell",
+      "sulphur-tuft"
+    ],
+    "poisoningHistory": "Safe when well-cooked and correctly identified; the serious danger is misidentifying the deadly Funeral Bell, which grows in similar spots.",
+    "habitat": "At the base of and on tree stumps and roots, deciduous and coniferous",
+    "season": "Autumn",
+    "region": "Europe, North America",
+    "photoUrls": [
+      "https://picsum.photos/seed/honey-fungus/800/800"
+    ],
+    "confidenceNotes": "Grows in dense clusters on wood with a cottony ring on the stem and a white spore print - take a spore print and check for the ring before eating anything found on a stump."
+  },
+  {
+    "id": "funeral-bell",
+    "commonName": "Funeral Bell",
+    "latinName": "Galerina marginata",
+    "edibilityStatus": "deadly",
+    "requiresCooking": false,
+    "toxicityNotes": "Contains the same amatoxins as the Death Cap. Small, unassuming, and grows on wood in the same spots foragers look for Honey Fungus.",
+    "lookalikeSpeciesIds": [
+      "honey-fungus"
+    ],
+    "poisoningHistory": "A well-documented cause of fatal poisoning, typically from being mistaken for Honey Fungus or for hallucinogenic Psilocybe species growing in the same habitat.",
+    "habitat": "On decaying wood, stumps, and fallen branches, conifer and deciduous",
+    "season": "Late summer to autumn",
+    "region": "Europe, North America",
+    "photoUrls": [
+      "https://picsum.photos/seed/funeral-bell/800/800"
+    ],
+    "confidenceNotes": "Much smaller and thinner-fleshed than Honey Fungus, grows singly or in small groups rather than dense clusters, and has a rusty-brown (not white) spore print."
+  },
+  {
+    "id": "sulphur-tuft",
+    "commonName": "Sulphur Tuft",
+    "latinName": "Hypholoma fasciculare",
+    "edibilityStatus": "toxic",
+    "requiresCooking": false,
+    "toxicityNotes": "Intensely bitter and causes gastrointestinal illness including vomiting and diarrhea.",
+    "lookalikeSpeciesIds": [
+      "honey-fungus"
+    ],
+    "poisoningHistory": "Regularly causes mild-to-moderate GI poisoning when picked in place of Honey Fungus.",
+    "habitat": "Dense clusters on stumps and dead wood, deciduous and coniferous",
+    "season": "Year-round, peaking in autumn",
+    "region": "Europe, North America",
+    "photoUrls": [
+      "https://picsum.photos/seed/sulphur-tuft/800/800"
+    ],
+    "confidenceNotes": "Sulphur-yellow cap and gills that turn greenish then purple-black with age (from the spores); intensely bitter taste - unlike the mild Honey Fungus."
+  },
+  {
+    "id": "shaggy-mane",
+    "commonName": "Shaggy Mane",
+    "latinName": "Coprinus comatus",
+    "edibilityStatus": "edible",
+    "requiresCooking": false,
+    "prepInstructions": "Eat within hours of picking - the cap self-digests into black ink within a day, especially once picked.",
+    "lookalikeSpeciesIds": [
+      "common-inkcap"
+    ],
+    "poisoningHistory": "Safe on its own; unlike the Common Ink Cap it has no alcohol interaction, but the two are easy to confuse so caution around alcohol is still often advised.",
+    "habitat": "Grassy areas, roadsides, disturbed ground",
+    "season": "Summer to autumn",
+    "region": "Europe, North America",
+    "photoUrls": [
+      "https://picsum.photos/seed/shaggy-mane/800/800"
+    ],
+    "confidenceNotes": "Tall, cylindrical, shaggy white cap that dissolves into black ink from the bottom edge upward with age - only eat while still white and firm."
+  },
+  {
+    "id": "common-inkcap",
+    "commonName": "Common Ink Cap",
+    "latinName": "Coprinopsis atramentaria",
+    "edibilityStatus": "toxic",
+    "requiresCooking": false,
+    "toxicityNotes": "Contains coprine, which is harmless alone but blocks alcohol metabolism. Combined with alcohol - even consumed up to several days after eating the mushroom - it causes flushing, rapid heartbeat, nausea, and vomiting (a reaction historically nicknamed 'tippler's bane').",
+    "lookalikeSpeciesIds": [
+      "shaggy-mane"
+    ],
+    "poisoningHistory": "A very well-documented and specific poisoning pattern tied to alcohol consumption after eating the mushroom, rather than the mushroom itself.",
+    "habitat": "Grassy areas, disturbed ground, near tree stumps",
+    "season": "Spring to autumn",
+    "region": "Europe, North America",
+    "photoUrls": [
+      "https://picsum.photos/seed/common-inkcap/800/800"
+    ],
+    "confidenceNotes": "Greyish, less shaggy cap than Shaggy Mane, growing in dense clumps; if you eat any ink cap, avoid alcohol entirely for several days afterward."
+  },
+  {
+    "id": "oyster-mushroom",
+    "commonName": "Oyster Mushroom",
+    "latinName": "Pleurotus ostreatus",
+    "edibilityStatus": "edible",
+    "requiresCooking": false,
+    "lookalikeSpeciesIds": [],
+    "poisoningHistory": "No significant poisoning history; widely foraged and commercially cultivated.",
+    "habitat": "Growing in shelf-like clusters on dead or dying deciduous trees",
+    "season": "Autumn to early spring",
+    "region": "Europe, North America",
+    "photoUrls": [
+      "https://picsum.photos/seed/oyster-mushroom/800/800"
+    ],
+    "confidenceNotes": "Fan- or oyster-shaped cap growing directly from wood in overlapping shelves, with gills running down a short or absent stem."
+  },
+  {
+    "id": "chicken-of-the-woods",
+    "commonName": "Chicken of the Woods",
+    "latinName": "Laetiporus sulphureus",
+    "edibilityStatus": "edible_cooked",
+    "requiresCooking": true,
+    "prepInstructions": "Cook thoroughly - raw or undercooked specimens can cause GI reactions. Avoid specimens growing on yew, eucalyptus, or other trees known to concentrate toxins into the fungus.",
+    "lookalikeSpeciesIds": [],
+    "poisoningHistory": "Generally well tolerated when cooked and harvested young from a safe host tree, though some people experience allergic-type reactions.",
+    "habitat": "Growing in shelf-like clusters on living or dead deciduous trees, especially oak",
+    "season": "Summer to autumn",
+    "region": "Europe, North America",
+    "photoUrls": [
+      "https://picsum.photos/seed/chicken-of-the-woods/800/800"
+    ],
+    "confidenceNotes": "Bright orange-yellow overlapping shelf-like brackets on a tree trunk; unmistakable coloring, but note the host tree species before eating."
+  },
+  {
+    "id": "beefsteak-fungus",
+    "commonName": "Beefsteak Fungus",
+    "latinName": "Fistulina hepatica",
+    "edibilityStatus": "edible",
+    "requiresCooking": false,
+    "lookalikeSpeciesIds": [],
+    "poisoningHistory": "No significant poisoning history.",
+    "habitat": "On living oak and sweet chestnut trunks",
+    "season": "Late summer to autumn",
+    "region": "Europe, North America",
+    "photoUrls": [
+      "https://picsum.photos/seed/beefsteak-fungus/800/800"
+    ],
+    "confidenceNotes": "Resembles a slab of raw meat, complete with a red juice that runs when cut - visually distinctive."
+  },
+  {
+    "id": "panther-cap",
+    "commonName": "Panther Cap",
+    "latinName": "Amanita pantherina",
+    "edibilityStatus": "toxic",
+    "requiresCooking": false,
+    "toxicityNotes": "Contains ibotenic acid and muscimol, causing confusion, disorientation, and in higher doses more severe neurological effects; potentially life-threatening in vulnerable people. Not a culinary species.",
+    "lookalikeSpeciesIds": [
+      "blusher"
+    ],
+    "poisoningHistory": "A recurring cause of poisoning in Central Europe, especially when confused with the edible Blusher.",
+    "habitat": "Deciduous and coniferous woodland",
+    "season": "Summer to autumn",
+    "region": "Europe",
+    "photoUrls": [
+      "https://picsum.photos/seed/panther-cap/800/800"
+    ],
+    "confidenceNotes": "Brown cap with white warts, a distinct bulbous stem base with a rimmed collar (not a loose sack-like volva), and flesh that does NOT redden when cut or bruised - unlike the Blusher."
+  },
+  {
+    "id": "blusher",
+    "commonName": "The Blusher",
+    "latinName": "Amanita rubescens",
+    "edibilityStatus": "edible_cooked",
+    "requiresCooking": true,
+    "prepInstructions": "Cook thoroughly - raw or undercooked specimens are mildly toxic. Given how easily it is confused with dangerous Amanita species, this one is recommended for experienced foragers only.",
+    "lookalikeSpeciesIds": [
+      "panther-cap",
+      "death-cap"
+    ],
+    "toxicityNotes": "Safe once well-cooked, but belongs to the same genus as the deadliest mushrooms in Europe and should only be picked by foragers confident in Amanita identification.",
+    "poisoningHistory": "Poisonings attributed to this species are almost always cases of a more dangerous Amanita picked by mistake.",
+    "habitat": "Deciduous and coniferous woodland",
+    "season": "Summer to autumn",
+    "region": "Europe",
+    "photoUrls": [
+      "https://picsum.photos/seed/blusher/800/800"
+    ],
+    "confidenceNotes": "Flesh reddens ('blushes') distinctly where bruised or cut, especially at the stem base - a feature the dangerous Panther Cap and Death Cap do not share."
+  },
+  {
+    "id": "fly-agaric",
+    "commonName": "Fly Agaric",
+    "latinName": "Amanita muscaria",
+    "edibilityStatus": "toxic",
+    "requiresCooking": false,
+    "toxicityNotes": "Contains ibotenic acid and muscimol; causes neurotoxic effects including confusion, altered perception, and nausea. Not a culinary species regardless of traditional detoxification methods used elsewhere.",
+    "lookalikeSpeciesIds": [
+      "blusher"
+    ],
+    "poisoningHistory": "A frequent cause of accidental poisoning, especially in children, due to its bright red, highly recognizable but tempting appearance.",
+    "habitat": "Birch and pine woodland",
+    "season": "Autumn",
+    "region": "Europe, North America (introduced)",
+    "photoUrls": [
+      "https://picsum.photos/seed/fly-agaric/800/800"
+    ],
+    "confidenceNotes": "Iconic bright red cap with white warts - the most recognizable mushroom in Europe, and a good reminder that recognizability doesn't mean edibility."
+  },
+  {
+    "id": "brown-rollrim",
+    "commonName": "Brown Rollrim",
+    "latinName": "Paxillus involutus",
+    "edibilityStatus": "toxic",
+    "requiresCooking": false,
+    "toxicityNotes": "Once widely eaten after cooking and long believed safe, it is now known to trigger a potentially fatal autoimmune reaction (destroying red blood cells) in some people after repeated exposure, with no way to predict who is affected.",
+    "lookalikeSpeciesIds": [],
+    "poisoningHistory": "Historically a significant cause of mushroom-poisoning deaths in Europe, notably before the delayed autoimmune mechanism was understood in the 20th century.",
+    "habitat": "Deciduous and coniferous woodland, often near birch",
+    "season": "Summer to autumn",
+    "region": "Europe",
+    "photoUrls": [
+      "https://picsum.photos/seed/brown-rollrim/800/800"
+    ],
+    "confidenceNotes": "Inrolled, brown, felty cap margin and gills that bruise brown when touched; a textbook example of why 'my grandparents always ate this' is not a safety guarantee."
+  },
+  {
+    "id": "poison-pie",
+    "commonName": "Poison Pie",
+    "latinName": "Hebeloma crustuliniforme",
+    "edibilityStatus": "toxic",
+    "requiresCooking": false,
+    "toxicityNotes": "Causes gastrointestinal upset including nausea and vomiting.",
+    "lookalikeSpeciesIds": [],
+    "poisoningHistory": "A recurring but rarely serious cause of GI poisoning in Europe.",
+    "habitat": "Deciduous and coniferous woodland, parks",
+    "season": "Autumn",
+    "region": "Europe, North America",
+    "photoUrls": [
+      "https://picsum.photos/seed/poison-pie/800/800"
+    ],
+    "confidenceNotes": "Pale tan cap with a sweet, radish-like smell that belies its toxicity - smell is not a reliable safety test."
+  },
+  {
+    "id": "verdigris-agaric",
+    "commonName": "Verdigris Agaric",
+    "latinName": "Stropharia aeruginosa",
+    "edibilityStatus": "unknown",
+    "requiresCooking": false,
+    "toxicityNotes": "Edibility is disputed in the mycological literature - some sources list it as edible after cooking, others report GI upset. Not recommended given the inconsistent reports.",
+    "lookalikeSpeciesIds": [],
+    "poisoningHistory": "Occasional reports of mild GI upset; not well studied enough to recommend confidently either way.",
+    "habitat": "Grassland, woodland edges, on decaying plant matter",
+    "season": "Summer to autumn",
+    "region": "Europe, North America",
+    "photoUrls": [
+      "https://picsum.photos/seed/verdigris-agaric/800/800"
+    ],
+    "confidenceNotes": "Striking blue-green, slimy cap makes it easy to recognize even though its edibility status remains unsettled."
+  }
+] as const;

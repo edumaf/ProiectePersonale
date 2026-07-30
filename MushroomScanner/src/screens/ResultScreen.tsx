@@ -1,4 +1,4 @@
-import { Dimensions, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, Dimensions, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialIcons } from '@expo/vector-icons';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
@@ -7,7 +7,7 @@ import { Card } from '../components/Card';
 import { EdibilityBadge } from '../components/EdibilityBadge';
 import { ConfidenceBadge } from '../components/ConfidenceBadge';
 import { PrimaryButton } from '../components/PrimaryButton';
-import { mockScans } from '../data/mockScans';
+import { useScan } from '../hooks/useScan';
 import { getSpeciesById } from '../data/species';
 import { defaultPoisonControl } from '../data/poisonControl';
 import { confidenceLevel, displayEdibilityStatus, LOW_CONFIDENCE_THRESHOLD } from '../utils/confidence';
@@ -22,7 +22,18 @@ const angleLabels: Record<string, string> = {
 };
 
 export function ResultScreen({ route, navigation }: Props) {
-  const scan = mockScans.find((s) => s.id === route.params.scanId) ?? mockScans[0];
+  const { scan, loading } = useScan(route.params.scanId);
+
+  if (loading || !scan) {
+    return (
+      <SafeAreaView style={styles.safe}>
+        <View style={styles.loadingCenter}>
+          <ActivityIndicator size="large" color={colors.moss} />
+        </View>
+      </SafeAreaView>
+    );
+  }
+
   const species = getSpeciesById(scan.speciesId);
   const isUncertain = !species || scan.confidencePercent < LOW_CONFIDENCE_THRESHOLD;
   const shownStatus = species ? displayEdibilityStatus(species.edibilityStatus, scan.confidencePercent) : 'unknown';
@@ -175,6 +186,7 @@ const screenWidth = Dimensions.get('window').width;
 
 const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: colors.cream },
+  loadingCenter: { flex: 1, alignItems: 'center', justifyContent: 'center' },
   content: { paddingBottom: spacing.xxl },
   photoSlide: { width: screenWidth, height: 280 },
   photo: { width: '100%', height: 280 },

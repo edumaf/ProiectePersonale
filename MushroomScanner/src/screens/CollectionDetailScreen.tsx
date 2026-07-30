@@ -1,8 +1,8 @@
-import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/types';
-import { mockCollections, mockScans } from '../data/mockScans';
+import { useAppData } from '../hooks/useAppData';
 import { getSpeciesById } from '../data/species';
 import { EdibilityBadge } from '../components/EdibilityBadge';
 import { colors, spacing, type } from '../theme';
@@ -10,9 +10,20 @@ import { colors, spacing, type } from '../theme';
 type Props = NativeStackScreenProps<RootStackParamList, 'CollectionDetail'>;
 
 export function CollectionDetailScreen({ route, navigation }: Props) {
-  const collection = mockCollections.find((c) => c.id === route.params.collectionId);
+  const { scans: allScans, collections, loading } = useAppData();
+  const collection = collections.find((c) => c.id === route.params.collectionId);
+
+  if (loading && !collection) {
+    return (
+      <SafeAreaView style={styles.safe}>
+        <View style={styles.loadingCenter}>
+          <ActivityIndicator size="large" color={colors.moss} />
+        </View>
+      </SafeAreaView>
+    );
+  }
   if (!collection) return null;
-  const scans = mockScans.filter((s) => collection.scanIds.includes(s.id));
+  const scans = allScans.filter((s) => collection.scanIds.includes(s.id));
 
   return (
     <SafeAreaView style={styles.safe} edges={['bottom']}>
@@ -47,6 +58,7 @@ export function CollectionDetailScreen({ route, navigation }: Props) {
 
 const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: colors.cream },
+  loadingCenter: { flex: 1, alignItems: 'center', justifyContent: 'center' },
   header: { padding: spacing.lg, paddingBottom: spacing.sm },
   grid: { paddingHorizontal: spacing.md, paddingBottom: spacing.xxl },
   tile: { flex: 1, margin: spacing.sm, maxWidth: '47%' },

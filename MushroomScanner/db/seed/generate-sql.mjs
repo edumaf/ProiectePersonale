@@ -80,3 +80,22 @@ on conflict (id) do update set
 
 writeFileSync(path.join(dir, 'seed.sql'), sql);
 console.log(`Wrote ${species.length} species to db/seed/seed.sql`);
+
+// Fixed filename (not timestamped) so re-running this script updates the
+// same migration in place instead of piling up duplicates.
+const migrationPath = path.join(dir, '..', '..', 'supabase', 'migrations', '20260730120100_seed_species.sql');
+writeFileSync(migrationPath, sql);
+console.log(`Wrote ${species.length} species to supabase/migrations/20260730120100_seed_species.sql`);
+
+// The identify edge function runs in its own Deno sandbox and can only
+// import files within supabase/functions/, so it gets its own copy of the
+// catalog rather than reaching across to db/seed/. A .ts module (rather
+// than a JSON import assertion) keeps this portable across Deno versions.
+const sharedSpeciesPath = path.join(dir, '..', '..', 'supabase', 'functions', '_shared', 'species.ts');
+const sharedSpeciesContent = `// Generated from db/seed/species.json by db/seed/generate-sql.mjs.
+// Do not edit by hand - edit species.json and regenerate instead.
+
+export const speciesCatalog = ${JSON.stringify(species, null, 2)} as const;
+`;
+writeFileSync(sharedSpeciesPath, sharedSpeciesContent);
+console.log('Wrote supabase/functions/_shared/species.ts');

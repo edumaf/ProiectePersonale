@@ -5,6 +5,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialIcons } from '@expo/vector-icons';
 import { RootStackParamList } from '../navigation/types';
 import { PrimaryButton } from '../components/PrimaryButton';
+import { useAuth } from '../lib/auth';
+import { isSupabaseConfigured } from '../lib/config';
 import { colors, spacing, type } from '../theme';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Onboarding'>;
@@ -12,6 +14,15 @@ type Props = NativeStackScreenProps<RootStackParamList, 'Onboarding'>;
 // Non-skippable safety consent. Must be accepted before any scan can run.
 export function OnboardingScreen({ navigation }: Props) {
   const [accepted, setAccepted] = useState(false);
+  const { session } = useAuth();
+
+  function handleContinue() {
+    if (isSupabaseConfigured && !session) {
+      navigation.replace('SignIn');
+    } else {
+      navigation.replace('Main', { screen: 'Dashboard' });
+    }
+  }
 
   return (
     <SafeAreaView style={styles.safe} edges={['top', 'bottom']}>
@@ -51,15 +62,13 @@ export function OnboardingScreen({ navigation }: Props) {
         </Text>
 
         <PrimaryButton
-          label={accepted ? 'Continue' : 'I understand - continue'}
-          onPress={() => navigation.replace('Main', { screen: 'Dashboard' })}
-        />
-        <PrimaryButton
           label={accepted ? 'Accepted' : 'I have read and accept the above'}
           variant="outline"
           onPress={() => setAccepted(true)}
           disabled={accepted}
         />
+        <View style={{ height: spacing.sm }} />
+        <PrimaryButton label="Continue" onPress={handleContinue} disabled={!accepted} />
       </ScrollView>
     </SafeAreaView>
   );

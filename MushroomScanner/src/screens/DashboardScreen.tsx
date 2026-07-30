@@ -6,7 +6,9 @@ import { CompositeScreenProps } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { MainTabParamList, RootStackParamList } from '../navigation/types';
 import { Card } from '../components/Card';
-import { mockScans } from '../data/mockScans';
+import { useAppData } from '../hooks/useAppData';
+import { useAuth } from '../lib/auth';
+import { isSupabaseConfigured } from '../lib/config';
 import { getSpeciesById } from '../data/species';
 import { defaultPoisonControl } from '../data/poisonControl';
 import { colors, spacing, type } from '../theme';
@@ -19,13 +21,28 @@ type Props = CompositeScreenProps<
 const safetyTip = 'Always check the base of the stem for a volva or sac - many deadly Amanita species hide it underground.';
 
 export function DashboardScreen({ navigation }: Props) {
-  const identifiedCount = new Set(mockScans.filter((s) => s.speciesId).map((s) => s.speciesId)).size;
-  const recentScans = mockScans.slice(0, 3);
+  const { scans, isDemo } = useAppData();
+  const { session, signOut } = useAuth();
+  const identifiedCount = new Set(scans.filter((s) => s.speciesId).map((s) => s.speciesId)).size;
+  const recentScans = scans.slice(0, 3);
 
   return (
     <SafeAreaView style={styles.safe} edges={['top']}>
       <ScrollView contentContainerStyle={styles.content}>
-        <Text style={[type.display, styles.title]}>MushroomScanner</Text>
+        <View style={styles.headerRow}>
+          <Text style={[type.display, styles.title]}>MushroomScanner</Text>
+          {isSupabaseConfigured && session && (
+            <TouchableOpacity onPress={() => signOut()}>
+              <MaterialIcons name="logout" size={22} color={colors.fog} />
+            </TouchableOpacity>
+          )}
+        </View>
+
+        {isDemo && (
+          <Text style={[type.caption, styles.demoTag]}>
+            {isSupabaseConfigured ? 'Showing demo data - sign in to save your own scans.' : 'Demo mode - backend not configured.'}
+          </Text>
+        )}
 
         <View style={styles.statsRow}>
           <Card style={styles.statCard}>
@@ -33,7 +50,7 @@ export function DashboardScreen({ navigation }: Props) {
             <Text style={[type.caption, styles.statLabel]}>Species identified</Text>
           </Card>
           <Card style={styles.statCard}>
-            <Text style={[type.h1, styles.statNumber]}>{mockScans.length}</Text>
+            <Text style={[type.h1, styles.statNumber]}>{scans.length}</Text>
             <Text style={[type.caption, styles.statLabel]}>Total scans</Text>
           </Card>
         </View>
@@ -85,7 +102,9 @@ export function DashboardScreen({ navigation }: Props) {
 const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: colors.cream },
   content: { padding: spacing.lg, paddingBottom: spacing.xxl },
-  title: { color: colors.ink, marginBottom: spacing.lg },
+  headerRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: spacing.sm },
+  title: { color: colors.ink },
+  demoTag: { color: colors.fog, marginBottom: spacing.md },
   statsRow: { flexDirection: 'row', gap: spacing.md, marginBottom: spacing.md },
   statCard: { flex: 1, alignItems: 'center' },
   statNumber: { color: colors.moss },

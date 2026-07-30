@@ -10,6 +10,7 @@ export type MainTabParamList = {
 
 export type RootStackParamList = {
   Onboarding: undefined;
+  SignIn: undefined;
   Main: NavigatorScreenParams<MainTabParamList>;
   Result: { scanId: string };
   SpeciesDetail: { speciesId: string };
