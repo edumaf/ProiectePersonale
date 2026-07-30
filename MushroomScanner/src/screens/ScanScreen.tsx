@@ -1,0 +1,88 @@
+import { useState } from 'react';
+import { ActivityIndicator, Image, StyleSheet, Text, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { MaterialIcons } from '@expo/vector-icons';
+import * as ImagePicker from 'expo-image-picker';
+import { CompositeScreenProps } from '@react-navigation/native';
+import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { MainTabParamList, RootStackParamList } from '../navigation/types';
+import { PrimaryButton } from '../components/PrimaryButton';
+import { mockScans } from '../data/mockScans';
+import { colors, spacing, type } from '../theme';
+
+type Props = CompositeScreenProps<
+  BottomTabScreenProps<MainTabParamList, 'Scan'>,
+  NativeStackScreenProps<RootStackParamList>
+>;
+
+type Status = 'idle' | 'loading';
+
+// Photo capture -> identification call -> result. The identification call
+// itself (multimodal LLM vision request) is wired up in build step 3; for
+// now selecting a photo jumps to a mock result after a short fake delay.
+export function ScanScreen({ navigation }: Props) {
+  const [status, setStatus] = useState<Status>('idle');
+  const [previewUri, setPreviewUri] = useState<string | null>(null);
+
+  async function pickFrom(source: 'camera' | 'library') {
+    const permission =
+      source === 'camera'
+        ? await ImagePicker.requestCameraPermissionsAsync()
+        : await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (!permission.granted) return;
+
+    const result =
+      source === 'camera'
+        ? await ImagePicker.launchCameraAsync({ quality: 0.8 })
+        : await ImagePicker.launchImageLibraryAsync({ quality: 0.8 });
+
+    if (result.canceled) return;
+
+    setPreviewUri(result.assets[0].uri);
+    setStatus('loading');
+    setTimeout(() => {
+      setStatus('idle');
+      navigation.navigate('Result', { scanId: mockScans[0].id });
+    }, 1200);
+  }
+
+  if (status === 'loading') {
+    return (
+      <SafeAreaView style={styles.safe}>
+        <View style={styles.center}>
+          {previewUri && <Image source={{ uri: previewUri }} style={styles.preview} />}
+          <ActivityIndicator size="large" color={colors.moss} style={{ marginTop: spacing.lg }} />
+          <Text style={[type.body, styles.loadingText]}>Identifying your mushroom...</Text>
+        </View>
+      </SafeAreaView>
+    );
+  }
+
+  return (
+    <SafeAreaView style={styles.safe}>
+      <View style={styles.center}>
+        <MaterialIcons name="camera-alt" size={56} color={colors.moss} />
+        <Text style={[type.h1, styles.title]}>Scan a mushroom</Text>
+        <Text style={[type.body, styles.subtitle]}>
+          Take a clear photo of the cap, gills, and stem base for the best result.
+        </Text>
+        <View style={styles.buttons}>
+          <PrimaryButton label="Take photo" onPress={() => pickFrom('camera')} />
+          <View style={{ height: spacing.sm }} />
+          <PrimaryButton label="Choose from library" variant="outline" onPress={() => pickFrom('library')} />
+        </View>
+      </View>
+    </SafeAreaView>
+  );
+}
+
+const styles = StyleSheet.create({
+  safe: { flex: 1, backgroundColor: colors.cream },
+  center: { flex: 1, alignItems: 'center', justifyContent: 'center', padding: spacing.lg },
+  title: { color: colors.ink, marginTop: spacing.md, marginBottom: spacing.sm },
+  subtitle: { color: colors.charcoal, textAlign: 'center', marginBottom: spacing.xl },
+  buttons: { width: '100%' },
+  preview: { width: 220, height: 220, borderRadius: 16 },
+  loadingText: { color: colors.charcoal, marginTop: spacing.sm },
+});
