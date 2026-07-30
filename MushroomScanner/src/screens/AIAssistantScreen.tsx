@@ -1,10 +1,22 @@
 import { useState } from 'react';
-import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import {
+  ActivityIndicator,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialIcons } from '@expo/vector-icons';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/types';
 import { getSpeciesById } from '../data/species';
+import { askSpecies, AssistantMessage } from '../lib/assistant';
+import { isSupabaseConfigured } from '../lib/config';
 import { colors, radius, spacing, type } from '../theme';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'AIAssistant'>;
@@ -16,10 +28,13 @@ interface Message {
 }
 
 // Chat scoped to a single species (habitat, prep, look-alikes) - not a
-// general-purpose chatbot. Wiring to a real model call lands in build step 6.
+// general-purpose chatbot. Calls the ask-species edge function (real
+// Claude chat) when Supabase is configured; otherwise falls back to a
+// canned placeholder so the screen still demos without a backend.
 export function AIAssistantScreen({ route }: Props) {
   const species = getSpeciesById(route.params.speciesId);
   const [input, setInput] = useState('');
+  const [sending, setSending] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
     {
       id: 'welcome',
@@ -30,16 +45,47 @@ export function AIAssistantScreen({ route }: Props) {
     },
   ]);
 
-  function send() {
-    if (!input.trim()) return;
-    const userMessage: Message = { id: `${Date.now()}-u`, from: 'user', text: input.trim() };
-    const reply: Message = {
-      id: `${Date.now()}-a`,
-      from: 'assistant',
-      text: 'This is a placeholder response - the assistant will be connected to a live model in a later build step.',
-    };
-    setMessages((prev) => [...prev, userMessage, reply]);
+  async function send() {
+    const text = input.trim();
+    if (!text || sending || !species) return;
+
+    const userMessage: Message = { id: `${Date.now()}-u`, from: 'user', text };
+    const nextMessages = [...messages, userMessage];
+    setMessages(nextMessages);
     setInput('');
+
+    if (!isSupabaseConfigured) {
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: `${Date.now()}-a`,
+          from: 'assistant',
+          text: 'This is demo mode - connect Supabase (see supabase/README.md) to talk to the real assistant.',
+        },
+      ]);
+      return;
+    }
+
+    setSending(true);
+    try {
+      const history: AssistantMessage[] = nextMessages.map((m) => ({
+        role: m.from,
+        text: m.text,
+      }));
+      const reply = await askSpecies(species.id, history);
+      setMessages((prev) => [...prev, { id: `${Date.now()}-a`, from: 'assistant', text: reply }]);
+    } catch (err) {
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: `${Date.now()}-a`,
+          from: 'assistant',
+          text: err instanceof Error ? `Something went wrong: ${err.message}` : 'Something went wrong - try again.',
+        },
+      ]);
+    } finally {
+      setSending(false);
+    }
   }
 
   return (
@@ -51,6 +97,11 @@ export function AIAssistantScreen({ route }: Props) {
               <Text style={[type.body, m.from === 'user' ? styles.userText : styles.assistantText]}>{m.text}</Text>
             </View>
           ))}
+          {sending && (
+            <View style={[styles.bubble, styles.assistantBubble]}>
+              <ActivityIndicator size="small" color={colors.moss} />
+            </View>
+          )}
         </ScrollView>
         <View style={styles.inputRow}>
           <TextInput
@@ -60,8 +111,9 @@ export function AIAssistantScreen({ route }: Props) {
             value={input}
             onChangeText={setInput}
             onSubmitEditing={send}
+            editable={!sending}
           />
-          <TouchableOpacity style={styles.sendButton} onPress={send}>
+          <TouchableOpacity style={styles.sendButton} onPress={send} disabled={sending}>
             <MaterialIcons name="send" size={20} color={colors.white} />
           </TouchableOpacity>
         </View>

@@ -3,13 +3,15 @@
 Mobile app (React Native + Expo) that identifies wild mushrooms from a photo
 and tells foragers whether they're safe to eat. English-first MVP.
 
-## Status: Build step 3 - backend, auth, real identification
+## Status: Build steps 1-3 + 6 - shell, species data, backend, AI assistant
 
 Navigation shell (step 1) and the species database + seed data (step 2) are
-done. Step 3 adds a real Supabase backend: schema + RLS, auth (email magic
+done. Step 3 added a real Supabase backend: schema + RLS, auth (email magic
 link + Apple/Google OAuth buttons), Storage for scan photos, and an edge
-function that calls the Claude API for identification. **The app runs with
-zero setup in demo mode** (mock data, fake identification delay) and
+function that calls the Claude API for identification. Step 6 (AI
+assistant) is also done, out of build order, since it needed no live
+credentials to write - see below. **The app runs with zero setup in demo
+mode** (mock data, fake identification delay, canned assistant reply) and
 automatically switches to the real backend once you configure it - see
 `supabase/README.md`.
 
@@ -23,7 +25,7 @@ src/components/              Shared UI: EdibilityBadge, ConfidenceBadge, Card, P
 src/theme/                    Colors, typography, spacing (earth-tone editorial palette)
 src/lib/                       config.ts (env/demo-mode detection), supabase.ts (client),
                                 auth.tsx (AuthProvider/useAuth), scans.ts (upload/identify/
-                                insert/fetch for scans + collections)
+                                insert/fetch for scans + collections), assistant.ts (ask-species call)
 src/hooks/                     useAppData (scans+collections, real or demo), useScan (single scan)
 src/data/                      species.ts (reads db/seed/species.json), mockScans.ts (demo-mode
                                 fallback data), poisonControl.ts
@@ -36,6 +38,7 @@ db/seed/generate-sql.mjs       Regenerates db/seed/seed.sql, supabase/migrations
                                 supabase/functions/_shared/species.ts from species.json
 supabase/migrations/           Deployable schema + RLS + storage bucket, and seed data
 supabase/functions/identify/   Edge function: Claude vision call constrained to our species catalog
+supabase/functions/ask-species/ Edge function: text-only Claude chat scoped to one species
 supabase/README.md             Step-by-step setup + what's verified vs. not
 ```
 
@@ -79,6 +82,16 @@ no invented death tolls. The Result screen's look-alike section shows the
 user's own photo side-by-side with each look-alike's reference photo for
 direct visual comparison.
 
+### AI assistant
+
+Reachable from the Result screen and every Species Detail page. It's a
+chat scoped to one species, not a general chatbot: the `ask-species` edge
+function's system prompt pins it to that species' reference data (habitat,
+prep, toxicity, look-alikes) and instructs it to redirect off-topic
+questions and never encourage eating an unconfirmed specimen. Falls back
+to a one-line "connect Supabase to talk to the real assistant" message in
+demo mode.
+
 ## Safety logic already in place
 
 - `LOW_CONFIDENCE_THRESHOLD` in `src/utils/confidence.ts` (currently 85%,
@@ -102,11 +115,12 @@ The app works two ways depending on whether `EXPO_PUBLIC_SUPABASE_URL` /
 - **Not set (default)**: Onboarding goes straight to Main, no sign-in.
   Dashboard/History/My Finds show a small fixed set of mock scans and
   collections (labeled "Demo mode"). Scan's "Identify" always returns the
-  same mock chanterelle result.
+  same mock chanterelle result. The AI Assistant replies with a fixed
+  "connect Supabase" message.
 - **Set, and Supabase is provisioned** (`supabase/README.md`): Onboarding
   routes to SignIn if there's no session. Once signed in, everything reads
-  and writes real data, and Scan calls the real Claude vision identify
-  function.
+  and writes real data, Scan calls the real Claude vision identify
+  function, and the AI Assistant has a real conversation.
 
 ## Pre-launch TODOs (do not skip)
 
@@ -121,10 +135,11 @@ The app works two ways depending on whether `EXPO_PUBLIC_SUPABASE_URL` /
   countries and need a real locale-detection + expanded list.
 - Photo URLs are still placeholder (`picsum.photos`) for species reference
   photos - need real, licensed species photography before launch.
-- The `identify` edge function and the auth flow were written to Supabase's
-  documented patterns but **not exercised against a live Supabase project
-  or Anthropic key** - there was no way to do that without real
-  credentials. Test both for real after following `supabase/README.md`.
+- The `identify`/`ask-species` edge functions and the auth flow were
+  written to Supabase's documented patterns but **not exercised against a
+  live Supabase project or Anthropic key** - there was no way to do that
+  without real credentials. Test all three for real after following
+  `supabase/README.md`.
 
 ## Next build steps
 
@@ -133,6 +148,4 @@ The app works two ways depending on whether `EXPO_PUBLIC_SUPABASE_URL` /
    practice?).
 5. Polish Dashboard/My Finds/History against real usage - pull-to-refresh,
    pagination, empty states.
-6. AI assistant chat wired to a real per-species-scoped model call
-   (`AIAssistantScreen` currently returns a canned placeholder reply).
 7. Visual polish pass, then final onboarding/consent copy.

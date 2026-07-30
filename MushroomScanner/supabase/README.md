@@ -48,15 +48,19 @@ In the Supabase dashboard under Authentication > Providers:
 Add `mushroomscanner://auth/callback` as a redirect URL under
 Authentication > URL Configuration (this matches `app.json`'s `scheme`).
 
-## 4. Deploy the identify edge function
+## 4. Deploy the edge functions
 
 ```
 npx supabase functions deploy identify
+npx supabase functions deploy ask-species
 npx supabase secrets set ANTHROPIC_API_KEY=sk-ant-...
 ```
 
-`CLAUDE_MODEL` defaults to `claude-sonnet-5`; set it as a secret too if you
-want a different model.
+`identify` powers the Scan screen (vision); `ask-species` powers the
+per-species AI Assistant chat (text-only, scoped to one species' reference
+data - see the system prompt in `supabase/functions/ask-species/index.ts`).
+`CLAUDE_MODEL` defaults to `claude-sonnet-5` for both; set it as a secret
+too if you want a different model.
 
 ## 5. Configure the app
 
@@ -68,11 +72,11 @@ project's URL and anon key (Project Settings > API), then restart
 
 - Schema, RLS policies, and the storage bucket policy: verified against a
   real (if stubbed-auth) Postgres instance in this environment.
-- The `identify` edge function: written to Supabase's documented
-  `_shared/` pattern and the Claude Messages API's documented vision
-  request shape, but **not** executed against a live Anthropic key or a
+- The `identify` and `ask-species` edge functions: written to Supabase's
+  documented `_shared/` pattern and the Claude Messages API's documented
+  request shapes, but **not** executed against a live Anthropic key or a
   deployed Supabase project from this session - there was no way to do
-  that without your credentials. Test it for real after step 4 above.
+  that without your credentials. Test them for real after step 4 above.
 - Auth (email magic link + Apple/Google OAuth buttons): written to
   Supabase's documented Expo deep-link pattern, same caveat - untested
   against a live project.
