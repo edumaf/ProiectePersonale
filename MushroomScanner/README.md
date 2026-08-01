@@ -142,12 +142,13 @@ This deviates from a literal reading of the brief, which put "full
 look-alike detail" behind Pro. Making the app's core safety warning a
 paid feature isn't defensible regardless of what it does for conversion.
 
-**Safety constraints on Pro content.** Cooking methods exist only for
-species marked `edible`/`edible_cooked`, enforced in three places: the
-seed generator throws, a DB check constraint rejects the row, and the
-component refuses to render. They're also hidden entirely on a
-low-confidence result - offering technique on an uncertain ID would
-undercut the warning directly above it. Shared find text carries its own
+**Safety constraints on Pro content.** Cooking methods only ever appear
+on a Result screen - a specimen the app actually identified, at or above
+the confidence threshold. They are deliberately absent from Species
+Detail, which is the browsable reference guide and never refers to a
+mushroom the user is holding. Three further guards keep them off
+non-edible species: the seed generator throws, a DB check constraint
+rejects the row, and the component refuses to render. Shared find text carries its own
 confidence figure and disclaimer, since it lands somewhere with no app
 context around it.
 

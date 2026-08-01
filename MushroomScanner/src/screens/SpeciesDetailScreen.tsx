@@ -6,7 +6,6 @@ import { RootStackParamList } from '../navigation/types';
 import { Card } from '../components/Card';
 import { EdibilityBadge } from '../components/EdibilityBadge';
 import { PrimaryButton } from '../components/PrimaryButton';
-import { CookingMethodsSection } from '../components/CookingMethods';
 import { CompanionSpeciesSection } from '../components/CompanionSpecies';
 import { useEntitlement } from '../lib/entitlement';
 import { getSpeciesById } from '../data/species';
@@ -54,7 +53,11 @@ export function SpeciesDetailScreen({ route, navigation }: Props) {
           </Card>
         )}
 
-        <CookingMethodsSection species={species} isPro={isPro} />
+        {/* No cooking methods here by design. This screen is the reference
+            guide - reachable by browsing Learn, or from a look-alike link -
+            so nothing on it refers to a specimen the user actually has.
+            Cooking advice only appears on a Result, attached to a scan the
+            app confidently identified. */}
 
         <Card style={styles.section}>
           <SectionTitle icon="park" title="Habitat & season" />
