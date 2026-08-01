@@ -7,6 +7,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { MainTabParamList, RootStackParamList } from '../navigation/types';
 import { Card } from '../components/Card';
 import { useAppData } from '../hooks/useAppData';
+import { useCollectionProgress } from '../hooks/useCollectionProgress';
 import { useAuth } from '../lib/auth';
 import { isSupabaseConfigured } from '../lib/config';
 import { getSpeciesById } from '../data/species';
@@ -23,7 +24,7 @@ const safetyTip = 'Always check the base of the stem for a volva or sac - many d
 export function DashboardScreen({ navigation }: Props) {
   const { scans, isDemo, loading, refresh } = useAppData();
   const { session, signOut } = useAuth();
-  const identifiedCount = new Set(scans.filter((s) => s.speciesId).map((s) => s.speciesId)).size;
+  const progress = useCollectionProgress();
   const recentScans = scans.slice(0, 3);
 
   return (
@@ -49,14 +50,33 @@ export function DashboardScreen({ navigation }: Props) {
 
         <View style={styles.statsRow}>
           <Card style={styles.statCard}>
-            <Text style={[type.h1, styles.statNumber]}>{identifiedCount}</Text>
-            <Text style={[type.caption, styles.statLabel]}>Species identified</Text>
+            <Text style={[type.h1, styles.statNumber]}>{progress.found}</Text>
+            <Text style={[type.caption, styles.statLabel]}>Species found</Text>
           </Card>
           <Card style={styles.statCard}>
             <Text style={[type.h1, styles.statNumber]}>{scans.length}</Text>
             <Text style={[type.caption, styles.statLabel]}>Total scans</Text>
           </Card>
         </View>
+
+        <TouchableOpacity onPress={() => navigation.navigate('Learn')} activeOpacity={0.85}>
+          <Card style={styles.progressCard}>
+            <View style={styles.progressHeader}>
+              <Text style={[type.bodyMedium, { color: colors.ink }]}>Your collection</Text>
+              <Text style={[type.caption, { color: colors.fog }]}>
+                {progress.found} of {progress.total}
+              </Text>
+            </View>
+            <View style={styles.progressTrack}>
+              <View style={[styles.progressFill, { width: `${progress.percent}%` }]} />
+            </View>
+            <Text style={[type.caption, styles.progressHint]}>
+              {progress.found === 0
+                ? 'Species you confidently identify get added here.'
+                : `${progress.percent}% of the species in the guide. Only confident identifications count.`}
+            </Text>
+          </Card>
+        </TouchableOpacity>
 
         <TouchableOpacity onPress={() => navigation.navigate('Scan')} activeOpacity={0.85}>
           <Card style={styles.scanAgainCard}>
@@ -126,6 +146,11 @@ const styles = StyleSheet.create({
     marginBottom: spacing.md,
   },
   scanAgainText: { color: colors.white, marginLeft: spacing.sm },
+  progressCard: { marginBottom: spacing.md },
+  progressHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: spacing.sm },
+  progressTrack: { height: 8, borderRadius: 4, backgroundColor: colors.hairline, overflow: 'hidden' },
+  progressFill: { height: '100%', borderRadius: 4, backgroundColor: colors.moss },
+  progressHint: { color: colors.fog, marginTop: spacing.xs },
   tipCard: { backgroundColor: colors.edibleBg, borderColor: colors.edibleBg, marginBottom: spacing.md },
   tipHeader: { flexDirection: 'row', alignItems: 'center', marginBottom: spacing.xs },
   tipLabel: { color: colors.mossDark, marginLeft: spacing.xs },

@@ -19,7 +19,21 @@ export const speciesCatalog = [
     "photoUrls": [
       "https://picsum.photos/seed/chanterelle/800/800"
     ],
-    "confidenceNotes": "True gills are shallow, forked, and run down the stem (not true gills but ridges); distinct apricot smell. Solid flesh throughout, unlike hollow-stemmed look-alikes."
+    "confidenceNotes": "True gills are shallow, forked, and run down the stem (not true gills but ridges); distinct apricot smell. Solid flesh throughout, unlike hollow-stemmed look-alikes.",
+    "cookingMethods": [
+      {
+        "method": "Dry sauté",
+        "detail": "Chanterelles hold a lot of water. Dry-fry in a hot pan with no fat until the water releases and boils off, then add butter and finish. Adding fat too early steams them."
+      },
+      {
+        "method": "Butter and cream",
+        "detail": "Classic finish: butter, shallot, a splash of cream. Their apricot note suits eggs and poultry."
+      },
+      {
+        "method": "Freeze (cooked)",
+        "detail": "Freeze only after cooking. Raw frozen chanterelles turn bitter and mushy."
+      }
+    ]
   },
   {
     "id": "false-chanterelle",
@@ -117,7 +131,21 @@ export const speciesCatalog = [
     "photoUrls": [
       "https://picsum.photos/seed/morel/800/800"
     ],
-    "confidenceNotes": "Cap is honeycombed with pits and ridges and is fully hollow, including where it joins the stem - cut it lengthwise to check."
+    "confidenceNotes": "Cap is honeycombed with pits and ridges and is fully hollow, including where it joins the stem - cut it lengthwise to check.",
+    "cookingMethods": [
+      {
+        "method": "Sauté (essential)",
+        "detail": "Never eat raw. Sauté at least 5-10 minutes until fully cooked through - raw morels cause GI illness even in people who tolerate them cooked."
+      },
+      {
+        "method": "Dry for storage",
+        "detail": "Dries exceptionally well and intensifies in flavour. Rehydrate in warm water, and cook the rehydrated mushroom thoroughly."
+      },
+      {
+        "method": "Cream sauce",
+        "detail": "Cooked morels finished with cream and stock is the traditional preparation."
+      }
+    ]
   },
   {
     "id": "false-morel",
@@ -156,7 +184,21 @@ export const speciesCatalog = [
     "photoUrls": [
       "https://picsum.photos/seed/porcini/800/800"
     ],
-    "confidenceNotes": "White pore surface when young (aging to olive-yellow), a fine white network pattern on the upper stem, and flesh that does not change color when cut."
+    "confidenceNotes": "White pore surface when young (aging to olive-yellow), a fine white network pattern on the upper stem, and flesh that does not change color when cut.",
+    "cookingMethods": [
+      {
+        "method": "Pan-sear",
+        "detail": "Slice thickly and sear in butter or oil until golden. Young firm caps take heat best."
+      },
+      {
+        "method": "Dry",
+        "detail": "The classic preservation method - drying deepens the flavour considerably. Rehydrate and keep the soaking liquid for stock."
+      },
+      {
+        "method": "Raw (young only)",
+        "detail": "Very young, firm, insect-free specimens are sometimes shaved raw into salads. Only do this if you are completely certain of the identification."
+      }
+    ]
   },
   {
     "id": "bitter-bolete",
@@ -213,7 +255,17 @@ export const speciesCatalog = [
     "photoUrls": [
       "https://picsum.photos/seed/bay-bolete/800/800"
     ],
-    "confidenceNotes": "Chestnut-brown cap, yellowish pore surface that bruises blue-green (but not as dramatically as Satan's Bolete), and a smooth, unnetworked stem."
+    "confidenceNotes": "Chestnut-brown cap, yellowish pore surface that bruises blue-green (but not as dramatically as Satan's Bolete), and a smooth, unnetworked stem.",
+    "cookingMethods": [
+      {
+        "method": "Pan-fry",
+        "detail": "Fries well; the flesh stays firmer than most boletes. Remove the pore layer on older specimens - it goes slimy."
+      },
+      {
+        "method": "Dry",
+        "detail": "Dries well, though with less intensity than porcini."
+      }
+    ]
   },
   {
     "id": "birch-bolete",
@@ -229,7 +281,17 @@ export const speciesCatalog = [
     "photoUrls": [
       "https://picsum.photos/seed/birch-bolete/800/800"
     ],
-    "confidenceNotes": "Stem covered in small dark scales ('scabers'); only grows near birch, which narrows identification considerably."
+    "confidenceNotes": "Stem covered in small dark scales ('scabers'); only grows near birch, which narrows identification considerably.",
+    "cookingMethods": [
+      {
+        "method": "Cook thoroughly",
+        "detail": "Softer than porcini and goes mushy easily - best in soups, stews, or sauces rather than pan-fried alone."
+      },
+      {
+        "method": "Dry",
+        "detail": "Dries acceptably. Discard the spongy pore layer on older specimens first."
+      }
+    ]
   },
   {
     "id": "orange-birch-bolete",
@@ -246,7 +308,17 @@ export const speciesCatalog = [
     "photoUrls": [
       "https://picsum.photos/seed/orange-birch-bolete/800/800"
     ],
-    "confidenceNotes": "Bright orange cap and scabered stem that darkens sharply when cut."
+    "confidenceNotes": "Bright orange cap and scabered stem that darkens sharply when cut.",
+    "cookingMethods": [
+      {
+        "method": "Cook well (required)",
+        "detail": "Cook thoroughly - like other Leccinum boletes it can cause GI upset when undercooked. Do not eat rare."
+      },
+      {
+        "method": "Stews and soups",
+        "detail": "The flesh darkens to near-black when cooked, which is normal. Suits robust dishes."
+      }
+    ]
   },
   {
     "id": "hedgehog-mushroom",
@@ -262,7 +334,17 @@ export const speciesCatalog = [
     "photoUrls": [
       "https://picsum.photos/seed/hedgehog-mushroom/800/800"
     ],
-    "confidenceNotes": "Distinctive soft spines instead of gills or pores on the underside of the cap - unmistakable once checked."
+    "confidenceNotes": "Distinctive soft spines instead of gills or pores on the underside of the cap - unmistakable once checked.",
+    "cookingMethods": [
+      {
+        "method": "Pan-fry",
+        "detail": "Firm texture that holds up well to frying. Older specimens can be slightly bitter - blanch briefly first if so."
+      },
+      {
+        "method": "Scrape the spines",
+        "detail": "The spines drop off when cooking and can make a sauce gritty; scrape them off first for delicate dishes."
+      }
+    ]
   },
   {
     "id": "black-trumpet",
@@ -278,7 +360,17 @@ export const speciesCatalog = [
     "photoUrls": [
       "https://picsum.photos/seed/black-trumpet/800/800"
     ],
-    "confidenceNotes": "Thin, dark grey-brown, trumpet-shaped and hollow throughout; easy to overlook against leaf litter."
+    "confidenceNotes": "Thin, dark grey-brown, trumpet-shaped and hollow throughout; easy to overlook against leaf litter.",
+    "cookingMethods": [
+      {
+        "method": "Dry",
+        "detail": "Dries superbly and the flavour concentrates into something close to truffle. Grind dried ones into a powder for seasoning."
+      },
+      {
+        "method": "Sauté",
+        "detail": "Rinse carefully - grit and insects hide in the hollow trumpet - then sauté in butter."
+      }
+    ]
   },
   {
     "id": "cauliflower-fungus",
@@ -294,7 +386,17 @@ export const speciesCatalog = [
     "photoUrls": [
       "https://picsum.photos/seed/cauliflower-fungus/800/800"
     ],
-    "confidenceNotes": "Large, pale, brain-like mass of flattened ribbons growing at a pine base - visually distinctive."
+    "confidenceNotes": "Large, pale, brain-like mass of flattened ribbons growing at a pine base - visually distinctive.",
+    "cookingMethods": [
+      {
+        "method": "Wash thoroughly first",
+        "detail": "The ribbon folds trap pine needles and grit. Soak and rinse repeatedly before cooking."
+      },
+      {
+        "method": "Sauté or braise",
+        "detail": "Firm, almost noodle-like texture that holds its shape well. Young specimens are best; older ones toughen."
+      }
+    ]
   },
   {
     "id": "giant-puffball",
@@ -314,7 +416,17 @@ export const speciesCatalog = [
     "photoUrls": [
       "https://picsum.photos/seed/giant-puffball/800/800"
     ],
-    "confidenceNotes": "Always slice any puffball-like find in half top to bottom before eating: uniform white flesh throughout is a true puffball; any internal outline of a cap, gills, or stem means it is something else entirely - do not eat it."
+    "confidenceNotes": "Always slice any puffball-like find in half top to bottom before eating: uniform white flesh throughout is a true puffball; any internal outline of a cap, gills, or stem means it is something else entirely - do not eat it.",
+    "cookingMethods": [
+      {
+        "method": "Slice and fry",
+        "detail": "Cut into thick slabs and fry like a steak or schnitzel. Only use flesh that is pure white throughout."
+      },
+      {
+        "method": "Do not dry",
+        "detail": "Does not dry or freeze well - the texture collapses. Eat fresh, within a day or two."
+      }
+    ]
   },
   {
     "id": "field-mushroom",
@@ -334,7 +446,17 @@ export const speciesCatalog = [
     "photoUrls": [
       "https://picsum.photos/seed/field-mushroom/800/800"
     ],
-    "confidenceNotes": "Always check the stem base for a volva (sack) - a true field mushroom has none. Gills are pink, darkening to chocolate-brown with age, never pure white."
+    "confidenceNotes": "Always check the stem base for a volva (sack) - a true field mushroom has none. Gills are pink, darkening to chocolate-brown with age, never pure white.",
+    "cookingMethods": [
+      {
+        "method": "Grill or fry",
+        "detail": "Treat like a shop-bought mushroom, which it is closely related to. Grilling whole caps concentrates the flavour."
+      },
+      {
+        "method": "Check for maggots",
+        "detail": "Field mushrooms are frequently infested. Halve each one and inspect before cooking."
+      }
+    ]
   },
   {
     "id": "horse-mushroom",
@@ -354,7 +476,17 @@ export const speciesCatalog = [
     "photoUrls": [
       "https://picsum.photos/seed/horse-mushroom/800/800"
     ],
-    "confidenceNotes": "Larger than the Field Mushroom with a faint aniseed smell; check for a volva at the base and pink-to-brown (never white) gills."
+    "confidenceNotes": "Larger than the Field Mushroom with a faint aniseed smell; check for a volva at the base and pink-to-brown (never white) gills.",
+    "cookingMethods": [
+      {
+        "method": "Grill or stuff",
+        "detail": "Large caps suit stuffing and grilling. The faint aniseed note cooks off into something mild and nutty."
+      },
+      {
+        "method": "Cook young",
+        "detail": "Best while the gills are still pink. Older specimens can be strong and are often infested."
+      }
+    ]
   },
   {
     "id": "yellow-stainer",
@@ -394,7 +526,17 @@ export const speciesCatalog = [
     "photoUrls": [
       "https://picsum.photos/seed/parasol-mushroom/800/800"
     ],
-    "confidenceNotes": "Grows large (cap can exceed 20cm) on a tall, slender, snakeskin-patterned stem with a free-moving double ring. Size alone rules out the much smaller Deadly Dapperling."
+    "confidenceNotes": "Grows large (cap can exceed 20cm) on a tall, slender, snakeskin-patterned stem with a free-moving double ring. Size alone rules out the much smaller Deadly Dapperling.",
+    "cookingMethods": [
+      {
+        "method": "Breaded and fried",
+        "detail": "The classic preparation: coat the whole cap in egg and breadcrumbs and shallow-fry like a schnitzel."
+      },
+      {
+        "method": "Cap only",
+        "detail": "Discard the stem entirely - it is fibrous and woody regardless of cooking."
+      }
+    ]
   },
   {
     "id": "shaggy-parasol",
@@ -414,7 +556,17 @@ export const speciesCatalog = [
     "photoUrls": [
       "https://picsum.photos/seed/shaggy-parasol/800/800"
     ],
-    "confidenceNotes": "Shorter and stockier than the true Parasol, with flesh that reddens when cut; ring is not free-moving on the stem like the Parasol's."
+    "confidenceNotes": "Shorter and stockier than the true Parasol, with flesh that reddens when cut; ring is not free-moving on the stem like the Parasol's.",
+    "cookingMethods": [
+      {
+        "method": "Cook thoroughly, try a little first",
+        "detail": "Cook well, and eat only a small portion the first time. A meaningful minority of people get GI upset from this species even properly cooked."
+      },
+      {
+        "method": "Breaded and fried",
+        "detail": "Same preparation as the true Parasol - cap only, stem discarded."
+      }
+    ]
   },
   {
     "id": "deadly-dapperling",
@@ -452,7 +604,17 @@ export const speciesCatalog = [
     "photoUrls": [
       "https://picsum.photos/seed/saffron-milkcap/800/800"
     ],
-    "confidenceNotes": "Bleeds a distinctive orange 'milk' when cut that slowly turns green; concentric orange zoning on the cap."
+    "confidenceNotes": "Bleeds a distinctive orange 'milk' when cut that slowly turns green; concentric orange zoning on the cap.",
+    "cookingMethods": [
+      {
+        "method": "Grill or pan-fry",
+        "detail": "Traditional in Spain and Catalonia grilled over coals with garlic, oil, and parsley. Firm texture, slightly grainy."
+      },
+      {
+        "method": "Preserve in oil",
+        "detail": "Commonly blanched then preserved in oil or vinegar in southern Europe."
+      }
+    ]
   },
   {
     "id": "woolly-milkcap",
@@ -489,7 +651,17 @@ export const speciesCatalog = [
     "photoUrls": [
       "https://picsum.photos/seed/charcoal-burner/800/800"
     ],
-    "confidenceNotes": "Cap color is variably purple-green-grey; uniquely among Russulas, its gills feel greasy/flexible rather than chalky and brittle."
+    "confidenceNotes": "Cap color is variably purple-green-grey; uniquely among Russulas, its gills feel greasy/flexible rather than chalky and brittle.",
+    "cookingMethods": [
+      {
+        "method": "Sauté",
+        "detail": "Mild, nutty, and one of the more reliable Russulas in the kitchen. Cooks quickly."
+      },
+      {
+        "method": "Handle gently",
+        "detail": "Brittle flesh that breaks easily during transport - carry in a rigid basket."
+      }
+    ]
   },
   {
     "id": "emetic-russula",
@@ -527,7 +699,17 @@ export const speciesCatalog = [
     "photoUrls": [
       "https://picsum.photos/seed/wood-blewit/800/800"
     ],
-    "confidenceNotes": "Distinctive lilac-violet coloring throughout the cap, gills, and stem when young, fading with age; spore print is pale pink-buff."
+    "confidenceNotes": "Distinctive lilac-violet coloring throughout the cap, gills, and stem when young, fading with age; spore print is pale pink-buff.",
+    "cookingMethods": [
+      {
+        "method": "Cook thoroughly (required)",
+        "detail": "Must be cooked well - raw or undercooked blewits cause GI upset. Never eat raw, including in salads."
+      },
+      {
+        "method": "Slow cook",
+        "detail": "Suits stews and slow braises; the violet colour fades to grey-brown as it cooks, which is expected."
+      }
+    ]
   },
   {
     "id": "livid-pinkgill",
@@ -566,7 +748,17 @@ export const speciesCatalog = [
     "photoUrls": [
       "https://picsum.photos/seed/st-georges-mushroom/800/800"
     ],
-    "confidenceNotes": "One of the few common edible mushrooms fruiting in spring, which narrows the field considerably - but always confirm against the Deadly Fibrecap, which shares its season."
+    "confidenceNotes": "One of the few common edible mushrooms fruiting in spring, which narrows the field considerably - but always confirm against the Deadly Fibrecap, which shares its season.",
+    "cookingMethods": [
+      {
+        "method": "Sauté in butter",
+        "detail": "Strong, distinctly mealy flavour that some love and some dislike. Cook simply to judge it first."
+      },
+      {
+        "method": "Use sparingly",
+        "detail": "The flavour dominates a dish - use less than you would other mushrooms."
+      }
+    ]
   },
   {
     "id": "deadly-fibrecap",
@@ -605,7 +797,21 @@ export const speciesCatalog = [
     "photoUrls": [
       "https://picsum.photos/seed/honey-fungus/800/800"
     ],
-    "confidenceNotes": "Grows in dense clusters on wood with a cottony ring on the stem and a white spore print - take a spore print and check for the ring before eating anything found on a stump."
+    "confidenceNotes": "Grows in dense clusters on wood with a cottony ring on the stem and a white spore print - take a spore print and check for the ring before eating anything found on a stump.",
+    "cookingMethods": [
+      {
+        "method": "Cook thoroughly (required)",
+        "detail": "Must be well cooked. Undercooked honey fungus causes GI upset in many people, and some react even when it is properly cooked."
+      },
+      {
+        "method": "Parboil and discard water",
+        "detail": "Commonly parboiled with the water discarded before the final cooking, which reduces the reaction rate."
+      },
+      {
+        "method": "Caps only",
+        "detail": "Discard the tough, fibrous stems entirely."
+      }
+    ]
   },
   {
     "id": "funeral-bell",
@@ -662,7 +868,17 @@ export const speciesCatalog = [
     "photoUrls": [
       "https://picsum.photos/seed/shaggy-mane/800/800"
     ],
-    "confidenceNotes": "Tall, cylindrical, shaggy white cap that dissolves into black ink from the bottom edge upward with age - only eat while still white and firm."
+    "confidenceNotes": "Tall, cylindrical, shaggy white cap that dissolves into black ink from the bottom edge upward with age - only eat while still white and firm.",
+    "cookingMethods": [
+      {
+        "method": "Cook within hours",
+        "detail": "Begins self-digesting into black ink almost immediately after picking. Cook the same day, ideally within a few hours."
+      },
+      {
+        "method": "Gentle sauté or soup",
+        "detail": "Delicate, high water content - a quick sauté or a soup suits it better than aggressive frying."
+      }
+    ]
   },
   {
     "id": "common-inkcap",
@@ -697,7 +913,17 @@ export const speciesCatalog = [
     "photoUrls": [
       "https://picsum.photos/seed/oyster-mushroom/800/800"
     ],
-    "confidenceNotes": "Fan- or oyster-shaped cap growing directly from wood in overlapping shelves, with gills running down a short or absent stem."
+    "confidenceNotes": "Fan- or oyster-shaped cap growing directly from wood in overlapping shelves, with gills running down a short or absent stem.",
+    "cookingMethods": [
+      {
+        "method": "High-heat sear",
+        "detail": "Sears beautifully and crisps at the edges. Do not crowd the pan or they steam instead of browning."
+      },
+      {
+        "method": "Shred and fry",
+        "detail": "Tearing rather than slicing gives more surface area and a better texture."
+      }
+    ]
   },
   {
     "id": "chicken-of-the-woods",
@@ -714,7 +940,21 @@ export const speciesCatalog = [
     "photoUrls": [
       "https://picsum.photos/seed/chicken-of-the-woods/800/800"
     ],
-    "confidenceNotes": "Bright orange-yellow overlapping shelf-like brackets on a tree trunk; unmistakable coloring, but note the host tree species before eating."
+    "confidenceNotes": "Bright orange-yellow overlapping shelf-like brackets on a tree trunk; unmistakable coloring, but note the host tree species before eating.",
+    "cookingMethods": [
+      {
+        "method": "Cook thoroughly (required)",
+        "detail": "Always cook well - undercooked specimens cause GI reactions, and some people react regardless. Try a small portion the first time."
+      },
+      {
+        "method": "Young edges only",
+        "detail": "Use the soft outer growing edges. The older inner bracket turns woody and chalky."
+      },
+      {
+        "method": "Check the host tree",
+        "detail": "Avoid specimens growing on yew, eucalyptus, or conifers - the fungus can take up compounds from the host."
+      }
+    ]
   },
   {
     "id": "beefsteak-fungus",
@@ -730,7 +970,17 @@ export const speciesCatalog = [
     "photoUrls": [
       "https://picsum.photos/seed/beefsteak-fungus/800/800"
     ],
-    "confidenceNotes": "Resembles a slab of raw meat, complete with a red juice that runs when cut - visually distinctive."
+    "confidenceNotes": "Resembles a slab of raw meat, complete with a red juice that runs when cut - visually distinctive.",
+    "cookingMethods": [
+      {
+        "method": "Slice thin",
+        "detail": "Acidic and quite sour, unlike most mushrooms. Slicing thin and cooking in fat mellows it."
+      },
+      {
+        "method": "Soak to reduce acidity",
+        "detail": "Some cooks soak slices in milk or water before cooking to draw out the sourness."
+      }
+    ]
   },
   {
     "id": "panther-cap",
@@ -770,7 +1020,17 @@ export const speciesCatalog = [
     "photoUrls": [
       "https://picsum.photos/seed/blusher/800/800"
     ],
-    "confidenceNotes": "Flesh reddens ('blushes') distinctly where bruised or cut, especially at the stem base - a feature the dangerous Panther Cap and Death Cap do not share."
+    "confidenceNotes": "Flesh reddens ('blushes') distinctly where bruised or cut, especially at the stem base - a feature the dangerous Panther Cap and Death Cap do not share.",
+    "cookingMethods": [
+      {
+        "method": "Cook thoroughly (required)",
+        "detail": "Raw or undercooked Blushers are toxic. Cook completely - and only if you are certain of the identification, since this is an Amanita."
+      },
+      {
+        "method": "Simple sauté",
+        "detail": "Good texture and mild flavour once well cooked. Suits a plain butter sauté."
+      }
+    ]
   },
   {
     "id": "fly-agaric",

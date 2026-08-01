@@ -33,7 +33,17 @@ const columns = [
   'region',
   'photo_urls',
   'confidence_notes',
+  'cooking_methods',
 ];
+
+// Guard rail: cooking advice must never appear on a species the app
+// classifies as toxic/deadly/inedible/unknown. The DB has a matching
+// check constraint; this fails the build earlier and more loudly.
+for (const s of species) {
+  if (s.cookingMethods?.length && !['edible', 'edible_cooked'].includes(s.edibilityStatus)) {
+    throw new Error(`${s.id} is "${s.edibilityStatus}" but has cookingMethods - refusing to generate.`);
+  }
+}
 
 const rows = species.map((s) => {
   const values = [
@@ -51,6 +61,7 @@ const rows = species.map((s) => {
     sqlString(s.region),
     sqlTextArray(s.photoUrls),
     sqlString(s.confidenceNotes),
+    `${sqlString(JSON.stringify(s.cookingMethods ?? []))}::jsonb`,
   ];
   return `  (${values.join(', ')})`;
 });
@@ -75,6 +86,7 @@ on conflict (id) do update set
   region = excluded.region,
   photo_urls = excluded.photo_urls,
   confidence_notes = excluded.confidence_notes,
+  cooking_methods = excluded.cooking_methods,
   updated_at = now();
 `;
 

@@ -36,7 +36,8 @@ src/lib/                       config.ts (env/demo-mode detection), supabase.ts 
                                 consent), entitlement.tsx (free/pro tier), scans.ts (upload/
                                 identify/insert/fetch), assistant.ts (ask-species call)
 src/hooks/                     useAppData (scans+collections), useScan (single scan),
-                                useScanHistory (paginated, infinite scroll)
+                                useScanHistory (paginated), useCollectionProgress (X of 45)
+src/utils/companions.ts        Derives "also grows here" from shared habitat/season/region
 src/data/                      species.ts (reads db/seed/species.json), mockScans.ts (demo-mode
                                 fallback data), poisonControl.ts
 src/types/                     Domain model types (Species, ScanResult, Collection)
@@ -110,21 +111,45 @@ demo mode.
 
 ### Free vs. Pro
 
-Free: 5 scans a month, 1 collection, species names + edibility + habitat,
-and the *names and edibility badges* of every dangerous look-alike.
+Free: 5 scans a month, 1 collection, 5 most recent scans in history,
+species names + edibility + habitat, the *names and edibility badges* of
+every dangerous look-alike, and the hazard half of "also grows here".
 
-Pro: unlimited scans and collections, side-by-side look-alike photo
-comparison with distinguishing-feature notes, full poisoning history, and
-the AI assistant.
+Pro: unlimited scans and collections, full scan history, side-by-side
+look-alike photo comparison with distinguishing-feature notes, cooking
+methods for every edible species, the edible half of "also grows here",
+full poisoning history, the AI assistant, and sharing a find.
 
-**Deliberate deviation from the brief:** the brief put "full look-alike
-detail" behind Pro. Which deadly species a find can be confused with, and
-how dangerous each one is, is *never* paywalled - a free user still sees
-"commonly confused with Death Cap [DEADLY]". Only the richer comparison
-(photos side by side, the specific features that separate them) is Pro.
-Hiding the existence of a deadly look-alike behind a paywall would make
-the app's core safety warning a paid feature, which isn't defensible
-regardless of what it does for conversion.
+The Dashboard and Learn tab track collection progress ("12 of 45 species
+found"), available on every tier. Only confident identifications count
+toward it - a low-confidence guess doesn't tick a species off the list,
+since the app just told the user it didn't know.
+
+**What is never paywalled, by design.** Anything that warns a user away
+from eating something dangerous stays free:
+
+- Which deadly species a find can be confused with, and how dangerous each
+  one is. A free user still sees "commonly confused with Death Cap
+  [DEADLY]"; Pro only adds the side-by-side photos and the distinguishing
+  features.
+- The hazard list in "also grows here". Knowing something deadly shares
+  this habitat is safety information; Pro adds the *edible* companions,
+  which is the foraging-convenience half.
+- Toxicity notes, prep requirements, the confidence score, the forced
+  "uncertain - do not consume" state, and poison control.
+
+This deviates from a literal reading of the brief, which put "full
+look-alike detail" behind Pro. Making the app's core safety warning a
+paid feature isn't defensible regardless of what it does for conversion.
+
+**Safety constraints on Pro content.** Cooking methods exist only for
+species marked `edible`/`edible_cooked`, enforced in three places: the
+seed generator throws, a DB check constraint rejects the row, and the
+component refuses to render. They're also hidden entirely on a
+low-confidence result - offering technique on an uncertain ID would
+undercut the warning directly above it. Shared find text carries its own
+confidence figure and disclaimer, since it lands somewhere with no app
+context around it.
 
 The quota is enforced **server-side** in the identify edge function via
 `consume_scan_credit`, not in the client, so a patched app can't award

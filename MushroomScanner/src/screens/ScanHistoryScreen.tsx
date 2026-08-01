@@ -6,7 +6,9 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { MainTabParamList, RootStackParamList } from '../navigation/types';
 import { EdibilityBadge } from '../components/EdibilityBadge';
 import { EmptyState } from '../components/EmptyState';
+import { ProLock } from '../components/ProLock';
 import { useScanHistory } from '../hooks/useScanHistory';
+import { useEntitlement } from '../lib/entitlement';
 import { getSpeciesById } from '../data/species';
 import { colors, spacing, type } from '../theme';
 
@@ -20,21 +22,31 @@ function formatDate(iso: string) {
 }
 
 // Chronological log of every scan, independent of collections.
+// Free tier sees a recent window of their history; Pro sees the full
+// archive. The cap is presentational only - nothing is deleted, and the
+// scans are still the user's own data, so it's restored the moment they
+// upgrade.
+const FREE_HISTORY_LIMIT = 5;
+
 export function ScanHistoryScreen({ navigation }: Props) {
   const { scans, refreshing, loadingMore, isDemo, refresh, loadMore } = useScanHistory();
+  const { isPro } = useEntitlement();
+
+  const visibleScans = isPro ? scans : scans.slice(0, FREE_HISTORY_LIMIT);
+  const hiddenCount = scans.length - visibleScans.length;
 
   return (
     <SafeAreaView style={styles.safe} edges={['top']}>
       <Text style={[type.display, styles.title]}>Scan History</Text>
       {isDemo && <Text style={[type.caption, styles.demoTag]}>Showing demo data.</Text>}
       <FlatList
-        data={scans}
+        data={visibleScans}
         keyExtractor={(s) => s.id}
-        contentContainerStyle={scans.length === 0 ? styles.emptyList : styles.list}
+        contentContainerStyle={visibleScans.length === 0 ? styles.emptyList : styles.list}
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={refresh} tintColor={colors.moss} />
         }
-        onEndReached={loadMore}
+        onEndReached={isPro ? loadMore : undefined}
         onEndReachedThreshold={0.4}
         ListEmptyComponent={
           refreshing ? null : (
@@ -48,7 +60,14 @@ export function ScanHistoryScreen({ navigation }: Props) {
           )
         }
         ListFooterComponent={
-          loadingMore ? <ActivityIndicator style={styles.footer} color={colors.moss} /> : null
+          !isPro && hiddenCount > 0 ? (
+            <ProLock
+              title={`${hiddenCount} older ${hiddenCount === 1 ? 'scan' : 'scans'} hidden`}
+              description={`Free keeps your ${FREE_HISTORY_LIMIT} most recent scans visible. Pro opens the full archive - nothing has been deleted.`}
+            />
+          ) : loadingMore ? (
+            <ActivityIndicator style={styles.footer} color={colors.moss} />
+          ) : null
         }
         renderItem={({ item }) => {
           const species = getSpeciesById(item.speciesId);

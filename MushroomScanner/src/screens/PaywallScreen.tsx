@@ -19,11 +19,27 @@ const proFeatures: Array<{ icon: keyof typeof MaterialIcons.glyphMap; title: str
     detail: 'Side-by-side photos and the details that separate a safe find from a dangerous one.',
   },
   {
+    icon: 'restaurant',
+    title: 'How to cook it',
+    detail: 'Preparation methods for every edible species - technique, storage, and what to avoid.',
+  },
+  {
+    icon: 'travel-explore',
+    title: 'What else grows nearby',
+    detail: 'The other edible species sharing a habitat and season with your find.',
+  },
+  {
+    icon: 'history',
+    title: 'Full scan history',
+    detail: 'Free keeps your 5 most recent scans visible; Pro opens the whole archive.',
+  },
+  {
     icon: 'history-edu',
     title: 'Complete toxicity & poisoning history',
     detail: 'Sourced notes on what each species has actually been responsible for.',
   },
   { icon: 'forum', title: 'AI assistant', detail: 'Ask follow-up questions about any species you look at.' },
+  { icon: 'share', title: 'Share your finds', detail: 'Send a find to a friend with its confidence and safety notes attached.' },
   { icon: 'collections-bookmark', title: 'Unlimited collections', detail: 'Free plan includes one saved collection.' },
 ];
 

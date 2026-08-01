@@ -1,12 +1,14 @@
 import { useMemo, useState } from 'react';
 import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { MaterialIcons } from '@expo/vector-icons';
 import { CompositeScreenProps } from '@react-navigation/native';
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { MainTabParamList, RootStackParamList } from '../navigation/types';
 import { EdibilityBadge } from '../components/EdibilityBadge';
 import { EmptyState } from '../components/EmptyState';
+import { useCollectionProgress } from '../hooks/useCollectionProgress';
 import { speciesList } from '../data/species';
 import { colors, edibilityPresentation, EdibilityStatus, spacing, type } from '../theme';
 
@@ -26,6 +28,7 @@ const filters: Array<{ key: EdibilityStatus | 'all'; label: string }> = [
 // Browse the species database directly, not just via scanning.
 export function LearnScreen({ navigation }: Props) {
   const [activeFilter, setActiveFilter] = useState<EdibilityStatus | 'all'>('all');
+  const progress = useCollectionProgress();
 
   const filtered = useMemo(
     () => (activeFilter === 'all' ? speciesList : speciesList.filter((s) => s.edibilityStatus === activeFilter)),
@@ -35,6 +38,9 @@ export function LearnScreen({ navigation }: Props) {
   return (
     <SafeAreaView style={styles.safe} edges={['top']}>
       <Text style={[type.display, styles.title]}>Learn</Text>
+      <Text style={[type.caption, styles.progress]}>
+        {progress.found} of {progress.total} species found
+      </Text>
       <FlatList
         horizontal
         showsHorizontalScrollIndicator={false}
@@ -70,7 +76,14 @@ export function LearnScreen({ navigation }: Props) {
             style={styles.row}
             onPress={() => navigation.navigate('SpeciesDetail', { speciesId: item.id })}
           >
-            <Image source={{ uri: item.photoUrls[0] }} style={styles.thumb} />
+            <View>
+              <Image source={{ uri: item.photoUrls[0] }} style={styles.thumb} />
+              {progress.isFound(item.id) && (
+                <View style={styles.foundBadge}>
+                  <MaterialIcons name="check" size={12} color={colors.white} />
+                </View>
+              )}
+            </View>
             <View style={styles.info}>
               <Text style={[type.bodyMedium, { color: colors.ink }]}>{item.commonName}</Text>
               <Text style={[type.latin, { color: colors.fog, fontSize: 13 }]}>{item.latinName}</Text>
@@ -86,6 +99,20 @@ export function LearnScreen({ navigation }: Props) {
 const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: colors.cream },
   title: { color: colors.ink, paddingHorizontal: spacing.lg, paddingTop: spacing.md },
+  progress: { color: colors.fog, paddingHorizontal: spacing.lg, marginTop: spacing.xs },
+  foundBadge: {
+    position: 'absolute',
+    right: spacing.sm,
+    bottom: -2,
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    backgroundColor: colors.moss,
+    borderWidth: 2,
+    borderColor: colors.cream,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   filterList: { flexGrow: 0, marginTop: spacing.sm },
   filterListContent: { paddingHorizontal: spacing.lg, gap: spacing.sm },
   filterChip: {

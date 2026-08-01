@@ -9,7 +9,10 @@ import { ConfidenceBadge } from '../components/ConfidenceBadge';
 import { PrimaryButton } from '../components/PrimaryButton';
 import { useScan } from '../hooks/useScan';
 import { ProLock } from '../components/ProLock';
+import { CookingMethodsSection } from '../components/CookingMethods';
+import { CompanionSpeciesSection } from '../components/CompanionSpecies';
 import { useEntitlement } from '../lib/entitlement';
+import { shareFind } from '../lib/share';
 import { getSpeciesById } from '../data/species';
 import { defaultPoisonControl } from '../data/poisonControl';
 import { confidenceLevel, displayEdibilityStatus, LOW_CONFIDENCE_THRESHOLD } from '../utils/confidence';
@@ -161,6 +164,11 @@ export function ResultScreen({ route, navigation }: Props) {
             </View>
           ))}
 
+        {/* Cooking advice is only reachable for a confident, edible
+            result - offering technique on an uncertain ID would undercut
+            the warning directly above it. */}
+        {species && !isUncertain && <CookingMethodsSection species={species} isPro={isPro} />}
+
         {species && (
           <Card style={styles.section}>
             <SectionTitle icon="park" title="Habitat & season" />
@@ -169,6 +177,8 @@ export function ResultScreen({ route, navigation }: Props) {
             <InfoRow label="Region" value={species.region} />
           </Card>
         )}
+
+        {species && <CompanionSpeciesSection species={species} isPro={isPro} />}
 
         <Card style={styles.poisonCard}>
           <MaterialIcons name="local-hospital" size={22} color={colors.deadly} />
@@ -180,13 +190,30 @@ export function ResultScreen({ route, navigation }: Props) {
           </View>
         </Card>
 
-        {species && (
-          <PrimaryButton
-            label="Ask the AI assistant about this species"
-            variant="outline"
-            onPress={() => navigation.navigate('AIAssistant', { speciesId: species.id })}
-          />
-        )}
+        <View style={styles.actions}>
+          {species && (
+            <PrimaryButton
+              label="Ask the AI assistant about this species"
+              variant="outline"
+              onPress={() => navigation.navigate('AIAssistant', { speciesId: species.id })}
+            />
+          )}
+
+          <View style={{ height: spacing.sm }} />
+
+          {isPro ? (
+            <PrimaryButton
+              label="Share this find"
+              variant="outline"
+              onPress={() => shareFind(species, scan.confidencePercent)}
+            />
+          ) : (
+            <ProLock
+              title="Share this find"
+              description="Pro lets you send a find to a friend, with its confidence level and safety notes attached."
+            />
+          )}
+        </View>
       </ScrollView>
     </SafeAreaView>
   );
@@ -256,6 +283,7 @@ const styles = StyleSheet.create({
   compareThumb: { width: '100%', aspectRatio: 1, borderRadius: 10, maxWidth: 120 },
   compareCaption: { color: colors.fog, marginTop: 4 },
   distinguishNote: { color: colors.charcoal, marginTop: spacing.xs },
+  actions: { marginHorizontal: spacing.lg, marginTop: spacing.md },
   compareIcon: { marginHorizontal: spacing.sm },
   lookalikeInfo: { flex: 1 },
   infoRow: { marginBottom: spacing.sm },

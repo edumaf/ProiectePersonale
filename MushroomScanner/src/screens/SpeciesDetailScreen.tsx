@@ -6,6 +6,9 @@ import { RootStackParamList } from '../navigation/types';
 import { Card } from '../components/Card';
 import { EdibilityBadge } from '../components/EdibilityBadge';
 import { PrimaryButton } from '../components/PrimaryButton';
+import { CookingMethodsSection } from '../components/CookingMethods';
+import { CompanionSpeciesSection } from '../components/CompanionSpecies';
+import { useEntitlement } from '../lib/entitlement';
 import { getSpeciesById } from '../data/species';
 import { colors, spacing, type } from '../theme';
 
@@ -15,6 +18,7 @@ type Props = NativeStackScreenProps<RootStackParamList, 'SpeciesDetail'>;
 // look-alike link on the Result screen - no scan/confidence involved.
 export function SpeciesDetailScreen({ route, navigation }: Props) {
   const species = getSpeciesById(route.params.speciesId);
+  const { isPro } = useEntitlement();
   if (!species) return null;
 
   return (
@@ -50,12 +54,16 @@ export function SpeciesDetailScreen({ route, navigation }: Props) {
           </Card>
         )}
 
+        <CookingMethodsSection species={species} isPro={isPro} />
+
         <Card style={styles.section}>
           <SectionTitle icon="park" title="Habitat & season" />
           <InfoRow label="Habitat" value={species.habitat} />
           <InfoRow label="Season" value={species.season} />
           <InfoRow label="Region" value={species.region} />
         </Card>
+
+        <CompanionSpeciesSection species={species} isPro={isPro} />
 
         <View style={styles.section}>
           <PrimaryButton

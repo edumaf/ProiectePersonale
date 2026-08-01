@@ -33,6 +33,14 @@ create table species (
   region text not null,
   photo_urls text[] not null default '{}',
   confidence_notes text,
+  -- [{"method": "...", "detail": "..."}]; edible species only, see the
+  -- check constraint. Distinct from prep_instructions, which holds the
+  -- safety-critical requirements.
+  cooking_methods jsonb not null default '[]',
+  constraint species_cooking_methods_edible_only check (
+    cooking_methods = '[]'::jsonb
+    or edibility_status in ('edible', 'edible_cooked')
+  ),
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );

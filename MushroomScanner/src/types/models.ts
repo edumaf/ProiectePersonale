@@ -16,6 +16,18 @@ export interface Species {
   /** Reference photos, ordered; first is the cover image. */
   photoUrls: string[];
   confidenceNotes?: string;
+  /**
+   * Culinary preparation. Only present on edible/edible_cooked species -
+   * never populate this for a toxic one. This is flavour/technique advice
+   * layered on top of prepInstructions, which carries the safety-critical
+   * requirements and always takes precedence.
+   */
+  cookingMethods?: CookingMethod[];
+}
+
+export interface CookingMethod {
+  method: string;
+  detail: string;
 }
 
 export type ScanAngle = 'cap' | 'gills' | 'stem_base';
