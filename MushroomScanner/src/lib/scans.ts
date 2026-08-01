@@ -28,6 +28,14 @@ function mimeTypeFor(uri: string) {
   return 'image/jpeg';
 }
 
+/** Thrown when a free-tier user has used up their monthly scan allowance. */
+export class ScanLimitReachedError extends Error {
+  constructor() {
+    super('scan_limit_reached');
+    this.name = 'ScanLimitReachedError';
+  }
+}
+
 /** Sends photos to the identify edge function (real Claude vision call). */
 export async function identifyPhotos(photos: CapturedPhoto[]): Promise<IdentifyResult> {
   const client = requireSupabase();
@@ -40,7 +48,18 @@ export async function identifyPhotos(photos: CapturedPhoto[]): Promise<IdentifyR
   );
 
   const { data, error } = await client.functions.invoke('identify', { body: { photos: encoded } });
-  if (error) throw error;
+
+  if (error) {
+    // functions.invoke surfaces non-2xx as FunctionsHttpError with the body
+    // on .context - dig out our own quota signal so the caller can show
+    // the paywall instead of a generic failure.
+    const status = (error as { context?: { status?: number } }).context?.status;
+    if (status === 402) throw new ScanLimitReachedError();
+    throw error;
+  }
+  if ((data as { error?: string })?.error === 'scan_limit_reached') {
+    throw new ScanLimitReachedError();
+  }
   return data as IdentifyResult;
 }
 
@@ -118,11 +137,17 @@ export async function fetchScanById(id: string): Promise<ScanResult | null> {
   return data ? mapScanRow(data as ScanRow) : null;
 }
 
-export async function fetchScans(userId: string, options?: { limit?: number; collectionId?: string }): Promise<ScanResult[]> {
+export async function fetchScans(
+  userId: string,
+  options?: { limit?: number; offset?: number; collectionId?: string }
+): Promise<ScanResult[]> {
   const client = requireSupabase();
   let query = client.from('scans').select('*').eq('user_id', userId).order('timestamp', { ascending: false });
   if (options?.collectionId) query = query.eq('collection_id', options.collectionId);
-  if (options?.limit) query = query.limit(options.limit);
+  if (options?.limit) {
+    const from = options.offset ?? 0;
+    query = query.range(from, from + options.limit - 1);
+  }
   const { data, error } = await query;
   if (error) throw error;
   return (data as ScanRow[]).map(mapScanRow);

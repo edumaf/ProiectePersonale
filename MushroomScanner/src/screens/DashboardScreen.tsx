@@ -1,4 +1,4 @@
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { RefreshControl, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialIcons } from '@expo/vector-icons';
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
@@ -21,14 +21,17 @@ type Props = CompositeScreenProps<
 const safetyTip = 'Always check the base of the stem for a volva or sac - many deadly Amanita species hide it underground.';
 
 export function DashboardScreen({ navigation }: Props) {
-  const { scans, isDemo } = useAppData();
+  const { scans, isDemo, loading, refresh } = useAppData();
   const { session, signOut } = useAuth();
   const identifiedCount = new Set(scans.filter((s) => s.speciesId).map((s) => s.speciesId)).size;
   const recentScans = scans.slice(0, 3);
 
   return (
     <SafeAreaView style={styles.safe} edges={['top']}>
-      <ScrollView contentContainerStyle={styles.content}>
+      <ScrollView
+        contentContainerStyle={styles.content}
+        refreshControl={<RefreshControl refreshing={loading} onRefresh={refresh} tintColor={colors.moss} />}
+      >
         <View style={styles.headerRow}>
           <Text style={[type.display, styles.title]}>MushroomScanner</Text>
           {isSupabaseConfigured && session && (
@@ -81,6 +84,11 @@ export function DashboardScreen({ navigation }: Props) {
         </TouchableOpacity>
 
         <Text style={[type.h2, styles.sectionTitle]}>Recent scans</Text>
+        {recentScans.length === 0 && (
+          <Text style={[type.body, styles.noScans]}>
+            Nothing scanned yet. Your recent identifications will appear here.
+          </Text>
+        )}
         {recentScans.map((scan) => {
           const species = getSpeciesById(scan.speciesId);
           return (
@@ -131,6 +139,7 @@ const styles = StyleSheet.create({
   },
   poisonTextWrap: { marginLeft: spacing.sm },
   sectionTitle: { color: colors.ink, marginBottom: spacing.sm },
+  noScans: { color: colors.fog },
   scanRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',

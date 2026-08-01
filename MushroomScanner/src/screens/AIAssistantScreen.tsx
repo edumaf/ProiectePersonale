@@ -17,6 +17,8 @@ import { RootStackParamList } from '../navigation/types';
 import { getSpeciesById } from '../data/species';
 import { askSpecies, AssistantMessage } from '../lib/assistant';
 import { isSupabaseConfigured } from '../lib/config';
+import { useEntitlement } from '../lib/entitlement';
+import { PrimaryButton } from '../components/PrimaryButton';
 import { colors, radius, spacing, type } from '../theme';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'AIAssistant'>;
@@ -31,8 +33,9 @@ interface Message {
 // general-purpose chatbot. Calls the ask-species edge function (real
 // Claude chat) when Supabase is configured; otherwise falls back to a
 // canned placeholder so the screen still demos without a backend.
-export function AIAssistantScreen({ route }: Props) {
+export function AIAssistantScreen({ route, navigation }: Props) {
   const species = getSpeciesById(route.params.speciesId);
+  const { isPro } = useEntitlement();
   const [input, setInput] = useState('');
   const [sending, setSending] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
@@ -88,6 +91,23 @@ export function AIAssistantScreen({ route }: Props) {
     }
   }
 
+  if (!isPro) {
+    return (
+      <SafeAreaView style={styles.safe} edges={['bottom']}>
+        <View style={styles.lockedWrap}>
+          <MaterialIcons name="forum" size={40} color={colors.clay} />
+          <Text style={[type.h1, styles.lockedTitle]}>Ask about this species</Text>
+          <Text style={[type.body, styles.lockedBody]}>
+            {species
+              ? `Pro lets you ask follow-up questions about ${species.commonName} - how to tell it apart from its look-alikes, where it grows, how it needs to be prepared.`
+              : 'Pro lets you ask follow-up questions about any species in the guide.'}
+          </Text>
+          <PrimaryButton label="See what Pro includes" onPress={() => navigation.navigate('Paywall', {})} />
+        </View>
+      </SafeAreaView>
+    );
+  }
+
   return (
     <SafeAreaView style={styles.safe} edges={['bottom']}>
       <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
@@ -124,6 +144,9 @@ export function AIAssistantScreen({ route }: Props) {
 
 const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: colors.cream },
+  lockedWrap: { flex: 1, alignItems: 'center', justifyContent: 'center', padding: spacing.lg },
+  lockedTitle: { color: colors.ink, marginTop: spacing.md, marginBottom: spacing.sm, textAlign: 'center' },
+  lockedBody: { color: colors.charcoal, textAlign: 'center', marginBottom: spacing.xl },
   messages: { padding: spacing.lg, gap: spacing.sm },
   bubble: { maxWidth: '85%', borderRadius: radius.md, padding: spacing.md, marginBottom: spacing.sm },
   assistantBubble: { backgroundColor: colors.paper, borderWidth: 1, borderColor: colors.hairline, alignSelf: 'flex-start' },

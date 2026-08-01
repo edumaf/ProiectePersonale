@@ -32,9 +32,11 @@ src/screens/                 One file per screen (see below)
 src/components/              Shared UI: EdibilityBadge, ConfidenceBadge, Card, PrimaryButton
 src/theme/                    Colors, typography, spacing (earth-tone editorial palette)
 src/lib/                       config.ts (env/demo-mode detection), supabase.ts (client),
-                                auth.tsx (AuthProvider/useAuth), scans.ts (upload/identify/
-                                insert/fetch for scans + collections), assistant.ts (ask-species call)
-src/hooks/                     useAppData (scans+collections, real or demo), useScan (single scan)
+                                auth.tsx (AuthProvider/useAuth), consent.tsx (persisted safety
+                                consent), entitlement.tsx (free/pro tier), scans.ts (upload/
+                                identify/insert/fetch), assistant.ts (ask-species call)
+src/hooks/                     useAppData (scans+collections), useScan (single scan),
+                                useScanHistory (paginated, infinite scroll)
 src/data/                      species.ts (reads db/seed/species.json), mockScans.ts (demo-mode
                                 fallback data), poisonControl.ts
 src/types/                     Domain model types (Species, ScanResult, Collection)
@@ -44,7 +46,8 @@ db/schema.sql                  Generic Postgres schema (species/scans/collection
 db/seed/species.json           Canonical ~45-species dataset (source of truth)
 db/seed/generate-sql.mjs       Regenerates db/seed/seed.sql, supabase/migrations seed, and
                                 supabase/functions/_shared/species.ts from species.json
-supabase/migrations/           Deployable schema + RLS + storage bucket, and seed data
+supabase/migrations/           Deployable schema + RLS + storage bucket, seed data, and
+                                profiles/subscription tiers with server-side quota enforcement
 supabase/functions/identify/   Edge function: Claude vision call constrained to our species catalog
 supabase/functions/ask-species/ Edge function: text-only Claude chat scoped to one species
 supabase/README.md             Step-by-step setup + what's verified vs. not
@@ -60,8 +63,13 @@ node db/seed/generate-sql.mjs
 
 Onboarding (safety consent) -> SignIn (only when Supabase is configured and
 there's no session) -> Main (bottom tabs: Dashboard, Scan, My Finds, Scan
-History, Learn) -> Result, Species Detail, Collection Detail, AI Assistant
-(pushed on the root stack).
+History, Learn) -> Result, Species Detail, Collection Detail, AI Assistant,
+Paywall (pushed on the root stack).
+
+Consent is persisted (`src/lib/consent.tsx`), so the disclaimer shows once
+rather than on every launch. Bumping `CONSENT_VERSION` there re-prompts
+everyone - do that if the disclaimer's wording materially changes, so
+users aren't silently held to copy they never read.
 
 ### Scan flow
 
@@ -100,6 +108,33 @@ questions and never encourage eating an unconfirmed specimen. Falls back
 to a one-line "connect Supabase to talk to the real assistant" message in
 demo mode.
 
+### Free vs. Pro
+
+Free: 5 scans a month, 1 collection, species names + edibility + habitat,
+and the *names and edibility badges* of every dangerous look-alike.
+
+Pro: unlimited scans and collections, side-by-side look-alike photo
+comparison with distinguishing-feature notes, full poisoning history, and
+the AI assistant.
+
+**Deliberate deviation from the brief:** the brief put "full look-alike
+detail" behind Pro. Which deadly species a find can be confused with, and
+how dangerous each one is, is *never* paywalled - a free user still sees
+"commonly confused with Death Cap [DEADLY]". Only the richer comparison
+(photos side by side, the specific features that separate them) is Pro.
+Hiding the existence of a deadly look-alike behind a paywall would make
+the app's core safety warning a paid feature, which isn't defensible
+regardless of what it does for conversion.
+
+The quota is enforced **server-side** in the identify edge function via
+`consume_scan_credit`, not in the client, so a patched app can't award
+itself free scans. `profiles` is read-only to its owner, so nobody can
+self-upgrade to Pro either. Both verified against real Postgres.
+
+Payment processing is **not built** - the Upgrade button explains that and
+points you at the Supabase dashboard. Wiring RevenueCat or StoreKit 2 +
+Play Billing is a pre-launch task.
+
 ## Safety logic already in place
 
 - `LOW_CONFIDENCE_THRESHOLD` in `src/utils/confidence.ts` (currently 85%,
@@ -134,15 +169,21 @@ The app works two ways depending on whether `EXPO_PUBLIC_SUPABASE_URL` /
 
 - **Terms of use / liability disclaimer must be reviewed by a lawyer**
   before public launch. Not started.
-- Onboarding consent state is not yet persisted (always shows on launch).
+- **No payment processing.** The paywall UI and all server-side entitlement
+  checks exist, but nothing charges money - needs RevenueCat or StoreKit 2 +
+  Play Billing, plus a webhook that flips `profiles.tier`.
+- **Poison control is hardcoded to Romania** (`src/data/poisonControl.ts`
+  has 5 countries and the app always shows the Romanian one). A user
+  elsewhere is shown a hotline that can't help them, in an emergency.
+  Needs device-locale detection and a wider list.
 - Apple/Google sign-in buttons call `supabase.auth.signInWithOAuth`, but
   need real provider credentials configured in the Supabase dashboard
   (Apple Services ID, Google OAuth client) before they'll work - see
   `supabase/README.md` step 3.
-- Poison-control numbers in `src/data/poisonControl.ts` cover a handful of
-  countries and need a real locale-detection + expanded list.
 - Photo URLs are still placeholder (`picsum.photos`) for species reference
-  photos - need real, licensed species photography before launch.
+  photos - need real, licensed species photography before launch. This
+  matters most for the look-alike comparison, which is close to useless
+  with stand-in images.
 - The `identify`/`ask-species` edge functions and the auth flow were
   written to Supabase's documented patterns but **not exercised against a
   live Supabase project or Anthropic key** - there was no way to do that
@@ -153,7 +194,10 @@ The app works two ways depending on whether `EXPO_PUBLIC_SUPABASE_URL` /
 
 4. Validate the confidence-threshold/look-alike logic against real model
    output once the identify function is live (is 85% the right cutoff in
-   practice?).
-5. Polish Dashboard/My Finds/History against real usage - pull-to-refresh,
-   pagination, empty states.
-7. Visual polish pass, then final onboarding/consent copy.
+   practice?). **Blocked on a live Supabase project + Anthropic key.**
+7. Visual polish pass, then final onboarding/consent copy - best done once
+   the app has been used against real data.
+
+Also outstanding, in rough priority order: locale-aware poison control,
+payment processing, and real species photography (all in the pre-launch
+list above).

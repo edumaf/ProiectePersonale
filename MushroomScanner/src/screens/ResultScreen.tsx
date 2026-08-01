@@ -8,6 +8,8 @@ import { EdibilityBadge } from '../components/EdibilityBadge';
 import { ConfidenceBadge } from '../components/ConfidenceBadge';
 import { PrimaryButton } from '../components/PrimaryButton';
 import { useScan } from '../hooks/useScan';
+import { ProLock } from '../components/ProLock';
+import { useEntitlement } from '../lib/entitlement';
 import { getSpeciesById } from '../data/species';
 import { defaultPoisonControl } from '../data/poisonControl';
 import { confidenceLevel, displayEdibilityStatus, LOW_CONFIDENCE_THRESHOLD } from '../utils/confidence';
@@ -23,6 +25,7 @@ const angleLabels: Record<string, string> = {
 
 export function ResultScreen({ route, navigation }: Props) {
   const { scan, loading } = useScan(route.params.scanId);
+  const { isPro } = useEntitlement();
 
   if (loading || !scan) {
     return (
@@ -88,11 +91,17 @@ export function ResultScreen({ route, navigation }: Props) {
           </Card>
         )}
 
+        {/* Which dangerous species this can be confused with, and how
+            dangerous they are, is never paywalled - that warning is the
+            whole point of the app. Pro unlocks the side-by-side visual
+            comparison and the distinguishing-feature notes. */}
         {lookalikes.length > 0 && (
           <Card style={styles.section}>
             <SectionTitle icon="compare" title="Dangerous look-alikes" />
             <Text style={[type.caption, styles.lookalikeIntro]}>
-              Compare your photo (left) against each look-alike before deciding anything.
+              {isPro
+                ? 'Compare your photo (left) against each look-alike before deciding anything.'
+                : 'This species is commonly confused with the following. Check each one before deciding anything.'}
             </Text>
             {lookalikes.map((look) => (
               <TouchableOpacity
@@ -100,38 +109,57 @@ export function ResultScreen({ route, navigation }: Props) {
                 style={styles.lookalikeCard}
                 onPress={() => navigation.push('SpeciesDetail', { speciesId: look!.id })}
               >
-                <View style={styles.compareRow}>
-                  <View style={styles.compareSide}>
-                    <Image source={{ uri: scan.photos[0].url }} style={styles.compareThumb} />
-                    <Text style={[type.caption, styles.compareCaption]}>Your find</Text>
+                {isPro && (
+                  <View style={styles.compareRow}>
+                    <View style={styles.compareSide}>
+                      <Image source={{ uri: scan.photos[0].url }} style={styles.compareThumb} />
+                      <Text style={[type.caption, styles.compareCaption]}>Your find</Text>
+                    </View>
+                    <MaterialIcons name="compare-arrows" size={20} color={colors.fog} style={styles.compareIcon} />
+                    <View style={styles.compareSide}>
+                      <Image source={{ uri: look!.photoUrls[0] }} style={styles.compareThumb} />
+                      <Text style={[type.caption, styles.compareCaption]} numberOfLines={1}>
+                        {look!.commonName}
+                      </Text>
+                    </View>
                   </View>
-                  <MaterialIcons name="compare-arrows" size={20} color={colors.fog} style={styles.compareIcon} />
-                  <View style={styles.compareSide}>
-                    <Image source={{ uri: look!.photoUrls[0] }} style={styles.compareThumb} />
-                    <Text style={[type.caption, styles.compareCaption]} numberOfLines={1}>
-                      {look!.commonName}
-                    </Text>
-                  </View>
-                </View>
+                )}
                 <View style={styles.lookalikeInfo}>
                   <Text style={[type.bodyMedium, { color: colors.ink }]}>{look!.commonName}</Text>
                   <Text style={[type.latin, { color: colors.fog, fontSize: 13 }]}>{look!.latinName}</Text>
                   <EdibilityBadge status={look!.edibilityStatus} size="small" />
+                  {isPro && look!.confidenceNotes && (
+                    <Text style={[type.caption, styles.distinguishNote]}>{look!.confidenceNotes}</Text>
+                  )}
                 </View>
               </TouchableOpacity>
             ))}
+            {!isPro && (
+              <ProLock
+                title="Side-by-side comparison"
+                description="Pro shows your photo next to each look-alike, plus the specific features that tell them apart."
+              />
+            )}
           </Card>
         )}
 
-        {species?.poisoningHistory && (
-          <Card style={styles.section}>
-            <SectionTitle icon="history-edu" title="Poisoning history" />
-            <Text style={[type.body, { color: colors.ink }]}>{species.poisoningHistory}</Text>
-            <Text style={[type.caption, styles.sourceCaption]}>
-              Source: mycological literature and poison-control publications.
-            </Text>
-          </Card>
-        )}
+        {species?.poisoningHistory &&
+          (isPro ? (
+            <Card style={styles.section}>
+              <SectionTitle icon="history-edu" title="Poisoning history" />
+              <Text style={[type.body, { color: colors.ink }]}>{species.poisoningHistory}</Text>
+              <Text style={[type.caption, styles.sourceCaption]}>
+                Source: mycological literature and poison-control publications.
+              </Text>
+            </Card>
+          ) : (
+            <View style={styles.section}>
+              <ProLock
+                title="Poisoning history"
+                description="Sourced notes on documented poisonings and fatalities attributed to this species."
+              />
+            </View>
+          ))}
 
         {species && (
           <Card style={styles.section}>
@@ -227,6 +255,7 @@ const styles = StyleSheet.create({
   compareSide: { flex: 1, alignItems: 'center' },
   compareThumb: { width: '100%', aspectRatio: 1, borderRadius: 10, maxWidth: 120 },
   compareCaption: { color: colors.fog, marginTop: 4 },
+  distinguishNote: { color: colors.charcoal, marginTop: spacing.xs },
   compareIcon: { marginHorizontal: spacing.sm },
   lookalikeInfo: { flex: 1 },
   infoRow: { marginBottom: spacing.sm },

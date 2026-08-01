@@ -4,17 +4,23 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
 import { RootNavigator } from './src/navigation/RootNavigator';
 import { AuthProvider } from './src/lib/auth';
+import { ConsentProvider } from './src/lib/consent';
+import { EntitlementProvider } from './src/lib/entitlement';
 
 export default function App() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaProvider>
-        <AuthProvider>
-          <NavigationContainer>
-            <RootNavigator />
-            <StatusBar style="dark" />
-          </NavigationContainer>
-        </AuthProvider>
+        <ConsentProvider>
+          <AuthProvider>
+            <EntitlementProvider>
+              <NavigationContainer>
+                <RootNavigator />
+                <StatusBar style="dark" />
+              </NavigationContainer>
+            </EntitlementProvider>
+          </AuthProvider>
+        </ConsentProvider>
       </SafeAreaProvider>
     </GestureHandlerRootView>
   );

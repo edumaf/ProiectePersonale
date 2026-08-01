@@ -16,6 +16,7 @@ export type RootStackParamList = {
   SpeciesDetail: { speciesId: string };
   CollectionDetail: { collectionId: string };
   AIAssistant: { speciesId: string };
+  Paywall: { reason?: 'scan_limit' | 'collection_limit' } | undefined;
 };
 
 declare global {

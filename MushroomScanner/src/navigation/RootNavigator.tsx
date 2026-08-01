@@ -8,19 +8,22 @@ import { ResultScreen } from '../screens/ResultScreen';
 import { SpeciesDetailScreen } from '../screens/SpeciesDetailScreen';
 import { CollectionDetailScreen } from '../screens/CollectionDetailScreen';
 import { AIAssistantScreen } from '../screens/AIAssistantScreen';
+import { PaywallScreen } from '../screens/PaywallScreen';
 import { useAuth } from '../lib/auth';
+import { useConsent } from '../lib/consent';
+import { isSupabaseConfigured } from '../lib/config';
 import { colors } from '../theme';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export function RootNavigator() {
-  // TODO: read real onboarding-consent state (e.g. AsyncStorage) once
-  // persistence lands; onboarding always shows first for now. SignIn is
-  // only reachable when Supabase is configured (OnboardingScreen decides
-  // where "Continue" goes) - in demo mode it's registered but unused.
-  const { loading } = useAuth();
+  const { loading: authLoading, session } = useAuth();
+  const { accepted, loading: consentLoading } = useConsent();
 
-  if (loading) {
+  // Both the stored consent flag and the initial Supabase session have to
+  // resolve before picking a start route, otherwise the app flashes
+  // Onboarding (or SignIn) for a frame before correcting itself.
+  if (authLoading || consentLoading) {
     return (
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: colors.cream }}>
         <ActivityIndicator size="large" color={colors.moss} />
@@ -28,9 +31,11 @@ export function RootNavigator() {
     );
   }
 
+  const initialRouteName = !accepted ? 'Onboarding' : isSupabaseConfigured && !session ? 'SignIn' : 'Main';
+
   return (
     <Stack.Navigator
-      initialRouteName="Onboarding"
+      initialRouteName={initialRouteName}
       screenOptions={{
         headerStyle: { backgroundColor: colors.paper },
         headerTintColor: colors.ink,
@@ -45,6 +50,11 @@ export function RootNavigator() {
       <Stack.Screen name="SpeciesDetail" component={SpeciesDetailScreen} options={{ title: 'Species' }} />
       <Stack.Screen name="CollectionDetail" component={CollectionDetailScreen} options={{ title: 'Collection' }} />
       <Stack.Screen name="AIAssistant" component={AIAssistantScreen} options={{ title: 'Ask the assistant' }} />
+      <Stack.Screen
+        name="Paywall"
+        component={PaywallScreen}
+        options={{ title: 'Pro', presentation: 'modal' }}
+      />
     </Stack.Navigator>
   );
 }

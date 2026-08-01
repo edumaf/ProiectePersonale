@@ -19,12 +19,28 @@ npx supabase link --project-ref <your-project-ref>
 npx supabase db push
 ```
 
-This runs both migrations in `supabase/migrations/`: the schema + RLS
-policies + storage bucket (`20260730120000_init_schema.sql`), then the
-45-species seed data (`20260730120100_seed_species.sql`). Both were
-verified against a real Postgres 16 instance with RLS enforcement tested
-(two simulated users, confirmed neither can read or write the other's
-scans/collections/storage objects) - see the build history for details.
+This runs every migration in `supabase/migrations/`: the schema + RLS
+policies + storage bucket (`20260730120000_init_schema.sql`), the
+45-species seed data (`20260730120100_seed_species.sql`), and the
+profiles/subscription tables (`20260801120000_profiles_and_entitlements.sql`).
+
+All three were verified against a real Postgres 16 instance:
+- Two simulated users confirmed neither can read or write the other's
+  scans, collections, or storage objects.
+- The free-tier quota was exercised end to end: 5 scans allowed, 6th
+  refused, pro grants unlimited, an *expired* pro falls back to free
+  limits, and a new calendar month resets the count.
+- A user cannot grant themselves Pro - `profiles` has a read-only policy
+  for owners, so the self-upgrade `update` affects 0 rows.
+
+## Testing Pro features
+
+There's no payment integration yet, so flip a tier by hand in the
+Supabase dashboard (Table Editor > profiles) or via SQL:
+
+```sql
+update profiles set tier = 'pro' where id = '<your-user-id>';
+```
 
 If you edit `db/seed/species.json`, regenerate the seed migration and the
 edge function's copy of the catalog before pushing again:
@@ -55,6 +71,10 @@ npx supabase functions deploy identify
 npx supabase functions deploy ask-species
 npx supabase secrets set ANTHROPIC_API_KEY=sk-ant-...
 ```
+
+`identify` enforces the free-tier scan quota before calling the model, so
+it needs `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` - Supabase injects
+both into deployed functions automatically, nothing to set by hand.
 
 `identify` powers the Scan screen (vision); `ask-species` powers the
 per-species AI Assistant chat (text-only, scoped to one species' reference

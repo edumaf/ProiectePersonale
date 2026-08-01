@@ -5,6 +5,7 @@ import { RootStackParamList } from '../navigation/types';
 import { useAppData } from '../hooks/useAppData';
 import { getSpeciesById } from '../data/species';
 import { EdibilityBadge } from '../components/EdibilityBadge';
+import { EmptyState } from '../components/EmptyState';
 import { colors, spacing, type } from '../theme';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'CollectionDetail'>;
@@ -35,7 +36,14 @@ export function CollectionDetailScreen({ route, navigation }: Props) {
         data={scans}
         keyExtractor={(s) => s.id}
         numColumns={2}
-        contentContainerStyle={styles.grid}
+        contentContainerStyle={scans.length === 0 ? styles.emptyGrid : styles.grid}
+        ListEmptyComponent={
+          <EmptyState
+            icon="photo-library"
+            title="Nothing saved here yet"
+            message="Scans you add to this collection will show up here."
+          />
+        }
         renderItem={({ item }) => {
           const species = getSpeciesById(item.speciesId);
           return (
@@ -61,6 +69,7 @@ const styles = StyleSheet.create({
   loadingCenter: { flex: 1, alignItems: 'center', justifyContent: 'center' },
   header: { padding: spacing.lg, paddingBottom: spacing.sm },
   grid: { paddingHorizontal: spacing.md, paddingBottom: spacing.xxl },
+  emptyGrid: { flexGrow: 1, justifyContent: 'center' },
   tile: { flex: 1, margin: spacing.sm, maxWidth: '47%' },
   thumb: { width: '100%', aspectRatio: 1, borderRadius: 12, marginBottom: spacing.xs },
   thumbLabel: { color: colors.ink, marginBottom: 4 },

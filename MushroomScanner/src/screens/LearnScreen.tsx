@@ -6,6 +6,7 @@ import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { MainTabParamList, RootStackParamList } from '../navigation/types';
 import { EdibilityBadge } from '../components/EdibilityBadge';
+import { EmptyState } from '../components/EmptyState';
 import { speciesList } from '../data/species';
 import { colors, edibilityPresentation, EdibilityStatus, spacing, type } from '../theme';
 
@@ -56,7 +57,14 @@ export function LearnScreen({ navigation }: Props) {
       <FlatList
         data={filtered}
         keyExtractor={(s) => s.id}
-        contentContainerStyle={styles.list}
+        contentContainerStyle={filtered.length === 0 ? styles.emptyList : styles.list}
+        ListEmptyComponent={
+          <EmptyState
+            icon="search-off"
+            title="Nothing in this category"
+            message="No species in the guide match this filter yet."
+          />
+        }
         renderItem={({ item }) => (
           <TouchableOpacity
             style={styles.row}
@@ -91,6 +99,7 @@ const styles = StyleSheet.create({
   },
   filterChipActive: { backgroundColor: colors.moss, borderColor: colors.moss },
   list: { padding: spacing.lg, paddingBottom: spacing.xxl },
+  emptyList: { flexGrow: 1, justifyContent: 'center' },
   row: { flexDirection: 'row', marginBottom: spacing.md },
   thumb: { width: 64, height: 64, borderRadius: 10, marginRight: spacing.md },
   info: { flex: 1, justifyContent: 'center' },

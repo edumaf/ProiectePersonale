@@ -8,11 +8,14 @@
 // threshold, forced "uncertain" state, etc.) - none of that logic lives
 // here, it's enforced client-side in src/utils/confidence.ts.
 
+import { createClient } from 'jsr:@supabase/supabase-js@2';
 import { speciesCatalog } from '../_shared/species.ts';
 
 const ANTHROPIC_API_KEY = Deno.env.get('ANTHROPIC_API_KEY');
 const MODEL = Deno.env.get('CLAUDE_MODEL') ?? 'claude-sonnet-5';
 const ANTHROPIC_VERSION = '2023-06-01';
+const SUPABASE_URL = Deno.env.get('SUPABASE_URL')!;
+const SERVICE_ROLE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
 
 type ScanAngle = 'cap' | 'gills' | 'stem_base';
 
@@ -82,6 +85,15 @@ Deno.serve(async (req) => {
     return jsonResponse({ error: 'ANTHROPIC_API_KEY is not configured on this function' }, 500);
   }
 
+  // Identify who's calling from their JWT - never trust a user id in the
+  // request body, or anyone could spend someone else's quota.
+  const authHeader = req.headers.get('Authorization') ?? '';
+  const admin = createClient(SUPABASE_URL, SERVICE_ROLE_KEY);
+  const { data: userData, error: userError } = await admin.auth.getUser(authHeader.replace('Bearer ', ''));
+  if (userError || !userData?.user) {
+    return jsonResponse({ error: 'Not authenticated' }, 401);
+  }
+
   let body: IdentifyRequestBody;
   try {
     body = await req.json();
@@ -94,6 +106,26 @@ Deno.serve(async (req) => {
   }
   if (body.photos.length > 5) {
     return jsonResponse({ error: 'Too many photos (max 5)' }, 400);
+  }
+
+  // Quota check happens before the (billable) model call, and consumes the
+  // credit atomically so parallel requests can't slip past the free cap.
+  const { data: creditRows, error: creditError } = await admin.rpc('consume_scan_credit', {
+    p_user_id: userData.user.id,
+  });
+  if (creditError) {
+    return jsonResponse({ error: 'Failed to check scan quota', detail: creditError.message }, 500);
+  }
+  const credit = Array.isArray(creditRows) ? creditRows[0] : creditRows;
+  if (!credit?.allowed) {
+    return jsonResponse(
+      {
+        error: 'scan_limit_reached',
+        scansUsed: credit?.scans_used ?? null,
+        scansLimit: credit?.scans_limit ?? null,
+      },
+      402
+    );
   }
 
   const imageBlocks = body.photos.map((photo) => ({

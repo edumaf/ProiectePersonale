@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { FlatList, RefreshControl, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialIcons } from '@expo/vector-icons';
 import { CompositeScreenProps } from '@react-navigation/native';
@@ -7,9 +7,11 @@ import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { MainTabParamList, RootStackParamList } from '../navigation/types';
 import { Card } from '../components/Card';
+import { EmptyState } from '../components/EmptyState';
 import { useAppData } from '../hooks/useAppData';
 import { useAuth } from '../lib/auth';
 import { createCollection } from '../lib/scans';
+import { useEntitlement } from '../lib/entitlement';
 import { colors, spacing, type } from '../theme';
 
 type Props = CompositeScreenProps<
@@ -18,20 +20,43 @@ type Props = CompositeScreenProps<
 >;
 
 export function MyFindsScreen({ navigation }: Props) {
-  const { collections, isDemo, refresh } = useAppData();
+  const { collections, isDemo, loading, refresh } = useAppData();
   const { session } = useAuth();
+  const { isPro } = useEntitlement();
   const [creating, setCreating] = useState(false);
   const [newName, setNewName] = useState('');
+  const [error, setError] = useState('');
+
+  function startNewCollection() {
+    // Free tier allows one collection; the DB trigger enforces this too,
+    // this just avoids making the user type a name only to be refused.
+    if (!isPro && collections.length >= 1) {
+      navigation.navigate('Paywall', { reason: 'collection_limit' });
+      return;
+    }
+    setCreating(true);
+  }
 
   async function submitNewCollection() {
     if (!session || !newName.trim()) {
       setCreating(false);
       return;
     }
-    await createCollection(session.user.id, newName.trim());
-    setNewName('');
-    setCreating(false);
-    refresh();
+    setError('');
+    try {
+      await createCollection(session.user.id, newName.trim());
+      setNewName('');
+      setCreating(false);
+      refresh();
+    } catch (err) {
+      const message = err instanceof Error ? err.message : '';
+      if (message.includes('collection_limit_reached')) {
+        setCreating(false);
+        navigation.navigate('Paywall', { reason: 'collection_limit' });
+        return;
+      }
+      setError('Could not create that collection - try again.');
+    }
   }
 
   return (
@@ -39,7 +64,7 @@ export function MyFindsScreen({ navigation }: Props) {
       <View style={styles.headerRow}>
         <Text style={[type.display, { color: colors.ink }]}>My Finds</Text>
         {!isDemo && (
-          <TouchableOpacity style={styles.newButton} onPress={() => setCreating(true)}>
+          <TouchableOpacity style={styles.newButton} onPress={startNewCollection}>
             <MaterialIcons name="add" size={20} color={colors.white} />
           </TouchableOpacity>
         )}
@@ -66,10 +91,24 @@ export function MyFindsScreen({ navigation }: Props) {
         </View>
       )}
 
+      {error ? <Text style={[type.caption, styles.error]}>{error}</Text> : null}
+
       <FlatList
         data={collections}
         keyExtractor={(c) => c.id}
-        contentContainerStyle={styles.list}
+        contentContainerStyle={collections.length === 0 ? styles.emptyList : styles.list}
+        refreshControl={<RefreshControl refreshing={loading} onRefresh={refresh} tintColor={colors.moss} />}
+        ListEmptyComponent={
+          loading ? null : (
+            <EmptyState
+              icon="collections-bookmark"
+              title="No collections yet"
+              message="Group your finds by trip or location so you can look back at them together."
+              actionLabel={isDemo ? undefined : 'New collection'}
+              onAction={isDemo ? undefined : startNewCollection}
+            />
+          )
+        }
         renderItem={({ item }) => (
           <TouchableOpacity onPress={() => navigation.navigate('CollectionDetail', { collectionId: item.id })}>
             <Card style={styles.collectionCard}>
@@ -118,6 +157,8 @@ const styles = StyleSheet.create({
   },
   newInput: { flex: 1, paddingVertical: spacing.sm, color: colors.ink, marginRight: spacing.sm },
   list: { padding: spacing.lg, paddingBottom: spacing.xxl },
+  emptyList: { flexGrow: 1, justifyContent: 'center' },
+  error: { color: colors.deadly, paddingHorizontal: spacing.lg, marginTop: spacing.sm },
   collectionCard: { flexDirection: 'row', alignItems: 'center', marginBottom: spacing.sm },
   collectionInfo: { flex: 1, marginLeft: spacing.sm },
 });

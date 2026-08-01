@@ -6,17 +6,23 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { RootStackParamList } from '../navigation/types';
 import { PrimaryButton } from '../components/PrimaryButton';
 import { useAuth } from '../lib/auth';
+import { useConsent } from '../lib/consent';
 import { isSupabaseConfigured } from '../lib/config';
 import { colors, spacing, type } from '../theme';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Onboarding'>;
 
 // Non-skippable safety consent. Must be accepted before any scan can run.
+// Acceptance persists across launches (see src/lib/consent.tsx) - the
+// disclaimer only reappears if the copy version is bumped or the user
+// reviews it deliberately from the dashboard.
 export function OnboardingScreen({ navigation }: Props) {
   const [accepted, setAccepted] = useState(false);
   const { session } = useAuth();
+  const { accept } = useConsent();
 
-  function handleContinue() {
+  async function handleContinue() {
+    await accept();
     if (isSupabaseConfigured && !session) {
       navigation.replace('SignIn');
     } else {

@@ -11,7 +11,8 @@ import { PrimaryButton } from '../components/PrimaryButton';
 import { mockScans } from '../data/mockScans';
 import { ScanAngle } from '../types/models';
 import { useAuth } from '../lib/auth';
-import { identifyPhotos, insertScan, uploadScanPhotos } from '../lib/scans';
+import { identifyPhotos, insertScan, ScanLimitReachedError, uploadScanPhotos } from '../lib/scans';
+import { useEntitlement } from '../lib/entitlement';
 import { colors, radius, spacing, type } from '../theme';
 
 type Props = CompositeScreenProps<
@@ -38,6 +39,7 @@ const angleSteps: Array<{ angle: ScanAngle; title: string; hint: string; require
 // a fixed mock result after a short fake delay instead.
 export function ScanScreen({ navigation }: Props) {
   const { session } = useAuth();
+  const { scansUsed, scansLimit, isPro, refresh: refreshEntitlement } = useEntitlement();
   const [status, setStatus] = useState<Status>('idle');
   const [photos, setPhotos] = useState<Partial<Record<ScanAngle, string>>>({});
   const [errorMessage, setErrorMessage] = useState('');
@@ -82,9 +84,15 @@ export function ScanScreen({ navigation }: Props) {
       const scan = await insertScan(session.user.id, uploadedPhotos, result);
       setStatus('idle');
       setPhotos({});
+      refreshEntitlement();
       navigation.navigate('Result', { scanId: scan.id });
     } catch (err) {
       setStatus('idle');
+      if (err instanceof ScanLimitReachedError) {
+        refreshEntitlement();
+        navigation.navigate('Paywall', { reason: 'scan_limit' });
+        return;
+      }
       setErrorMessage(err instanceof Error ? err.message : 'Identification failed - try again.');
     }
   }
@@ -112,6 +120,14 @@ export function ScanScreen({ navigation }: Props) {
           More angles mean a more reliable result. The cap is required; gills and stem base are
           highly recommended - they're often the only way to tell a safe species from a deadly one.
         </Text>
+
+        {session && !isPro && scansLimit !== null && (
+          <TouchableOpacity onPress={() => navigation.navigate('Paywall', {})}>
+            <Text style={[type.caption, styles.quota]}>
+              {Math.max(scansLimit - scansUsed, 0)} of {scansLimit} free scans left this month · Upgrade
+            </Text>
+          </TouchableOpacity>
+        )}
 
         {angleSteps.map((step) => {
           const uri = photos[step.angle];
@@ -167,7 +183,8 @@ const styles = StyleSheet.create({
   content: { padding: spacing.lg, paddingBottom: spacing.xxl },
   center: { flex: 1, alignItems: 'center', justifyContent: 'center', padding: spacing.lg },
   title: { color: colors.ink, marginBottom: spacing.sm },
-  subtitle: { color: colors.charcoal, marginBottom: spacing.lg },
+  subtitle: { color: colors.charcoal, marginBottom: spacing.md },
+  quota: { color: colors.clay, marginBottom: spacing.lg },
   slot: { flexDirection: 'row', marginBottom: spacing.md },
   slotImageWrap: { marginRight: spacing.md },
   slotImage: { width: 84, height: 84, borderRadius: radius.md },
