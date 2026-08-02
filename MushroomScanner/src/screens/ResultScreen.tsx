@@ -14,7 +14,7 @@ import { CompanionSpeciesSection } from '../components/CompanionSpecies';
 import { useEntitlement } from '../lib/entitlement';
 import { shareFind } from '../lib/share';
 import { getSpeciesById } from '../data/species';
-import { defaultPoisonControl } from '../data/poisonControl';
+import { PoisonControlCard } from '../components/PoisonControlCard';
 import { confidenceLevel, displayEdibilityStatus, LOW_CONFIDENCE_THRESHOLD } from '../utils/confidence';
 import { colors, spacing, type } from '../theme';
 
@@ -180,15 +180,9 @@ export function ResultScreen({ route, navigation }: Props) {
 
         {species && <CompanionSpeciesSection species={species} isPro={isPro} />}
 
-        <Card style={styles.poisonCard}>
-          <MaterialIcons name="local-hospital" size={22} color={colors.deadly} />
-          <View style={{ marginLeft: spacing.sm }}>
-            <Text style={[type.bodyMedium, { color: colors.deadly }]}>
-              Poison Control - {defaultPoisonControl.country}
-            </Text>
-            <Text style={[type.body, { color: colors.ink }]}>{defaultPoisonControl.phone}</Text>
-          </View>
-        </Card>
+        <View style={styles.poisonWrap}>
+          <PoisonControlCard compact />
+        </View>
 
         <View style={styles.actions}>
           {species && (
@@ -287,13 +281,5 @@ const styles = StyleSheet.create({
   compareIcon: { marginHorizontal: spacing.sm },
   lookalikeInfo: { flex: 1 },
   infoRow: { marginBottom: spacing.sm },
-  poisonCard: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: colors.deadlyBg,
-    borderColor: colors.deadlyBg,
-    marginHorizontal: spacing.lg,
-    marginTop: spacing.md,
-    marginBottom: spacing.lg,
-  },
+  poisonWrap: { marginHorizontal: spacing.lg, marginTop: spacing.md, marginBottom: spacing.lg },
 });

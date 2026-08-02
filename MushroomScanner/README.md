@@ -87,6 +87,11 @@ number:
 - **`src/utils/__tests__/companions.test.ts`** - hazard/edible split,
   no self-references, look-alikes excluded, and the specific pairings
   that matter (Porcini→Death Cap, Field Mushroom→Deadly Dapperling).
+- **`src/data/__tests__/poisonControl.test.ts`** - an unknown region
+  never resolves to some arbitrary country, a null region doesn't throw,
+  and every listed number survives `toDialString` into something
+  dialable. These can't verify the numbers are *correct* - that's the
+  pre-launch task above - only that the lookup never lies.
 
 These were verified by mutation: deliberately attaching cooking methods
 to Death Cap, adding a dangling look-alike id, inventing a death toll,
@@ -203,8 +208,16 @@ Play Billing is a pre-launch task.
   fixed species catalog and instructs it to return `null` rather than
   force a guess; any id outside the catalog is discarded server-side too.
 - Edibility is always shown as a color+icon badge, never buried in text.
-- Poison control contact is reachable from the Dashboard and every Result
-  screen.
+- Emergency contacts appear on the Dashboard and every Result screen, are
+  matched to the device's region (`expo-localization`), and actually dial
+  when tapped. Where a region isn't in the catalog the app says so rather
+  than showing another country's number - a confidently wrong hotline
+  wastes the time that matters, an honest gap sends the user straight to
+  local emergency services. Every entry leads with the number we're
+  surest of (112 across the EU/EEA); a dedicated poison centre is shown
+  as an additional line only where a single national one exists, so
+  countries with regional-only centres get a routing note instead of an
+  arbitrary city's number.
 - Row Level Security ensures a user can only ever read/write their own
   scans, collections, and uploaded photos - verified against a real
   Postgres instance with two simulated users (see `supabase/README.md`).
@@ -231,20 +244,14 @@ The app works two ways depending on whether `EXPO_PUBLIC_SUPABASE_URL` /
 - **No payment processing.** The paywall UI and all server-side entitlement
   checks exist, but nothing charges money - needs RevenueCat or StoreKit 2 +
   Play Billing, plus a webhook that flips `profiles.tier`.
-- **Poison control is broken in three ways**, and it sits on the emergency
-  path so this should be next:
-  1. Always shows Romania. Both screens import `defaultPoisonControl`,
-     which is hardcoded to `RO` - nothing reads the user's actual region.
-  2. Tapping it does nothing. The Dashboard card is wrapped in a
-     `TouchableOpacity` with no `onPress`, so it dims on press and then
-     does nothing; on Result it isn't tappable at all. Needs
-     `Linking.openURL('tel:...')`.
-  3. Only 5 countries, for a guide covering all of Europe.
-
-  Also decide the unknown-region behaviour: falling back to Romania
-  silently is the current bug. Better to say "no number for your region"
-  and link to local emergency services - a confidently wrong number is
-  worse than an obvious gap.
+- **Every poison-control number must be verified against an official
+  source before launch.** The mechanism is built and tested (see below),
+  but the numbers themselves were compiled during development and are
+  **not authoritative**. Check each against the country's health ministry
+  or national poison centre, and re-check periodically - these do change.
+  A wrong number here costs minutes during amatoxin poisoning, where the
+  treatable window is measured in hours. `src/data/poisonControl.ts`
+  carries the same warning at the top of the file.
 - Apple/Google sign-in buttons call `supabase.auth.signInWithOAuth`, but
   need real provider credentials configured in the Supabase dashboard
   (Apple Services ID, Google OAuth client) before they'll work - see

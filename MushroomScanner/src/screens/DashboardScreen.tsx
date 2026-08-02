@@ -11,7 +11,7 @@ import { useCollectionProgress } from '../hooks/useCollectionProgress';
 import { useAuth } from '../lib/auth';
 import { isSupabaseConfigured } from '../lib/config';
 import { getSpeciesById } from '../data/species';
-import { defaultPoisonControl } from '../data/poisonControl';
+import { PoisonControlCard } from '../components/PoisonControlCard';
 import { colors, spacing, type } from '../theme';
 
 type Props = CompositeScreenProps<
@@ -93,15 +93,9 @@ export function DashboardScreen({ navigation }: Props) {
           <Text style={[type.body, styles.tipText]}>{safetyTip}</Text>
         </Card>
 
-        <TouchableOpacity activeOpacity={0.85}>
-          <Card style={styles.poisonCard}>
-            <MaterialIcons name="local-hospital" size={22} color={colors.deadly} />
-            <View style={styles.poisonTextWrap}>
-              <Text style={[type.bodyMedium, { color: colors.deadly }]}>Poison Control - {defaultPoisonControl.country}</Text>
-              <Text style={[type.body, { color: colors.ink }]}>{defaultPoisonControl.phone}</Text>
-            </View>
-          </Card>
-        </TouchableOpacity>
+        <View style={styles.poisonWrap}>
+          <PoisonControlCard />
+        </View>
 
         <Text style={[type.h2, styles.sectionTitle]}>Recent scans</Text>
         {recentScans.length === 0 && (
@@ -155,14 +149,7 @@ const styles = StyleSheet.create({
   tipHeader: { flexDirection: 'row', alignItems: 'center', marginBottom: spacing.xs },
   tipLabel: { color: colors.mossDark, marginLeft: spacing.xs },
   tipText: { color: colors.mossDark },
-  poisonCard: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: colors.deadlyBg,
-    borderColor: colors.deadlyBg,
-    marginBottom: spacing.lg,
-  },
-  poisonTextWrap: { marginLeft: spacing.sm },
+  poisonWrap: { marginBottom: spacing.lg },
   sectionTitle: { color: colors.ink, marginBottom: spacing.sm },
   noScans: { color: colors.fog },
   scanRow: {
