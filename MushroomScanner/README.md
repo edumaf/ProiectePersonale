@@ -60,6 +60,39 @@ Regenerate the generated SQL/catalog files after editing `species.json`:
 node db/seed/generate-sql.mjs
 ```
 
+## Tests
+
+```
+npm test          # jest
+npm run typecheck # tsc --noEmit
+```
+
+Coverage is deliberately concentrated on the logic where a silent
+regression is most dangerous, rather than spread thin for a coverage
+number:
+
+- **`src/utils/__tests__/confidence.test.ts`** - the forced "uncertain"
+  state. Asserts no status ever leaks through below the threshold, and
+  that `confidenceLevel` never reports "high" for a percentage the
+  threshold would reject (the two must agree, or the badge contradicts
+  the warning next to it).
+- **`src/data/__tests__/species.test.ts`** - catalog invariants: no
+  dangling look-alike references (which would silently drop a dangerous
+  species from a result screen), cooking methods only ever on edible
+  species, every deadly species has toxicity notes, and poisoning history
+  contains no invented death tolls.
+- **`src/lib/__tests__/share.test.ts`** - shared text always carries the
+  disclaimer, never presents a low-confidence guess as a verdict, and
+  never uses certainty language at any confidence level.
+- **`src/utils/__tests__/companions.test.ts`** - hazard/edible split,
+  no self-references, look-alikes excluded, and the specific pairings
+  that matter (Porcini→Death Cap, Field Mushroom→Deadly Dapperling).
+
+These were verified by mutation: deliberately attaching cooking methods
+to Death Cap, adding a dangling look-alike id, inventing a death toll,
+and inverting the threshold comparison each fail the suite. A test that
+cannot fail is not protecting anything.
+
 ### Screens
 
 Onboarding (safety consent) -> SignIn (only when Supabase is configured and
@@ -198,10 +231,20 @@ The app works two ways depending on whether `EXPO_PUBLIC_SUPABASE_URL` /
 - **No payment processing.** The paywall UI and all server-side entitlement
   checks exist, but nothing charges money - needs RevenueCat or StoreKit 2 +
   Play Billing, plus a webhook that flips `profiles.tier`.
-- **Poison control is hardcoded to Romania** (`src/data/poisonControl.ts`
-  has 5 countries and the app always shows the Romanian one). A user
-  elsewhere is shown a hotline that can't help them, in an emergency.
-  Needs device-locale detection and a wider list.
+- **Poison control is broken in three ways**, and it sits on the emergency
+  path so this should be next:
+  1. Always shows Romania. Both screens import `defaultPoisonControl`,
+     which is hardcoded to `RO` - nothing reads the user's actual region.
+  2. Tapping it does nothing. The Dashboard card is wrapped in a
+     `TouchableOpacity` with no `onPress`, so it dims on press and then
+     does nothing; on Result it isn't tappable at all. Needs
+     `Linking.openURL('tel:...')`.
+  3. Only 5 countries, for a guide covering all of Europe.
+
+  Also decide the unknown-region behaviour: falling back to Romania
+  silently is the current bug. Better to say "no number for your region"
+  and link to local emergency services - a confidently wrong number is
+  worse than an obvious gap.
 - Apple/Google sign-in buttons call `supabase.auth.signInWithOAuth`, but
   need real provider credentials configured in the Supabase dashboard
   (Apple Services ID, Google OAuth client) before they'll work - see
