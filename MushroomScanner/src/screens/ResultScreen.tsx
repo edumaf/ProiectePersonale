@@ -15,7 +15,12 @@ import { useEntitlement } from '../lib/entitlement';
 import { shareFind } from '../lib/share';
 import { getSpeciesById } from '../data/species';
 import { PoisonControlCard } from '../components/PoisonControlCard';
-import { confidenceLevel, displayEdibilityStatus, LOW_CONFIDENCE_THRESHOLD } from '../utils/confidence';
+import {
+  confidenceLevel,
+  displayEdibilityStatus,
+  suspectedHazard,
+  LOW_CONFIDENCE_THRESHOLD,
+} from '../utils/confidence';
 import { colors, spacing, type } from '../theme';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Result'>;
@@ -43,6 +48,7 @@ export function ResultScreen({ route, navigation }: Props) {
   const species = getSpeciesById(scan.speciesId);
   const isUncertain = !species || scan.confidencePercent < LOW_CONFIDENCE_THRESHOLD;
   const shownStatus = species ? displayEdibilityStatus(species.edibilityStatus, scan.confidencePercent) : 'unknown';
+  const hazard = suspectedHazard(species?.edibilityStatus, scan.confidencePercent);
   const lookalikes = species
     ? species.lookalikeSpeciesIds.map((id) => getSpeciesById(id)).filter(Boolean)
     : [];
@@ -64,6 +70,9 @@ export function ResultScreen({ route, navigation }: Props) {
         <View style={styles.header}>
           {species ? (
             <>
+              {/* Below the threshold the name is framed as a closest match,
+                  not a verdict - the badge stays "Uncertain" either way. */}
+              {isUncertain && <Text style={[type.label, styles.closestMatch]}>Closest match</Text>}
               <Text style={[type.h1, styles.commonName]}>{species.commonName}</Text>
               <Text style={[type.latin, styles.latinName]}>{species.latinName}</Text>
             </>
@@ -76,6 +85,31 @@ export function ResultScreen({ route, navigation }: Props) {
         </View>
 
         <EdibilityBadge status={shownStatus} size="large" />
+
+        {/* A low-confidence guess at a dangerous species must still be
+            named. "Unknown - do not consume" leaves a suspected Death Cap
+            sitting in the basket next to tonight's dinner; naming it gets
+            it thrown away. */}
+        {hazard.isSuspected && species && (
+          <Card style={styles.hazardCard}>
+            <View style={styles.hazardHeader}>
+              <MaterialIcons name="dangerous" size={22} color={colors.white} />
+              <Text style={[type.h2, styles.hazardTitle]}>
+                Possible {hazard.status === 'deadly' ? 'deadly' : 'toxic'} species
+              </Text>
+            </View>
+            <Text style={[type.body, styles.hazardText]}>
+              We could not confirm this identification, but the closest match was{' '}
+              <Text style={type.bodyMedium}>{species.commonName}</Text>, which is{' '}
+              {hazard.status === 'deadly'
+                ? 'deadly. Treat this specimen as dangerous: do not eat it, and keep it away from mushrooms you intend to eat.'
+                : 'toxic. Treat this specimen as dangerous and do not eat it.'}
+            </Text>
+            {species.toxicityNotes && (
+              <Text style={[type.caption, styles.hazardNotes]}>{species.toxicityNotes}</Text>
+            )}
+          </Card>
+        )}
 
         {isUncertain && (
           <Card style={styles.warningCard}>
@@ -251,6 +285,17 @@ const styles = StyleSheet.create({
   header: { padding: spacing.lg, paddingBottom: spacing.md },
   commonName: { color: colors.ink },
   latinName: { color: colors.charcoal, marginTop: 2 },
+  closestMatch: { color: colors.fog, marginBottom: 2 },
+  hazardCard: {
+    backgroundColor: colors.deadly,
+    borderColor: colors.deadly,
+    marginHorizontal: spacing.lg,
+    marginTop: spacing.md,
+  },
+  hazardHeader: { flexDirection: 'row', alignItems: 'center', marginBottom: spacing.sm },
+  hazardTitle: { color: colors.white, marginLeft: spacing.sm },
+  hazardText: { color: colors.white },
+  hazardNotes: { color: colors.white, opacity: 0.85, marginTop: spacing.sm },
   confidenceRow: { marginTop: spacing.sm },
   warningCard: {
     flexDirection: 'row',

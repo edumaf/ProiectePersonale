@@ -30,34 +30,87 @@ interface IdentifyRequestBody {
 }
 
 interface IdentifyResult {
+  /** Ordered first in the response so the model observes before concluding. */
+  notableFeatures: string[];
+  reasoning: string;
   speciesId: string | null;
   confidencePercent: number;
-  reasoning: string;
-  notableFeatures: string[];
 }
 
-const catalogText = (speciesCatalog as Array<{ id: string; commonName: string; latinName: string }>)
-  .map((s) => `${s.id}: ${s.commonName} (${s.latinName})`)
-  .join('\n');
+interface CatalogEntry {
+  id: string;
+  commonName: string;
+  latinName: string;
+  edibilityStatus: string;
+  habitat: string;
+  season: string;
+  confidenceNotes?: string;
+  lookalikeSpeciesIds: readonly string[];
+}
+
+// The catalog sent to the model includes the diagnostic notes from our
+// own seed data. Sending bare names (as v1 did) asks the model to
+// identify from an index with the field guide torn out - the features
+// that separate a Death Cap from a Field Mushroom are exactly what we
+// were withholding.
+const catalog = speciesCatalog as readonly CatalogEntry[];
+
+const catalogText = catalog
+  .map((s) => {
+    const lines = [
+      `### ${s.id}`,
+      `Name: ${s.commonName} (${s.latinName})`,
+      `Edibility: ${s.edibilityStatus}`,
+      `Habitat: ${s.habitat}`,
+      `Season: ${s.season}`,
+    ];
+    if (s.confidenceNotes) lines.push(`Distinguishing features: ${s.confidenceNotes}`);
+    if (s.lookalikeSpeciesIds.length) {
+      lines.push(`Commonly confused with: ${s.lookalikeSpeciesIds.join(', ')}`);
+    }
+    return lines.join('\n');
+  })
+  .join('\n\n');
 
 const systemPrompt = `You are assisting a mushroom foraging app called MushroomScanner. You are not a certified mycologist and your output is a decision-support suggestion only, never a certain identification - the app enforces its own safety rules on top of what you return.
 
-Given one or more photos of a single wild mushroom specimen (a cap photo, and optionally gills/underside and stem base), identify the most likely species from this fixed catalog ONLY. Do not propose any species outside this list, and do not guess a catalog entry you are not reasonably confident about just to give an answer.
+You are given one or more photos of a single wild mushroom specimen: a cap photo, and optionally the gills/underside and the stem base. Identify the most likely species from the fixed catalog below, ONLY. Never propose a species outside this list.
 
-Catalog (id: common name (Latin name)):
+# How to work
+
+Work in this order, and put your answer in the JSON fields in this same order:
+
+1. FIRST, list what you can actually see in the photos - cap shape and colour, gill attachment and colour, stem features, and critically whether the stem base shows a volva (a sack-like cup, often partly buried), a ring, or bulb. If an angle wasn't provided, say what you cannot assess rather than assuming.
+2. THEN reason from those observations toward a species, explicitly using the distinguishing features listed in the catalog. Say what your observations rule OUT as well as what they support.
+3. ONLY THEN name the species and give a confidence.
+
+Do not decide on a species first and justify it afterwards. The observations must drive the conclusion.
+
+# Safety rules that override everything else
+
+- A volva at the stem base is the single most important feature in this catalog. It is shared by the deadly Amanita species and absent from the edible Agaricus species they are confused with. If you see one, say so prominently. If the stem base was not photographed, you CANNOT rule out a deadly Amanita - reflect that by keeping confidence low.
+- If the specimen could plausibly be a deadly species, prefer naming the deadly species over the edible look-alike. Being wrong about a Death Cap in the cautious direction costs the user a meal; being wrong in the other direction can kill them.
+- If nothing in the catalog clearly matches, or the photos are too unclear or incomplete, return "speciesId": null. Do not force a guess to be helpful.
+- Confidence must be honest and calibrated, not encouraging. Be conservative with fewer angles: a cap-only photo of a gilled mushroom should rarely exceed 70, because the diagnostic features are on the parts you cannot see.
+
+# Catalog
+
 ${catalogText}
 
-If the specimen does not clearly match any catalog entry, or the photos are too unclear/incomplete to say, return "speciesId": null rather than forcing a guess.
+# Response format
 
-Respond with ONLY a single JSON object, no markdown fences, no other text, matching exactly this shape:
+Respond with ONLY a single JSON object, no markdown fences and no other text, with the keys in exactly this order:
 {
-  "speciesId": string | null,
-  "confidencePercent": number,
+  "notableFeatures": string[],
   "reasoning": string,
-  "notableFeatures": string[]
+  "speciesId": string | null,
+  "confidencePercent": number
 }
 
-confidencePercent must be your honest, calibrated confidence from 0-100 given only the photos provided - be conservative when fewer angles are available (e.g. cap only, no gills or stem base). reasoning should be 2-3 sentences citing the specific visual features you used. notableFeatures should be a short list of concrete observations (e.g. "gills free from stem", "no visible volva at base", "bruises blue when cut").`;
+notableFeatures: concrete observations only, things you can actually see (e.g. "sack-like volva at stem base", "gills free from stem, chocolate brown", "stem base not visible in any photo"). Include what is missing or unassessable, not just what is present.
+reasoning: 2-4 sentences working from those observations to the conclusion, naming what they rule out.
+speciesId: a catalog id, or null.
+confidencePercent: 0-100, honest and calibrated.`;
 
 // Permissive CORS since this is called from Expo web builds in addition to
 // native, and only ever exposes read access to the fixed species catalog.
@@ -152,7 +205,14 @@ Deno.serve(async (req) => {
             role: 'user',
             content: [
               ...imageBlocks,
-              { type: 'text', text: `Photos provided, in this order: ${angleSummary}. Identify this mushroom.` },
+              {
+                type: 'text',
+                text: `Photos provided, in this order: ${angleSummary}.${
+                  body.photos.some((p) => p.angle === 'stem_base')
+                    ? ''
+                    : ' NOTE: the stem base was NOT photographed, so a volva cannot be ruled out.'
+                } Identify this mushroom.`,
+              },
             ],
           },
         ],
@@ -180,14 +240,40 @@ Deno.serve(async (req) => {
     return jsonResponse({ error: 'Model response was not valid JSON', raw: textBlock.text }, 502);
   }
 
-  const validIds = new Set((speciesCatalog as Array<{ id: string }>).map((s) => s.id));
+  // Never trust the model's output shape. Everything below is defensive:
+  // a malformed field must degrade toward "we don't know", never toward a
+  // confident-looking result the app would then act on.
+  const validIds = new Set(catalog.map((s) => s.id));
+
+  if (typeof parsed.speciesId !== 'string' && parsed.speciesId !== null) {
+    parsed.speciesId = null;
+  }
+
   if (parsed.speciesId !== null && !validIds.has(parsed.speciesId)) {
-    // The model hallucinated an id outside our catalog - treat as unknown
+    // The model named something outside our catalog - treat as unknown
     // rather than passing through a species_id that would fail the
     // scans.species_id foreign key.
     parsed.speciesId = null;
-    parsed.confidencePercent = Math.min(parsed.confidencePercent ?? 0, 40);
   }
+
+  // Coerce confidence into 0-100. A missing, NaN, or out-of-range value
+  // becomes 0 (maximally uncertain) rather than being passed through,
+  // where a stray 150 would sail past the app's threshold check.
+  const rawConfidence = Number(parsed.confidencePercent);
+  parsed.confidencePercent = Number.isFinite(rawConfidence)
+    ? Math.max(0, Math.min(100, Math.round(rawConfidence)))
+    : 0;
+
+  // An unidentified specimen can never carry high confidence, whatever the
+  // model reported - "I don't know, 90%" is incoherent and would show the
+  // user a confident-looking badge on an empty result.
+  if (parsed.speciesId === null) {
+    parsed.confidencePercent = Math.min(parsed.confidencePercent, 40);
+  }
+
+  if (typeof parsed.reasoning !== 'string') parsed.reasoning = '';
+  if (!Array.isArray(parsed.notableFeatures)) parsed.notableFeatures = [];
+  parsed.notableFeatures = parsed.notableFeatures.filter((f): f is string => typeof f === 'string');
 
   return jsonResponse(parsed);
 });

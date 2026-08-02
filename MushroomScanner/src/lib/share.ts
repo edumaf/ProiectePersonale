@@ -1,7 +1,12 @@
 import { Share } from 'react-native';
 import { Species } from '../types/models';
 import { edibilityPresentation } from '../theme/colors';
-import { confidenceLevel, displayEdibilityStatus, LOW_CONFIDENCE_THRESHOLD } from '../utils/confidence';
+import {
+  confidenceLevel,
+  displayEdibilityStatus,
+  suspectedHazard,
+  LOW_CONFIDENCE_THRESHOLD,
+} from '../utils/confidence';
 
 /**
  * Builds the text for a shared find.
@@ -18,11 +23,24 @@ export function buildShareMessage(species: Species | null, confidencePercent: nu
 
   if (!species || confidencePercent < LOW_CONFIDENCE_THRESHOLD) {
     const shown = species ? displayEdibilityStatus(species.edibilityStatus, confidencePercent) : 'unknown';
+    const hazard = suspectedHazard(species?.edibilityStatus, confidencePercent);
+
     lines.push('MushroomScanner could not confidently identify this mushroom.');
     if (species) {
       lines.push(`Closest guess: ${species.commonName} (${species.latinName}) - only ${confidencePercent}% confidence.`);
     }
     lines.push(`Status: ${edibilityPresentation[shown].label}`);
+
+    // Naming the species isn't enough - a recipient who doesn't recognise
+    // "Death Cap" needs to be told what it means.
+    if (hazard.isSuspected) {
+      lines.push('');
+      lines.push(
+        `WARNING: that closest match is a ${hazard.status === 'deadly' ? 'DEADLY' : 'TOXIC'} species. ` +
+          'Treat this specimen as dangerous and keep it away from anything you plan to eat.'
+      );
+    }
+
     lines.push('');
     lines.push('Do not eat this. A low-confidence result means the app does not know what it is.');
   } else {

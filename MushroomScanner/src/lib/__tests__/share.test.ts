@@ -72,6 +72,27 @@ describe('buildShareMessage', () => {
     expect(message).toContain('never eat raw');
   });
 
+  it('warns that a low-confidence deadly match is deadly', () => {
+    // Naming "Death Cap" isn't enough - a recipient who doesn't recognise
+    // the name needs to be told what it means.
+    const message = buildShareMessage(deathCap, 72);
+    expect(message).toContain('Death Cap');
+    expect(message).toContain('DEADLY');
+    expect(message).toContain('keep it away from anything you plan to eat');
+  });
+
+  it('warns on a low-confidence toxic match too', () => {
+    const jackOLantern = getSpeciesById('jack-o-lantern')!;
+    const message = buildShareMessage(jackOLantern, 60);
+    expect(message).toContain('TOXIC');
+  });
+
+  it('does not add a hazard warning for a low-confidence edible match', () => {
+    const message = buildShareMessage(chanterelle, 60);
+    expect(message).not.toContain('DEADLY');
+    expect(message).not.toContain('TOXIC');
+  });
+
   it('handles an unidentified scan without inventing a species', () => {
     const message = buildShareMessage(null, 30);
     expect(message).toContain('could not confidently identify');

@@ -204,6 +204,23 @@ Play Billing is a pre-launch task.
 - `LOW_CONFIDENCE_THRESHOLD` in `src/utils/confidence.ts` (currently 85%,
   configurable) forces the Result screen into an "Unknown / Uncertain - do
   not consume" state regardless of the underlying guess.
+- **A low-confidence guess at a dangerous species is still named.**
+  Withholding the verdict below the threshold is right; withholding it
+  *entirely* was worse. If the closest match is Death Cap at 72%, the
+  badge stays honestly "Uncertain" but a hazard card names the species and
+  says it's deadly. "Unknown - do not consume" leaves a specimen in the
+  basket to re-examine later; "this might be a Death Cap" gets it thrown
+  out. Warning wrongly costs one mushroom; staying quiet can cost a life.
+  See `suspectedHazard` in `src/utils/confidence.ts`.
+- The identify function's prompt sends each species' diagnostic notes,
+  habitat, and season - not just names - and requires the model to record
+  observations and reasoning *before* naming a species, so the conclusion
+  follows the evidence rather than being justified after the fact. It is
+  also told explicitly that a missing stem-base photo means a volva
+  cannot be ruled out.
+- Model output is treated as untrusted: species ids outside the catalog
+  are discarded, confidence is clamped to 0-100, and an unidentified
+  result can never carry more than 40% confidence.
 - The `identify` edge function's system prompt constrains the model to our
   fixed species catalog and instructs it to return `null` rather than
   force a guess; any id outside the catalog is discarded server-side too.

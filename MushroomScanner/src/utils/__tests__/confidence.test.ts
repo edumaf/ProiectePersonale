@@ -1,4 +1,9 @@
-import { confidenceLevel, displayEdibilityStatus, LOW_CONFIDENCE_THRESHOLD } from '../confidence';
+import {
+  confidenceLevel,
+  displayEdibilityStatus,
+  suspectedHazard,
+  LOW_CONFIDENCE_THRESHOLD,
+} from '../confidence';
 import { EdibilityStatus } from '../../theme/colors';
 
 // These tests guard the app's central safety rule: below the confidence
@@ -73,6 +78,53 @@ describe('confidenceLevel', () => {
       expect(confidenceLevel(percent)).not.toBe('high');
       expect(displayEdibilityStatus('edible', percent)).toBe('unknown');
     }
+  });
+});
+
+describe('suspectedHazard', () => {
+  it('flags a deadly species guessed below the threshold', () => {
+    // The case this exists for: the model's closest match is a Death Cap
+    // at 72%. The badge stays "Uncertain", but the user must still be
+    // told a deadly species was suspected.
+    const result = suspectedHazard('deadly', 72);
+    expect(result.isSuspected).toBe(true);
+    expect(result.status).toBe('deadly');
+  });
+
+  it('flags a toxic species guessed below the threshold', () => {
+    expect(suspectedHazard('toxic', 50).isSuspected).toBe(true);
+  });
+
+  it('stays quiet above the threshold, where the real badge already says it', () => {
+    expect(suspectedHazard('deadly', LOW_CONFIDENCE_THRESHOLD).isSuspected).toBe(false);
+    expect(suspectedHazard('deadly', 99).isSuspected).toBe(false);
+  });
+
+  it('does not fire for non-hazardous species', () => {
+    for (const status of ['edible', 'edible_cooked', 'inedible', 'unknown'] as EdibilityStatus[]) {
+      expect(suspectedHazard(status, 50).isSuspected).toBe(false);
+    }
+  });
+
+  it('handles a missing species without throwing', () => {
+    expect(suspectedHazard(null, 50).isSuspected).toBe(false);
+    expect(suspectedHazard(undefined, 50).isSuspected).toBe(false);
+  });
+
+  it('fires across the whole low-confidence range for deadly species', () => {
+    // There is no confidence so low that "it might be a Death Cap" stops
+    // being worth saying.
+    for (let percent = 0; percent < LOW_CONFIDENCE_THRESHOLD; percent++) {
+      expect(suspectedHazard('deadly', percent).isSuspected).toBe(true);
+    }
+  });
+
+  it('complements displayEdibilityStatus rather than contradicting it', () => {
+    // The badge must stay honestly uncertain even while the hazard
+    // warning names the species - these two work together.
+    const percent = 70;
+    expect(displayEdibilityStatus('deadly', percent)).toBe('unknown');
+    expect(suspectedHazard('deadly', percent).isSuspected).toBe(true);
   });
 });
 
