@@ -12,12 +12,23 @@ progression, not an art pass.
 ## Getting set up
 
 Roblox Studio is not a filesystem project, so the source lives here and syncs
-into Studio with [Rojo](https://rojo.space). **Rojo is the only tool you need** —
-a single binary, no toolchain manager, no package install.
+into Studio with [Rojo](https://rojo.space). **Rojo is the only thing you need to
+install** — a single binary, no installer, no toolchain manager, no package
+manager. You need Windows or macOS, because Studio does not run on Linux.
 
-### Getting the code
+Every block below is copy-paste-able. Run them from inside the `MedievalBattle`
+folder.
 
-The game lives on the `claude/medieval-50v50-roblox-dnkcay` branch:
+### Step 1 — get the code
+
+```sh
+git clone https://github.com/edumaf/ProiectePersonale.git
+cd ProiectePersonale
+git checkout claude/medieval-50v50-roblox-dnkcay
+cd MedievalBattle
+```
+
+Already cloned? Just:
 
 ```sh
 git fetch origin
@@ -25,91 +36,117 @@ git checkout claude/medieval-50v50-roblox-dnkcay
 cd MedievalBattle
 ```
 
-(In GitHub Desktop: *Fetch origin*, then pick the branch from the branch
-dropdown. Everything below runs from the `MedievalBattle` folder.)
+In GitHub Desktop: **Fetch origin**, then pick
+`claude/medieval-50v50-roblox-dnkcay` from the branch dropdown, then open the
+`MedievalBattle` folder in a terminal (*Repository → Open in Command Prompt* /
+*Open in Terminal*).
 
-### Just want to open the game and play it?
+### Step 2 — install Rojo
 
-After step 1 below, from inside `MedievalBattle/`:
+The binary is downloaded straight into this folder, so there is no `PATH` to
+configure and nothing installed system-wide. `.gitignore` already excludes it,
+so it will never be committed.
+
+**Windows** — paste into **PowerShell** (not cmd):
+
+```powershell
+Invoke-WebRequest -Uri "https://github.com/rojo-rbx/rojo/releases/download/v7.4.4/rojo-7.4.4-windows-x86_64.zip" -OutFile "rojo.zip"
+Expand-Archive -Path "rojo.zip" -DestinationPath "." -Force
+Remove-Item "rojo.zip"
+.\rojo.exe --version
+```
+
+**macOS, Apple Silicon** (M1/M2/M3/M4) — paste into **Terminal**:
+
+```sh
+curl -L -o rojo.zip https://github.com/rojo-rbx/rojo/releases/download/v7.4.4/rojo-7.4.4-macos-aarch64.zip
+unzip -o rojo.zip && rm rojo.zip
+chmod +x rojo
+xattr -d com.apple.quarantine rojo 2>/dev/null
+./rojo --version
+```
+
+**macOS, Intel** — identical, but with `macos-x86_64` in the URL:
+
+```sh
+curl -L -o rojo.zip https://github.com/rojo-rbx/rojo/releases/download/v7.4.4/rojo-7.4.4-macos-x86_64.zip
+unzip -o rojo.zip && rm rojo.zip
+chmod +x rojo
+xattr -d com.apple.quarantine rojo 2>/dev/null
+./rojo --version
+```
+
+The last line must print `Rojo 7.4.4`. If it does, you are done installing.
+
+Two notes on the above: the Windows asset really is named `windows-x86_64` (not
+`win64`, which is what most guides guess), and the `xattr` line clears macOS
+Gatekeeper's quarantine flag, which otherwise blocks the first run with a
+"cannot be opened" dialog.
+
+From here on, the README writes commands as plain `rojo`. Type `.\rojo.exe` on
+Windows or `./rojo` on macOS — or move the binary onto your `PATH` once you are
+using it daily, and then plain `rojo` works from anywhere.
+
+### Step 3a — just play it
 
 ```sh
 rojo build -o MedievalBattle.rbxlx
 ```
 
-Double-click the resulting file — Studio opens with the whole game in it. No
-plugin, no sync server. Edits to `src/` will not appear until you build again,
-so this is for playing, not developing. (The file is gitignored: a place file is
+Double-click the resulting file: Studio opens with the whole game in it. No
+plugin, no sync server. Edits to `src/` will not show up until you build again,
+so this is for playing, not developing. (The place file is gitignored — it is
 build output, never source.)
 
-### Setting up properly
+### Step 3b — develop with live sync
 
-1. **Install Rojo.** One binary, no installer. Direct links for 7.4.4:
+```sh
+rojo plugin install     # once: installs the Rojo plugin into Studio
+rojo serve              # leave this running
+```
 
-   | OS | File |
-   | --- | --- |
-   | Windows | [`rojo-7.4.4-windows-x86_64.zip`](https://github.com/rojo-rbx/rojo/releases/download/v7.4.4/rojo-7.4.4-windows-x86_64.zip) |
-   | macOS (Apple Silicon) | [`rojo-7.4.4-macos-aarch64.zip`](https://github.com/rojo-rbx/rojo/releases/download/v7.4.4/rojo-7.4.4-macos-aarch64.zip) |
-   | macOS (Intel) | [`rojo-7.4.4-macos-x86_64.zip`](https://github.com/rojo-rbx/rojo/releases/download/v7.4.4/rojo-7.4.4-macos-x86_64.zip) |
+In Studio: **File → New**, then open the **Rojo** plugin from the Plugins tab
+and press **Connect**. The whole `src/` tree appears in the right services and
+stays in sync as you edit files. Save the place locally so you do not redo this
+each session.
 
-   Unzip it. **The simplest thing that works: drop the extracted `rojo.exe`
-   (or `rojo`) straight into this `MedievalBattle/` folder** and run it as
-   `.\rojo.exe` on Windows or `./rojo` on macOS. That sidesteps `PATH` setup
-   entirely, and `.gitignore` already excludes the binary so it will never be
-   committed.
+Daily loop from then on: `rojo serve` → Connect → edit files in your editor →
+press Play in Studio.
 
-   On macOS the first run is blocked by Gatekeeper. Clear it once with:
+### Step 4 — set max players (manual, easy to forget)
 
-   ```sh
-   chmod +x rojo && xattr -d com.apple.quarantine rojo
-   ```
+`Players.MaxPlayers` is a place setting and *cannot* be changed from a script.
+In Studio: **Home → Game Settings → Basic Info → Max Players → 100**.
 
-   Check it works — you should see `Rojo 7.4.4`:
+Studio allows up to 200 without approval; beyond that you need Roblox's
+large-server programme. The server prints a warning on boot if it is still below
+100, because otherwise you will "test 50v50" against the default 12-player cap
+and never notice.
 
-   ```sh
-   .\rojo.exe --version      # Windows
-   ./rojo --version          # macOS
-   ```
+### Step 5 — run it with two players
 
-   Once you are using it regularly, move the binary somewhere on your `PATH` so
-   you can type plain `rojo` from any folder.
+**Test tab → Clients and Servers → Players: 2 → Start.**
 
-   *Optional, for the team:* [Rokit](https://github.com/rojo-rbx/rokit) reads
-   `rokit.toml` in this folder and gives everyone identical Rojo and StyLua
-   versions (`rokit install`). Worth doing once we are all on this daily, since
-   the project-file format changes between Rojo majors. Nothing in the project
-   requires it.
+You get a server window and two client windows. Combat needs two characters, so
+solo *Play* only tells you things load, never that they work. The server window
+should print `[MedievalBattle] server ready in Nms` — if that line is missing,
+something failed at boot and the Output window says what.
 
-   (If you find older instructions mentioning **Aftman**: that was Rokit's
-   predecessor and is no longer maintained. Do not install it.)
+### Command reference
 
-2. **Install the Rojo plugin in Studio** — `.\rojo.exe plugin install` (or
-   `./rojo plugin install`), or search the Studio toolbox for "Rojo". The plugin
-   is what lets Studio talk to the sync server; it cannot read your files on its
-   own.
+| Command | What it does |
+| --- | --- |
+| `rojo build -o MedievalBattle.rbxlx` | Build a place file you can double-click |
+| `rojo serve` | Start the sync server for live editing |
+| `rojo plugin install` | Install the Studio plugin (once) |
+| `rojo --version` | Check the install worked |
 
-3. **Start the sync server and connect:**
-
-   ```sh
-   .\rojo.exe serve          # Windows
-   ./rojo serve              # macOS
-   ```
-
-   Leave that running. In Studio, open a new baseplate, click the Rojo plugin
-   button, and press *Connect*. The whole `src/` tree appears in the correct
-   services and stays in sync as you edit files. Save the place locally so you
-   do not repeat this each time.
-
-   From here on, the daily loop is: `rojo serve`, connect, edit files in your
-   editor, press Play in Studio.
-
-4. **Set max players — this one is manual and easy to forget.**
-
-   `Players.MaxPlayers` is a place setting and *cannot* be changed from a
-   script. In Studio: **Home → Game Settings → Basic Info → Max Players → 100**.
-   Studio allows up to 200 without approval; beyond that you need Roblox's
-   large-server programme. The server prints a warning on boot if it is still
-   below 100, because otherwise you will "test 50v50" with the default 12-player
-   cap and never notice.
+<sub>*Optional:* [Rokit](https://github.com/rojo-rbx/rokit) reads `rokit.toml`
+here and pins identical Rojo/StyLua versions for the whole team (`rokit
+install`). Worth it once we are all on this daily, since the project-file format
+changes between Rojo majors — but nothing in the project requires it. If you
+find older instructions mentioning **Aftman**, that was Rokit's predecessor and
+is no longer maintained; do not install it.</sub>
 
 ---
 
@@ -150,16 +187,17 @@ src/
 
   ServerScriptService/
     Main.server         boot order, in one place
-    Combat/             hit tracing, damage, stamina, rate limiting, effect fan-out
+    Combat/             hit tracing, damage, stamina, arrows, rate limiting, effects
     Classes/            loadouts and procedurally built weapon models
-    Rounds/             teams (round state machine + objectives land here)
+    Rounds/             team balance, round state machine, capture points
     Spawning/           spawn pipeline, respawn timers, collision groups
     Map/                greybox builder
 
   StarterPlayerScripts/
     Client.client       boot order, in one place
-    Combat/             input, prediction, weapon animation, camera, effects
-    UI/                 HUD
+    Combat/             input, prediction, weapon animation, camera, bow, effects
+    UI/                 health/stamina HUD, round + objective HUD, kill feed,
+                        class select, shared style
 ```
 
 ### Who owns what
@@ -209,12 +247,9 @@ storm for no gameplay benefit.
 
 ## Testing in Studio
 
-Combat needs two characters, so use **Test → Clients and Servers → 2 players →
-Start**. You get a server window plus two client windows.
-
-Both players spawn on opposite teams (the balancer alternates), at opposite ends
-of the map. Fly/walk them together, or drop `MapConfig.SpawnZones` closer while
-iterating.
+Launch two players as in step 5 above. They spawn on opposite teams (the
+balancer alternates), at opposite ends of the map — to cut the walk while
+iterating, move both start zones in `MapConfig.SpawnZones` near `x = 0`.
 
 The quick smoke test — two players spawn on opposite teams; flicking the mouse
 and clicking produces four visibly different swings; a swing that connects takes
