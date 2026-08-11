@@ -102,7 +102,7 @@ local function buildVisuals(parent: Instance)
 		local text = Instance.new("TextLabel")
 		text.BackgroundTransparency = 1
 		text.Size = UDim2.fromScale(1, 1)
-		text.Font = Enum.Font.MerriweatherBold
+		text.Font = Enum.Font.Antique
 		text.TextSize = 26
 		text.TextColor3 = Color3.fromRGB(240, 236, 228)
 		text.TextStrokeTransparency = 0.4

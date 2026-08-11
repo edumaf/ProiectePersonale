@@ -78,10 +78,12 @@ function MapBuilder.buildSpawnPads(parent: Instance)
 		pad.CanCollide = false
 		pad.CanQuery = false -- must never stop a swing trace
 		pad.CanTouch = false
-		pad.Size = Vector3.new(zone.Radius * 2, 0.4, zone.Radius * 2)
-		pad.Position = zone.Position + Vector3.new(0, 0.2, 0)
 		pad.Shape = Enum.PartType.Cylinder
-		-- A cylinder's flat faces point along X, so stand it up.
+		-- A cylinder's axis runs along its X size, and Y/Z form the circular
+		-- face. So thickness goes in X, diameter in Y and Z, and the part is
+		-- then rolled 90 degrees to stand the axis upright into a flat disc.
+		pad.Size = Vector3.new(0.4, zone.Radius * 2, zone.Radius * 2)
+		pad.Position = zone.Position + Vector3.new(0, 0.2, 0)
 		pad.Orientation = Vector3.new(0, 0, 90)
 		pad.Color = MapConfig.TeamColors[zone.Team]
 		pad.Material = Enum.Material.Neon

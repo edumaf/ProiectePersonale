@@ -29,8 +29,13 @@ UIStyle.Colors = {
 	Bad = Color3.fromRGB(214, 88, 88),
 }
 
-UIStyle.Font = Enum.Font.Merriweather
-UIStyle.FontBold = Enum.Font.MerriweatherBold
+-- Deliberately from the guaranteed legacy Font enum rather than one of the
+-- newer families: not every name in that list has a Bold variant, and assigning
+-- a Font member that does not exist is a hard error at run time. Both of these
+-- are serifs, which is close enough to medieval for a greybox. Swapping to a
+-- real typeface later means the FontFace API, not this enum.
+UIStyle.Font = Enum.Font.Garamond
+UIStyle.FontBold = Enum.Font.Antique
 
 function UIStyle.teamColor(teamId: number?): Color3
 	if teamId == Enums.TeamId.Attackers or teamId == Enums.TeamId.Defenders then
