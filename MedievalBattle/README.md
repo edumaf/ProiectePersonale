@@ -9,36 +9,56 @@ progression, not an art pass.
 
 ---
 
-## Getting set up (5 minutes)
+## Getting set up
 
 Roblox Studio is not a filesystem project, so the source lives here and syncs
-into Studio with [Rojo](https://rojo.space).
+into Studio with [Rojo](https://rojo.space). **Rojo is the only tool you need** —
+a single binary, no toolchain manager, no package install.
 
-1. **Install the tools.** With [Aftman](https://github.com/LPGhatguy/aftman):
+### Just want to open the game and play it?
+
+```sh
+rojo build -o MedievalBattle.rbxlx
+```
+
+Double-click the file — Studio opens with the whole game in it. Nothing else to
+install, no plugin. Edits to `src/` will not appear until you build again, so
+this is for looking, not developing. (The file is gitignored: a place file is
+build output, never source.)
+
+### Setting up properly
+
+1. **Install Rojo.** Grab the binary for your OS from the
+   [releases page](https://github.com/rojo-rbx/rojo/releases) (use 7.4.x), unzip
+   it, and put it somewhere on your `PATH`. Check it worked:
 
    ```sh
-   cd MedievalBattle
-   aftman install          # installs the pinned rojo + stylua from aftman.toml
+   rojo --version        # should print: Rojo 7.4.4
    ```
 
-   (Or install Rojo 7.4.x by hand — but pinning keeps all four of us on one
-   version, which matters because project-file format changes between majors.)
+   *Optional, for the team:* [Rokit](https://github.com/rojo-rbx/rokit) reads
+   `rokit.toml` in this folder and gives everyone the identical Rojo and StyLua
+   versions (`rokit install`). Worth doing once we are all working on this
+   daily, since project-file format changes between Rojo majors. It is genuinely
+   optional — nothing in the project requires it.
 
-2. **Install the Rojo plugin in Studio** — `rojo plugin install`, or get it from
-   the Studio plugin marketplace.
+   (If you find older instructions mentioning **Aftman**: that was Rokit's
+   predecessor and is no longer maintained. Do not install it.)
+
+2. **Install the Rojo plugin in Studio** — run `rojo plugin install`, or search
+   the Studio toolbox for "Rojo". The plugin is what lets Studio talk to the
+   sync server; it cannot read your files on its own.
 
 3. **Start the server and connect:**
 
    ```sh
+   cd MedievalBattle
    rojo serve
    ```
 
-   In Studio, open a new baseplate, click the Rojo plugin, and press *Connect*.
-   The whole `src/` tree appears in the correct services. Save the place as
-   `MedievalBattle.rbxl` (it is gitignored — the place file is build output,
-   never source).
-
-   To produce a place without Studio open: `rojo build -o MedievalBattle.rbxl`.
+   In Studio, open a new baseplate, click the Rojo plugin button, and press
+   *Connect*. The whole `src/` tree appears in the correct services and stays in
+   sync as you edit. Save the place locally so you do not repeat this each time.
 
 4. **Set max players — this one is manual and easy to forget.**
 

@@ -18,9 +18,7 @@ sourcemap.json
 *.local.project.json
 
 # --- Tooling ---
-# Aftman / Rokit install trees
-~/.aftman
-.aftman/
+# Rokit install tree (optional toolchain manager, see rokit.toml)
 .rokit/
 .lune/
 node_modules/
