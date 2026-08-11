@@ -138,6 +138,14 @@ function SwingAnimator.onGuard(character: Model, up: boolean)
 	end
 end
 
+function SwingAnimator.onDraw(character: Model, drawTime: number)
+	setTrack(character, Enums.CombatPhase.Drawing, drawTime, Enums.AttackDirection.Stab, false)
+end
+
+function SwingAnimator.onDrawEnd(character: Model)
+	setTrack(character, Enums.CombatPhase.Recovery, 0.3, Enums.AttackDirection.Stab, false)
+end
+
 function SwingAnimator.onFeint(character: Model)
 	local track = tracks[character]
 	local direction = if track then track.direction else Enums.AttackDirection.Right
@@ -178,6 +186,8 @@ local function poseFor(track: Track, rootCF: CFrame, weapon: WeaponDef, alpha: n
 		return SwingMath.getSwingCFrame(rootCF, weapon, track.direction, alpha)
 	elseif track.phase == Enums.CombatPhase.Blocking then
 		return SwingMath.getBlockCFrame(rootCF, weapon)
+	elseif track.phase == Enums.CombatPhase.Drawing then
+		return SwingMath.getDrawCFrame(rootCF, weapon, alpha)
 	end
 	-- Recovery and everything else: ease back to rest.
 	return SwingMath.getRecoveryCFrame(rootCF, weapon, track.direction, alpha)
@@ -218,7 +228,9 @@ local function step()
 			continue
 		end
 
-		if track.phase == Enums.CombatPhase.Release then
+		if track.phase == Enums.CombatPhase.Drawing then
+			continue -- hold the drawn pose until the shot is loosed
+		elseif track.phase == Enums.CombatPhase.Release then
 			-- Chain into recovery locally instead of waiting for a "recovery"
 			-- packet that is never sent. Without this, a remote player's weapon
 			-- would freeze at the end of its arc until their next action.

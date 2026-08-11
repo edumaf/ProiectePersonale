@@ -74,6 +74,8 @@ local TRACKS: { [number]: PoseTrack } = {
 -- guard is up (blade across the body, which is also roughly the block cone).
 local IDLE_POSE = pose(-16, 58, 12, 0)
 local BLOCK_POSE = pose(38, 12, 74, 0.5)
+-- Bow held up and across, roughly along the aim line.
+local DRAW_POSE = pose(-4, 2, 88, 0.9)
 
 local function lerp(a: number, b: number, t: number): number
 	return a + (b - a) * t
@@ -146,6 +148,15 @@ end
 
 function SwingMath.getBlockCFrame(rootCF: CFrame, weapon: WeaponDef): CFrame
 	return SwingMath.poseToCFrame(rootCF, weapon, BLOCK_POSE)
+end
+
+--[[
+	Bow draw: rest -> drawn, over the weapon's DrawTime.
+]]
+function SwingMath.getDrawCFrame(rootCF: CFrame, weapon: WeaponDef, alpha: number): CFrame
+	local clamped = math.clamp(alpha, 0, 1)
+	local eased = clamped * clamped * (3 - 2 * clamped)
+	return SwingMath.poseToCFrame(rootCF, weapon, lerpPose(IDLE_POSE, DRAW_POSE, eased))
 end
 
 --[[

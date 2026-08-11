@@ -70,6 +70,24 @@ local local_ = {
 type MouseSample = { t: number, x: number, y: number }
 local mouseSamples: { MouseSample } = {}
 
+-- Combat input is switched off while a full-screen menu is open, so clicking
+-- "Archer" does not also throw a swing.
+local inputEnabled = true
+
+-- Installed by RangedController. Keeping it a hook rather than a require means
+-- InputController has no idea ranged combat exists, and the two modules can be
+-- owned by different people.
+type RangedHandlers = { press: () -> (), release: () -> () }
+local rangedHandlers: RangedHandlers? = nil
+
+function InputController.setInputEnabled(enabled: boolean)
+	inputEnabled = enabled
+end
+
+function InputController.setRangedHandlers(handlers: RangedHandlers)
+	rangedHandlers = handlers
+end
+
 function InputController.isPredicting(): boolean
 	return local_.predicting
 end
@@ -156,7 +174,12 @@ local function startAttack()
 
 	local weapon = WeaponConfig.get(local_.weaponId)
 	if weapon.Kind ~= "Melee" then
-		return -- bows are driven by RangedController
+		-- Bows draw on hold and loose on release, so they need the raw
+		-- press/release pair rather than this one-shot path.
+		if rangedHandlers then
+			rangedHandlers.press()
+		end
+		return
 	end
 
 	local direction = readDirection()
@@ -287,8 +310,8 @@ end
 -- =============================================================== wiring ====
 
 local function onInputBegan(input: InputObject, processed: boolean)
-	if processed then
-		return -- the click went to a UI button
+	if processed or not inputEnabled then
+		return -- the click went to a UI button, or a menu is open
 	end
 
 	if input.UserInputType == Enum.UserInputType.MouseButton1 then
@@ -305,7 +328,13 @@ local function onInputBegan(input: InputObject, processed: boolean)
 end
 
 local function onInputEnded(input: InputObject)
-	if input.UserInputType == Enum.UserInputType.MouseButton2 then
+	-- Note: releases are handled even while input is disabled. Otherwise
+	-- opening a menu mid-block would leave the guard stuck up forever.
+	if input.UserInputType == Enum.UserInputType.MouseButton1 then
+		if rangedHandlers then
+			rangedHandlers.release()
+		end
+	elseif input.UserInputType == Enum.UserInputType.MouseButton2 then
 		setBlock(false)
 	elseif input.KeyCode == Enum.KeyCode.LeftShift then
 		setSprint(false)

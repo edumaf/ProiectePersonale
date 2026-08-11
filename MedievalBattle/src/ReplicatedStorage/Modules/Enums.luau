@@ -74,6 +74,15 @@ Enums.EffectKind = {
 	Stagger = 7,
 	Arrow = 8, -- spawn a client-side arrow tracer (kind, origin, velocity)
 	Death = 9,
+	DrawStart = 10, -- bow being pulled
+	DrawEnd = 11, -- bow released or cancelled
+}
+
+-- Client -> server ranged actions, sent as RangedRequest(action, aim).
+Enums.RangedAction = {
+	Draw = 1,
+	Release = 2,
+	Cancel = 3,
 }
 
 Enums.DamageCause = {
@@ -96,6 +105,7 @@ table.freeze(Enums.TeamId)
 table.freeze(Enums.RoundState)
 table.freeze(Enums.HitResult)
 table.freeze(Enums.EffectKind)
+table.freeze(Enums.RangedAction)
 table.freeze(Enums.DamageCause)
 table.freeze(Enums.PointState)
 

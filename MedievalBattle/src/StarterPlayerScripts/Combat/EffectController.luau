@@ -109,6 +109,16 @@ local function onEffect(kind: number, a: any, b: any, c: any, d: any)
 		if not isLocalCharacter(character) then
 			SwingAnimator.onGuard(character, false)
 		end
+	elseif kind == Enums.EffectKind.DrawStart then
+		local character, drawTime = a :: Model, (b :: number) or 0.85
+		if not isLocalCharacter(character) then
+			SwingAnimator.onDraw(character, drawTime)
+		end
+	elseif kind == Enums.EffectKind.DrawEnd then
+		local character = a :: Model
+		if not isLocalCharacter(character) then
+			SwingAnimator.onDrawEnd(character)
+		end
 	elseif kind == Enums.EffectKind.Stagger then
 		local character, duration = a :: Model, (b :: number) or 1
 		SwingAnimator.onStagger(character)

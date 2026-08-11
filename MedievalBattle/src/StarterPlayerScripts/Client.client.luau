@@ -8,9 +8,11 @@
 ]]
 
 local CameraController = require(script.Parent.Combat.CameraController)
+local ClassSelect = require(script.Parent.UI.ClassSelect)
 local EffectController = require(script.Parent.Combat.EffectController)
 local HUD = require(script.Parent.UI.HUD)
 local InputController = require(script.Parent.Combat.InputController)
+local RangedController = require(script.Parent.Combat.RangedController)
 local SwingAnimator = require(script.Parent.Combat.SwingAnimator)
 
 local controllers: { { name: string, init: () -> () } } = {
@@ -19,6 +21,8 @@ local controllers: { { name: string, init: () -> () } } = {
 	{ name = "CameraController", init = CameraController.init },
 	{ name = "InputController", init = InputController.init },
 	{ name = "EffectController", init = EffectController.init },
+	{ name = "RangedController", init = RangedController.init },
+	{ name = "ClassSelect", init = ClassSelect.init },
 }
 
 for _, controller in controllers do
