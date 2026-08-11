@@ -1,0 +1,9 @@
+# Aftman pins the exact tool versions for everyone on the team.
+# Install aftman (https://github.com/LPGhatguy/aftman), then run `aftman install`
+# in this folder and you get the same rojo/stylua as everyone else.
+#
+# If you prefer Rokit (the newer successor), the same tool specs work in rokit.toml.
+
+[tools]
+rojo = "rojo-rbx/rojo@7.4.4"
+stylua = "JohnnyMorganz/StyLua@0.20.0"
