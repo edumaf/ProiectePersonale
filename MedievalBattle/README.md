@@ -154,19 +154,15 @@ Both players spawn on opposite teams (the balancer alternates), at opposite ends
 of the map. Fly/walk them together, or drop `MapConfig.SpawnZones` closer while
 iterating.
 
-What to check on the barebones slice:
+The quick smoke test — two players spawn on opposite teams; flicking the mouse
+and clicking produces four visibly different swings; a swing that connects takes
+health off and one into a wall does not reach through it; holding RMB eats a hit
+and drains stamina; raising the guard *just before* impact parries and staggers
+the attacker.
 
-1. Two players spawn, on different teams, with a sword and a team-coloured
-   surcoat.
-2. Flicking the mouse and clicking produces four visibly different swings.
-3. A swing that connects takes health off; a swing into a wall does not reach
-   through it.
-4. Holding RMB in front of an incoming swing eats it and drains stamina.
-5. Raising the guard *just before* the hit parries it — the attacker staggers.
-6. Q during the first part of a windup cancels the attack.
-7. Stamina drains on attacks, blocks and sprinting, and refills after ~1s idle.
-   At zero you are visibly slower for a moment.
-8. Dying respawns you at your team's zone after ~6 seconds.
+**`docs/TESTING.md` has the full per-system checklist** — hit registration,
+blocking and parry timing, feints, the bow, and the round loop, with the config
+values to shrink while iterating.
 
 **Test performance with a small number of players first.** Two to eight clients
 tells you whether the systems work; it tells you nothing about 100-player
@@ -178,17 +174,36 @@ real physics work.
 
 ## Status
 
-Built and playable (the barebones slice):
+Built and playable:
 
 - Rojo project scaffold, strict-Luau modules, shared config
-- Greybox siege map, two teams with auto-balance, spawn/respawn
+- Greybox siege map, two teams with auto-balance, spawn/respawn with forward
+  spawn zones that unlock as the line moves
 - Directional melee (left/right/overhead/stab), windup → release → recovery,
   server-authoritative swept hit tracing, cleave
 - Blocking, parries, block-breaks, feints, stamina and exhaustion
-- Class loadouts (four classes, five melee weapons), HUD with health and stamina
+- Four classes, six weapons including a bow with drop and draw-scaled power
+- Sequential capture points, full round loop with scoring
+- HUD: health, stamina, round clock, objective track, kill feed, class select
 
-Next up: class select UI, the bow, and the capture-point round loop.
+Deliberately not built: monetisation, progression, matchmaking, mobile/console
+input, voice, art pass. **No sound at all yet** — no audio assets are referenced
+anywhere, and it is probably the single biggest feel upgrade available for the
+effort.
 
-Out of scope for the MVP entirely: monetisation, progression, matchmaking,
-mobile/console input, voice, art pass, sound (no audio assets are referenced
-anywhere yet).
+Known rough edges worth knowing about before you playtest:
+
+- Character *body* animation is untouched — only the weapon animates, so a
+  swing reads from the blade, not the arms. Procedural arm posing or real
+  animation assets are the next visual step.
+- Swing timing is server-start-on-receipt, so high-ping players' swings land
+  slightly later than they look (see `docs/GOTCHAS.md`).
+- The greybox ramps are eyeballed; expect to nudge `MapConfig.Blocks` once you
+  walk the map.
+
+## Further reading
+
+- `docs/TESTING.md` — a per-system Studio checklist, and how to test
+  performance without fooling yourself
+- `docs/GOTCHAS.md` — the Roblox-specific traps this codebase works around, and
+  why the workarounds are load-bearing
