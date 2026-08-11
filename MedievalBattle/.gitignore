@@ -1,0 +1,36 @@
+# --- Roblox / Rojo ---
+# Built place files. The place is generated from source with `rojo build`,
+# never committed - binary .rbxl files cannot be merged and will cause
+# constant conflicts for a 4-person team.
+*.rbxl
+*.rbxlx
+*.rbxl.lock
+*.rbxlx.lock
+*.rbxm
+*.rbxmx
+
+# Rojo/Studio scratch
+sourcemap.json
+*.rbxl.bak
+
+# Local-only Rojo project overrides (e.g. a solo dev's test place mapping).
+# Commit `default.project.json` only.
+*.local.project.json
+
+# --- Tooling ---
+# Aftman / Rokit install trees
+~/.aftman
+.aftman/
+.rokit/
+.lune/
+node_modules/
+
+# luau-lsp / editor
+.vscode/settings.local.json
+.idea/
+*.log
+
+# --- OS ---
+.DS_Store
+Thumbs.db
+desktop.ini
