@@ -23,6 +23,11 @@ sourcemap.json
 .lune/
 node_modules/
 
+# The Rojo binary itself, if you drop it in this folder to avoid PATH setup.
+# It is ~10MB and platform-specific - never commit it.
+rojo
+rojo.exe
+
 # luau-lsp / editor
 .vscode/settings.local.json
 .idea/

@@ -15,50 +15,92 @@ Roblox Studio is not a filesystem project, so the source lives here and syncs
 into Studio with [Rojo](https://rojo.space). **Rojo is the only tool you need** —
 a single binary, no toolchain manager, no package install.
 
+### Getting the code
+
+The game lives on the `claude/medieval-50v50-roblox-dnkcay` branch:
+
+```sh
+git fetch origin
+git checkout claude/medieval-50v50-roblox-dnkcay
+cd MedievalBattle
+```
+
+(In GitHub Desktop: *Fetch origin*, then pick the branch from the branch
+dropdown. Everything below runs from the `MedievalBattle` folder.)
+
 ### Just want to open the game and play it?
+
+After step 1 below, from inside `MedievalBattle/`:
 
 ```sh
 rojo build -o MedievalBattle.rbxlx
 ```
 
-Double-click the file — Studio opens with the whole game in it. Nothing else to
-install, no plugin. Edits to `src/` will not appear until you build again, so
-this is for looking, not developing. (The file is gitignored: a place file is
+Double-click the resulting file — Studio opens with the whole game in it. No
+plugin, no sync server. Edits to `src/` will not appear until you build again,
+so this is for playing, not developing. (The file is gitignored: a place file is
 build output, never source.)
 
 ### Setting up properly
 
-1. **Install Rojo.** Grab the binary for your OS from the
-   [releases page](https://github.com/rojo-rbx/rojo/releases) (use 7.4.x), unzip
-   it, and put it somewhere on your `PATH`. Check it worked:
+1. **Install Rojo.** One binary, no installer. Direct links for 7.4.4:
+
+   | OS | File |
+   | --- | --- |
+   | Windows | [`rojo-7.4.4-windows-x86_64.zip`](https://github.com/rojo-rbx/rojo/releases/download/v7.4.4/rojo-7.4.4-windows-x86_64.zip) |
+   | macOS (Apple Silicon) | [`rojo-7.4.4-macos-aarch64.zip`](https://github.com/rojo-rbx/rojo/releases/download/v7.4.4/rojo-7.4.4-macos-aarch64.zip) |
+   | macOS (Intel) | [`rojo-7.4.4-macos-x86_64.zip`](https://github.com/rojo-rbx/rojo/releases/download/v7.4.4/rojo-7.4.4-macos-x86_64.zip) |
+
+   Unzip it. **The simplest thing that works: drop the extracted `rojo.exe`
+   (or `rojo`) straight into this `MedievalBattle/` folder** and run it as
+   `.\rojo.exe` on Windows or `./rojo` on macOS. That sidesteps `PATH` setup
+   entirely, and `.gitignore` already excludes the binary so it will never be
+   committed.
+
+   On macOS the first run is blocked by Gatekeeper. Clear it once with:
 
    ```sh
-   rojo --version        # should print: Rojo 7.4.4
+   chmod +x rojo && xattr -d com.apple.quarantine rojo
    ```
 
+   Check it works — you should see `Rojo 7.4.4`:
+
+   ```sh
+   .\rojo.exe --version      # Windows
+   ./rojo --version          # macOS
+   ```
+
+   Once you are using it regularly, move the binary somewhere on your `PATH` so
+   you can type plain `rojo` from any folder.
+
    *Optional, for the team:* [Rokit](https://github.com/rojo-rbx/rokit) reads
-   `rokit.toml` in this folder and gives everyone the identical Rojo and StyLua
-   versions (`rokit install`). Worth doing once we are all working on this
-   daily, since project-file format changes between Rojo majors. It is genuinely
-   optional — nothing in the project requires it.
+   `rokit.toml` in this folder and gives everyone identical Rojo and StyLua
+   versions (`rokit install`). Worth doing once we are all on this daily, since
+   the project-file format changes between Rojo majors. Nothing in the project
+   requires it.
 
    (If you find older instructions mentioning **Aftman**: that was Rokit's
    predecessor and is no longer maintained. Do not install it.)
 
-2. **Install the Rojo plugin in Studio** — run `rojo plugin install`, or search
-   the Studio toolbox for "Rojo". The plugin is what lets Studio talk to the
-   sync server; it cannot read your files on its own.
+2. **Install the Rojo plugin in Studio** — `.\rojo.exe plugin install` (or
+   `./rojo plugin install`), or search the Studio toolbox for "Rojo". The plugin
+   is what lets Studio talk to the sync server; it cannot read your files on its
+   own.
 
-3. **Start the server and connect:**
+3. **Start the sync server and connect:**
 
    ```sh
-   cd MedievalBattle
-   rojo serve
+   .\rojo.exe serve          # Windows
+   ./rojo serve              # macOS
    ```
 
-   In Studio, open a new baseplate, click the Rojo plugin button, and press
-   *Connect*. The whole `src/` tree appears in the correct services and stays in
-   sync as you edit. Save the place locally so you do not repeat this each time.
+   Leave that running. In Studio, open a new baseplate, click the Rojo plugin
+   button, and press *Connect*. The whole `src/` tree appears in the correct
+   services and stays in sync as you edit files. Save the place locally so you
+   do not repeat this each time.
+
+   From here on, the daily loop is: `rojo serve`, connect, edit files in your
+   editor, press Play in Studio.
 
 4. **Set max players — this one is manual and easy to forget.**
 
