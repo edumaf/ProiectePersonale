@@ -14,6 +14,7 @@
 	  Combat     - handlers connected before the first character appears
 	  Classes    - loadouts, needs CombatService
 	  Spawning   - spawns players, needs all of the above
+	  Rounds     - drives spawning and objectives, so it goes last
 ]]
 
 local Players = game:GetService("Players")
@@ -25,7 +26,9 @@ local ClassService = require(script.Parent.Classes.ClassService)
 local CollisionGroups = require(script.Parent.Spawning.CollisionGroups)
 local CombatService = require(script.Parent.Combat.CombatService)
 local MapBuilder = require(script.Parent.Map.MapBuilder)
+local ObjectiveService = require(script.Parent.Rounds.ObjectiveService)
 local RangedService = require(script.Parent.Combat.RangedService)
+local RoundService = require(script.Parent.Rounds.RoundService)
 local SpawnService = require(script.Parent.Spawning.SpawnService)
 local TeamService = require(script.Parent.Rounds.TeamService)
 
@@ -38,10 +41,13 @@ MapBuilder.buildSpawnPads(map)
 
 CollisionGroups.setup()
 TeamService.init()
+ObjectiveService.init(map)
 CombatService.init()
 RangedService.init()
 ClassService.init()
 SpawnService.init()
+-- Last: the round loop drives spawning and objectives, so both must exist.
+RoundService.init()
 
 --[[
 	Players.MaxPlayers cannot be raised from a script - it is a place setting.

@@ -538,7 +538,12 @@ local function updateWalkSpeed(state: CombatState)
 	local classDef = ClassConfig.find(state.classId) or ClassConfig.get(ClassConfig.Default)
 	local speed = classDef.WalkSpeed
 
-	if state.phase == Enums.CombatPhase.Staggered then
+	if not combatEnabled then
+		-- Round countdown and score screen: everyone is planted where they
+		-- stand. Doing it here rather than with a separate "frozen" flag means
+		-- there is exactly one place that owns WalkSpeed.
+		speed = 0
+	elseif state.phase == Enums.CombatPhase.Staggered then
 		speed *= 0.45
 	elseif state.blocking then
 		speed *= 0.7

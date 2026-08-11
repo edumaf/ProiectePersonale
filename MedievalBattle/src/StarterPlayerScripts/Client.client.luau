@@ -12,11 +12,15 @@ local ClassSelect = require(script.Parent.UI.ClassSelect)
 local EffectController = require(script.Parent.Combat.EffectController)
 local HUD = require(script.Parent.UI.HUD)
 local InputController = require(script.Parent.Combat.InputController)
+local KillFeed = require(script.Parent.UI.KillFeed)
 local RangedController = require(script.Parent.Combat.RangedController)
+local RoundHUD = require(script.Parent.UI.RoundHUD)
 local SwingAnimator = require(script.Parent.Combat.SwingAnimator)
 
 local controllers: { { name: string, init: () -> () } } = {
 	{ name = "HUD", init = HUD.init },
+	{ name = "RoundHUD", init = RoundHUD.init },
+	{ name = "KillFeed", init = KillFeed.init },
 	{ name = "SwingAnimator", init = SwingAnimator.init },
 	{ name = "CameraController", init = CameraController.init },
 	{ name = "InputController", init = InputController.init },
