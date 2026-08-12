@@ -102,35 +102,49 @@ Two notes on the above: the Windows asset really is named `windows-x86_64` (not
 Gatekeeper's quarantine flag, which otherwise blocks the first run with a
 "cannot be opened" dialog.
 
-From here on, the README writes commands as plain `rojo`. Type `.\rojo.exe` on
-Windows or `./rojo` on macOS — or move the binary onto your `PATH` once you are
-using it daily, and then plain `rojo` works from anywhere.
+> **Always type `.\rojo.exe`, never plain `rojo`.**
+> PowerShell does not run programs from the current folder unless you prefix
+> `.\` — that is a deliberate safety behaviour, and it is why plain `rojo` gives
+> you:
+>
+> ```
+> rojo : The term 'rojo' is not recognized as the name of a cmdlet...
+> ```
+>
+> That message does **not** mean the download failed. Check with `ls rojo.exe`:
+> if the file is listed, just re-run the command with `.\` in front. (Plain
+> `rojo` only works once you have moved the binary onto your `PATH`, which is
+> worth doing later but is not needed for any of this.)
 
 ### Step 3a — just play it
 
-```sh
-rojo build -o MedievalBattle.rbxlx
+```powershell
+.\rojo.exe build -o MedievalBattle.rbxlx     # Windows
+./rojo build -o MedievalBattle.rbxlx         # macOS
 ```
 
 Double-click the resulting file: Studio opens with the whole game in it. No
 plugin, no sync server. Edits to `src/` will not show up until you build again,
 so this is for playing, not developing. (The place file is gitignored — it is
-build output, never source.)
+build output, never source. The name is arbitrary; `.rbxlx` just keeps it a text
+format.)
 
 ### Step 3b — develop with live sync
 
-```sh
-rojo plugin install     # once: installs the Rojo plugin into Studio
-rojo serve              # leave this running
+```powershell
+.\rojo.exe plugin install     # once: installs the Rojo plugin into Studio
+.\rojo.exe serve              # leave this running
 ```
+
+On macOS: `./rojo plugin install` and `./rojo serve`.
 
 In Studio: **File → New**, then open the **Rojo** plugin from the Plugins tab
 and press **Connect**. The whole `src/` tree appears in the right services and
 stays in sync as you edit files. Save the place locally so you do not redo this
 each session.
 
-Daily loop from then on: `rojo serve` → Connect → edit files in your editor →
-press Play in Studio.
+Daily loop from then on: `.\rojo.exe serve` → Connect → edit files in your
+editor → press Play in Studio.
 
 ### Step 4 — set max players (manual, easy to forget)
 
@@ -153,12 +167,24 @@ something failed at boot and the Output window says what.
 
 ### Command reference
 
+Windows form shown; on macOS use `./rojo` in place of `.\rojo.exe`.
+
 | Command | What it does |
 | --- | --- |
-| `rojo build -o MedievalBattle.rbxlx` | Build a place file you can double-click |
-| `rojo serve` | Start the sync server for live editing |
-| `rojo plugin install` | Install the Studio plugin (once) |
-| `rojo --version` | Check the install worked |
+| `.\rojo.exe build -o MedievalBattle.rbxlx` | Build a place file you can double-click |
+| `.\rojo.exe serve` | Start the sync server for live editing |
+| `.\rojo.exe plugin install` | Install the Studio plugin (once) |
+| `.\rojo.exe --version` | Check the install worked |
+
+### If something goes wrong
+
+| Symptom | Cause |
+| --- | --- |
+| `The term 'rojo' is not recognized...` | Missing `.\` prefix — PowerShell does not run programs from the current folder. Use `.\rojo.exe`. |
+| `.\rojo.exe : ...cannot find the path` | The binary is not in this folder. Re-run Step 2 from inside `MedievalBattle`. |
+| `Rojo: found no project file` | You are in the wrong folder. `ls` should show `default.project.json`. |
+| macOS: *"rojo cannot be opened"* | Gatekeeper quarantine — run the `xattr -d com.apple.quarantine rojo` line. |
+| Studio opens but the map is empty | You opened a blank baseplate instead of the built `.rbxlx`, or the Rojo plugin is not *Connect*ed. |
 
 <sub>*Optional:* [Rokit](https://github.com/rojo-rbx/rokit) reads `rokit.toml`
 here and pins identical Rojo/StyLua versions for the whole team (`rokit
