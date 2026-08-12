@@ -47,6 +47,25 @@ The binary is downloaded straight into this folder, so there is no `PATH` to
 configure and nothing installed system-wide. `.gitignore` already excludes it,
 so it will never be committed.
 
+> **Open your terminal *inside* `MedievalBattle` first.** These commands
+> download into whatever folder you are currently in, and Rojo has to sit next
+> to `default.project.json` to find the project. A terminal opens in your home
+> folder (`C:\Users\<you>`) by default, which is the wrong place.
+>
+> - **Windows:** open the `MedievalBattle` folder in File Explorer, click the
+>   address bar, type `powershell`, press Enter. (Or Shift + right-click on
+>   empty space in the folder → *Open PowerShell window here*.)
+> - **macOS:** right-click the folder → *Services → New Terminal at Folder*.
+> - **Or by hand** — with a GitHub Desktop clone this is usually:
+>   ```powershell
+>   cd "$HOME\Documents\GitHub\ProiectePersonale\MedievalBattle"
+>   ```
+>
+> Confirm before pasting anything: `ls` must list `default.project.json`, `src`,
+> `docs` and `README.md`. If it does not, you are in the wrong folder — and if
+> you already downloaded Rojo there, just delete the stray `rojo.exe` and start
+> again from the right one.
+
 **Windows** — paste into **PowerShell** (not cmd):
 
 ```powershell
