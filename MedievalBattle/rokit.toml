@@ -9,5 +9,5 @@
 # (Rokit replaces Aftman, which is no longer maintained. Same file format.)
 
 [tools]
-rojo = "rojo-rbx/rojo@7.4.4"
+rojo = "rojo-rbx/rojo@7.7.0"
 stylua = "JohnnyMorganz/StyLua@0.20.0"

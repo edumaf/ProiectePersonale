@@ -76,23 +76,23 @@ Test-Path .\default.project.json
 # rojo.exe and a confusing "not recognized" message later.
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
-Invoke-WebRequest -Uri "https://github.com/rojo-rbx/rojo/releases/download/v7.4.4/rojo-7.4.4-windows-x86_64.zip" -OutFile "rojo.zip"
+Invoke-WebRequest -Uri "https://github.com/rojo-rbx/rojo/releases/download/v7.7.0/rojo-7.7.0-windows-x86_64.zip" -OutFile "rojo.zip"
 Expand-Archive -Path ".\rojo.zip" -DestinationPath "." -Force
 Remove-Item .\rojo.zip
 
 Get-ChildItem .\rojo.exe      # must list the file
-.\rojo.exe --version          # must print Rojo 7.4.4
+.\rojo.exe --version          # must print Rojo 7.7.0
 ```
 
 If the download will not work at all, fetch
-[the zip](https://github.com/rojo-rbx/rojo/releases/download/v7.4.4/rojo-7.4.4-windows-x86_64.zip)
+[the zip](https://github.com/rojo-rbx/rojo/releases/download/v7.7.0/rojo-7.7.0-windows-x86_64.zip)
 in a browser, extract it, and drag `rojo.exe` into this folder by hand. Exactly
 the same result.
 
 **macOS, Apple Silicon** (M1/M2/M3/M4) — paste into **Terminal**:
 
 ```sh
-curl -L -o rojo.zip https://github.com/rojo-rbx/rojo/releases/download/v7.4.4/rojo-7.4.4-macos-aarch64.zip
+curl -L -o rojo.zip https://github.com/rojo-rbx/rojo/releases/download/v7.7.0/rojo-7.7.0-macos-aarch64.zip
 unzip -o rojo.zip && rm rojo.zip
 chmod +x rojo
 xattr -d com.apple.quarantine rojo 2>/dev/null
@@ -102,14 +102,14 @@ xattr -d com.apple.quarantine rojo 2>/dev/null
 **macOS, Intel** — identical, but with `macos-x86_64` in the URL:
 
 ```sh
-curl -L -o rojo.zip https://github.com/rojo-rbx/rojo/releases/download/v7.4.4/rojo-7.4.4-macos-x86_64.zip
+curl -L -o rojo.zip https://github.com/rojo-rbx/rojo/releases/download/v7.7.0/rojo-7.7.0-macos-x86_64.zip
 unzip -o rojo.zip && rm rojo.zip
 chmod +x rojo
 xattr -d com.apple.quarantine rojo 2>/dev/null
 ./rojo --version
 ```
 
-The last line must print `Rojo 7.4.4`. If it does, you are done installing.
+The last line must print `Rojo 7.7.0`. If it does, you are done installing.
 
 Two notes on the above: the Windows asset really is named `windows-x86_64` (not
 `win64`, which is what most guides guess), and the `xattr` line clears macOS
@@ -129,6 +129,25 @@ Gatekeeper's quarantine flag, which otherwise blocks the first run with a
 > if the file is listed, just re-run the command with `.\` in front. (Plain
 > `rojo` only works once you have moved the binary onto your `PATH`, which is
 > worth doing later but is not needed for any of this.)
+
+### Updating Rojo later
+
+There is no `rojo update` command — it is a standalone binary, so updating means
+downloading the new one over the old one. Re-run the Step 2 block for your OS
+with the new version number in the URL, then check `.\rojo.exe --version`.
+
+Two things to know:
+
+- **Stop `rojo serve` first.** Windows will not overwrite a running executable,
+  and `Expand-Archive` fails with a file-in-use error that does not obviously say
+  so.
+- **Tell the others.** The project file format can change between Rojo majors, so
+  everyone should move together. If you are using Rokit, bump the version in
+  `rokit.toml`, commit it, and `rokit install` gives the whole team the same
+  build.
+
+7.7.0 and 7.4.4 produce a byte-identical place file from this project, so
+upgrading between them is a non-event.
 
 ### Step 3a — just play it
 
