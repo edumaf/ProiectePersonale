@@ -18,12 +18,15 @@ sourcemap.json
 *.local.project.json
 
 # --- Tooling ---
-# Aftman / Rokit install trees
-~/.aftman
-.aftman/
+# Rokit install tree (optional toolchain manager, see rokit.toml)
 .rokit/
 .lune/
 node_modules/
+
+# The Rojo binary itself, if you drop it in this folder to avoid PATH setup.
+# It is ~10MB and platform-specific - never commit it.
+rojo
+rojo.exe
 
 # luau-lsp / editor
 .vscode/settings.local.json

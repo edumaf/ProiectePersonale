@@ -1,0 +1,13 @@
+# Optional. Rokit (https://github.com/rojo-rbx/rokit) pins the exact tool
+# versions so all four of us build with the same Rojo, rather than whatever each
+# of us happened to download. Run `rokit install` in this folder.
+#
+# Nothing in the project requires it: a plain `rojo` binary on your PATH works
+# fine. This exists so version drift never becomes a "works on my machine"
+# afternoon.
+#
+# (Rokit replaces Aftman, which is no longer maintained. Same file format.)
+
+[tools]
+rojo = "rojo-rbx/rojo@7.4.4"
+stylua = "JohnnyMorganz/StyLua@0.20.0"
