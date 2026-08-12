@@ -78,7 +78,7 @@ local Weapons: { [string]: WeaponDef } = {
 		StaminaCost = byDirection({ Left = 10, Right = 10, Overhead = 11, Stab = 8 }),
 
 		Range = 5.2,
-		GripOffset = Vector3.new(1.1, 0.35, -0.6),
+		GripOffset = Vector3.new(1.35, -0.8, -0.5),
 		MaxTargets = 1,
 
 		BlockStaminaDrain = 16,
@@ -109,7 +109,7 @@ local Weapons: { [string]: WeaponDef } = {
 		StaminaCost = byDirection({ Left = 15, Right = 15, Overhead = 17, Stab = 11 }),
 
 		Range = 4.6,
-		GripOffset = Vector3.new(1.1, 0.35, -0.6),
+		GripOffset = Vector3.new(1.35, -0.8, -0.5),
 		MaxTargets = 1,
 
 		-- Blocking a mace hurts: this is what makes the Knight a shield-breaker.
@@ -141,7 +141,7 @@ local Weapons: { [string]: WeaponDef } = {
 		StaminaCost = byDirection({ Left = 11, Right = 11, Overhead = 12, Stab = 12 }),
 
 		Range = 9.5,
-		GripOffset = Vector3.new(0.9, 0.3, -0.5),
+		GripOffset = Vector3.new(1.2, -0.7, -0.4),
 		MaxTargets = 1,
 
 		BlockStaminaDrain = 14,
@@ -170,7 +170,7 @@ local Weapons: { [string]: WeaponDef } = {
 		StaminaCost = byDirection({ Left = 19, Right = 19, Overhead = 21, Stab = 16 }),
 
 		Range = 7.2,
-		GripOffset = Vector3.new(1.0, 0.4, -0.6),
+		GripOffset = Vector3.new(1.25, -0.7, -0.5),
 		-- The one weapon that cleaves. This is the whole reason the Vanguard
 		-- exists in a 50v50 blob fight.
 		MaxTargets = 3,
@@ -198,7 +198,7 @@ local Weapons: { [string]: WeaponDef } = {
 		StaminaCost = allDirections(6),
 
 		Range = 2.8,
-		GripOffset = Vector3.new(1.0, 0.3, -0.6),
+		GripOffset = Vector3.new(1.35, -0.8, -0.5),
 		MaxTargets = 1,
 
 		BlockStaminaDrain = 8,
@@ -225,7 +225,7 @@ local Weapons: { [string]: WeaponDef } = {
 		StaminaCost = allDirections(12),
 
 		Range = 3.5,
-		GripOffset = Vector3.new(0.9, 0.3, -0.7),
+		GripOffset = Vector3.new(1.2, -0.6, -0.6),
 		MaxTargets = 1,
 
 		BlockStaminaDrain = 0,

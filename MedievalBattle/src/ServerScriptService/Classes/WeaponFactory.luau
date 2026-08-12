@@ -136,7 +136,7 @@ function WeaponFactory.buildShield(): Model
 
 	local board = Instance.new("Part")
 	board.Name = "Board"
-	board.Size = Vector3.new(0.4, 4.2, 3.2)
+	board.Size = Vector3.new(0.35, 2.9, 2.3)
 	board.Color = Color3.fromRGB(96, 72, 48)
 	board.Material = Enum.Material.Wood
 	configurePart(board)
@@ -147,7 +147,7 @@ function WeaponFactory.buildShield(): Model
 	local boss = Instance.new("Part")
 	boss.Name = "Boss"
 	boss.Shape = Enum.PartType.Ball
-	boss.Size = Vector3.new(0.9, 0.9, 0.9)
+	boss.Size = Vector3.new(0.7, 0.7, 0.7)
 	boss.Color = Color3.fromRGB(178, 185, 196)
 	boss.Material = Enum.Material.Metal
 	configurePart(boss)
@@ -169,7 +169,7 @@ function WeaponFactory.attachShield(character: Model, model: Model): Motor6D?
 		return nil
 	end
 
-	local offset = CFrame.new(-1.4, 0.2, -0.7) * CFrame.Angles(0, math.rad(-20), 0)
+	local offset = CFrame.new(-1.5, -0.5, -0.75) * CFrame.Angles(0, math.rad(-22), 0)
 	model:PivotTo(root.CFrame * offset)
 	model.Parent = character
 

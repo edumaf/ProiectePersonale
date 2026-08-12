@@ -52,6 +52,8 @@ type Track = {
 }
 
 local tracks: { [Model]: Track } = {}
+-- Characters whose arm is easing back to its rest pose after an action.
+local restoring: { [Model]: boolean } = {}
 
 local function findMotor(character: Model): (Motor6D?, WeaponDef?)
 	local root = character:FindFirstChild("HumanoidRootPart")
@@ -172,11 +174,81 @@ function SwingAnimator.cancelPrediction(character: Model)
 		if motor and weapon and root then
 			motor.C0 = root.CFrame:ToObjectSpace(SwingMath.getIdleCFrame(root.CFrame, weapon))
 		end
+		restoring[character] = true
 	end
 end
 
 function SwingAnimator.clear(character: Model)
 	tracks[character] = nil
+end
+
+--[[
+	Arm posing.
+
+	The weapon hangs off the HumanoidRootPart, not the hand, because the server
+	resolves swing geometry from the root and must not depend on client-side
+	limb positions. Left alone, that reads as a sword welded to someone's ribs.
+
+	So we do the reverse of what a normal rig does: the weapon leads, and the
+	arm is pointed at it. The right shoulder is rotated so the upper arm aims
+	down its own -Y axis at the grip, which is the axis R15 and R6 limbs both
+	run along. Purely cosmetic and purely client-side - the hitbox does not care
+	where the arm ended up.
+]]
+local shoulderRest: { [Motor6D]: CFrame } = {}
+
+local function findShoulder(character: Model): Motor6D?
+	-- R15: the joint lives inside the limb it drives. R6 keeps it on the torso.
+	local upperArm = character:FindFirstChild("RightUpperArm")
+	if upperArm then
+		local motor = upperArm:FindFirstChild("RightShoulder")
+		if motor and motor:IsA("Motor6D") then
+			return motor
+		end
+	end
+
+	local torso = character:FindFirstChild("Torso")
+	if torso then
+		local motor = torso:FindFirstChild("Right Shoulder")
+		if motor and motor:IsA("Motor6D") then
+			return motor
+		end
+	end
+
+	return nil
+end
+
+local function poseArm(character: Model, gripPosition: Vector3?, alpha: number)
+	local motor = findShoulder(character)
+	if not motor or not motor.Part0 then
+		return
+	end
+
+	local rest = shoulderRest[motor]
+	if not rest then
+		rest = motor.C0
+		shoulderRest[motor] = rest
+	end
+
+	if not gripPosition then
+		-- Ease back to the rig's own resting pose rather than snapping.
+		motor.C0 = motor.C0:Lerp(rest, math.clamp(alpha, 0, 1))
+		return
+	end
+
+	local torsoCF = motor.Part0.CFrame
+	local shoulderWorld = torsoCF * CFrame.new(rest.Position)
+	local toGrip = gripPosition - shoulderWorld.Position
+	if toGrip.Magnitude < 1e-3 then
+		return
+	end
+
+	-- Aim the limb's -Y down the line to the grip.
+	local aim = CFrame.lookAt(shoulderWorld.Position, shoulderWorld.Position + toGrip.Unit)
+		* CFrame.Angles(-math.pi / 2, 0, 0)
+	local rotation = torsoCF:ToObjectSpace(aim).Rotation
+
+	motor.C0 = CFrame.new(rest.Position) * rotation
 end
 
 local function poseFor(track: Track, rootCF: CFrame, weapon: WeaponDef, alpha: number): CFrame
@@ -191,6 +263,33 @@ local function poseFor(track: Track, rootCF: CFrame, weapon: WeaponDef, alpha: n
 	end
 	-- Recovery and everything else: ease back to rest.
 	return SwingMath.getRecoveryCFrame(rootCF, weapon, track.direction, alpha)
+end
+
+--[[
+	Eases arms back to rest after an action. Runs over a handful of characters
+	for a fraction of a second each, then empties itself.
+]]
+local function stepRestores()
+	for character in restoring do
+		if not character.Parent then
+			restoring[character] = nil
+			continue
+		end
+
+		local motor = findShoulder(character)
+		local rest = if motor then shoulderRest[motor] else nil
+		if not motor or not rest then
+			restoring[character] = nil
+			continue
+		end
+
+		poseArm(character, nil, 0.2)
+
+		if motor.C0.LookVector:Dot(rest.LookVector) > 0.9995 then
+			motor.C0 = rest
+			restoring[character] = nil
+		end
+	end
 end
 
 local function step()
@@ -224,6 +323,11 @@ local function step()
 		local target = poseFor(track, rootCF, weapon, alpha)
 		motor.C0 = rootCF:ToObjectSpace(target)
 
+		-- Point the arm at the grip so the weapon reads as held rather than
+		-- welded to the torso.
+		poseArm(character, target.Position, 1)
+		restoring[character] = nil
+
 		if alpha < 1 or track.phase == Enums.CombatPhase.Blocking then
 			continue
 		end
@@ -239,12 +343,15 @@ local function step()
 			track.duration = weapon.Timings[track.direction].Recovery
 		elseif track.phase == Enums.CombatPhase.Recovery then
 			-- Back at rest: drop it out of the working set so idle players cost
-			-- nothing at all.
+			-- nothing at all, and let the arm ease home over the next frames.
 			tracks[character] = nil
+			restoring[character] = true
 		end
 		-- A finished Windup holds its pose: the release event decides when the
 		-- blade actually starts moving.
 	end
+
+	stepRestores()
 end
 
 function SwingAnimator.init()

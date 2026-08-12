@@ -53,15 +53,15 @@ end
 local TRACKS: { [number]: PoseTrack } = {
 	[Enums.AttackDirection.Left] = {
 		from = pose(-82, 26, -30, 0.1),
-		to = pose(78, -16, 34, 0.7),
+		to = pose(78, -4, 34, 0.7),
 	},
 	[Enums.AttackDirection.Right] = {
 		from = pose(82, 26, 30, 0.1),
-		to = pose(-78, -16, -34, 0.7),
+		to = pose(-78, -4, -34, 0.7),
 	},
 	[Enums.AttackDirection.Overhead] = {
 		from = pose(-6, 78, 0, 0.0),
-		to = pose(4, -40, 0, 0.9),
+		to = pose(4, -26, 0, 0.9),
 	},
 	[Enums.AttackDirection.Stab] = {
 		-- A thrust barely rotates; the reach comes from `push`.

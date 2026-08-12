@@ -58,7 +58,7 @@ CombatConfig.FeintRecovery = 0.22 -- forced recovery after a feint
 -- Sampling several points along the blade means a swing connects with the
 -- middle of the sword, not only the tip.
 CombatConfig.BladeSamples = { 0.45, 0.72, 1.0 }
-CombatConfig.TraceRadius = 0.55 -- studs; sphere swept along the blade path
+CombatConfig.TraceRadius = 0.8 -- studs; sphere swept along the blade path
 CombatConfig.MaxTraceStepsPerTick = 3 -- sub-steps for very fast swings (anti-tunnelling)
 
 -- Bodies are ignored beyond this; a cheap sanity check before any raycasting.
@@ -136,5 +136,16 @@ CombatConfig.PlayerCollisions = true
 	entirely.
 ]]
 CombatConfig.WeaponRacks = true
+
+--[[
+	Training dummies beside each home spawn: static targets with a health number
+	over them that reset a few seconds after being destroyed.
+
+	They exist so hit registration can be tested by one person. Without them you
+	need two clients connected and cooperating before you can answer "did that
+	swing land", which makes tuning reach and timing far slower than it should
+	be. Turn off for real play.
+]]
+CombatConfig.TrainingDummies = true
 
 return table.freeze(CombatConfig)

@@ -221,9 +221,32 @@ local function sweepSegment(state: CombatState, weapon: WeaponDef, p0: Vector3, 
 
 		table.insert(filter, model)
 
+		if state.hitsThisSwing[model] then
+			continue
+		end
+
 		local victimPlayer = Players:GetPlayerFromCharacter(model)
 		local victimState = if victimPlayer then states[victimPlayer] else nil
-		if not victimState or state.hitsThisSwing[model] then
+
+		if not victimState then
+			-- A tagged target that is not a player: a training dummy. It has no
+			-- combat state, so there is no guard to beat and no stamina to
+			-- drain - it just takes the number.
+			local dummyResult =
+				DamageService.resolveDummy(state, model, weapon, state.direction, result.Instance)
+			if dummyResult ~= Enums.HitResult.Ignored then
+				state.hitsThisSwing[model] = true
+				state.hitCount += 1
+				EffectBroadcaster.broadcastIncluding(
+					result.Position,
+					{ state.player },
+					Enums.EffectKind.Impact,
+					dummyResult,
+					result.Position,
+					state.weaponId,
+					model
+				)
+			end
 			continue
 		end
 

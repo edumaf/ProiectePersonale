@@ -89,8 +89,11 @@ local function buildPedestal(parent: Instance, position: Vector3, weaponId: stri
 			part.Anchored = true
 		end
 	end
+	-- The model's pivot is the grip and the blade runs from there, so the grip
+	-- goes just above the stand and the weapon stands up out of it. Offsetting
+	-- by half the length instead leaves it floating in mid-air.
 	display:PivotTo(
-		CFrame.new(pedestal.Position + Vector3.new(0, PEDESTAL_SIZE.Y / 2 + def.Range / 2 + 0.6, 0))
+		CFrame.new(pedestal.Position + Vector3.new(0, PEDESTAL_SIZE.Y / 2 + 0.3, 0))
 			* CFrame.Angles(math.rad(90), 0, 0)
 	)
 	display.Parent = parent

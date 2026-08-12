@@ -255,6 +255,45 @@ function DamageService.resolveRanged(
 end
 
 --[[
+	Non-player targets: training dummies.
+
+	They carry a TeamId attribute like a real character (so the hit tracer finds
+	them) but no CombatState, so there is no guard to check and no stamina to
+	drain - a dummy simply takes the flat number. Health lives in an attribute,
+	which replicates to every client for free and is all the dummy needs.
+
+	TeamId 0 means "hostile to everyone", so both teams can train on the same
+	target. A dummy tagged with a real team id respects friendly fire instead.
+]]
+function DamageService.resolveDummy(
+	attackerState: CombatState,
+	model: Model,
+	weapon: WeaponDef,
+	direction: number,
+	hitPart: BasePart
+): number
+	local health = model:GetAttribute("Health")
+	if typeof(health) ~= "number" or health <= 0 then
+		return Enums.HitResult.Ignored
+	end
+
+	local teamId = model:GetAttribute("TeamId")
+	if typeof(teamId) == "number" and teamId ~= 0 and not CombatConfig.FriendlyFire then
+		local attackerCharacter = attackerState.character
+		if attackerCharacter and not TeamService.areEnemies(attackerCharacter, model) then
+			return Enums.HitResult.Ignored
+		end
+	end
+
+	local limbMultiplier = CombatConfig.LimbMultipliers[hitPart.Name] or CombatConfig.DefaultLimbMultiplier
+	local damage = WeaponConfig.getDamage(weapon, direction) * limbMultiplier
+
+	model:SetAttribute("Health", math.max(0, health - damage))
+	model:SetAttribute("LastHitBy", attackerState.player.Name)
+	return Enums.HitResult.Hit
+end
+
+--[[
 	Kills a player outright (fell out of the map, round reset, ...). Kept here so
 	every path to a death goes through the same attribution and kill feed.
 ]]
