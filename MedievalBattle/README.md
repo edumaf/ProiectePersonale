@@ -264,6 +264,12 @@ is no longer maintained; do not install it.</sub>
 | **Shift** (hold) | Sprint. Costs stamina while you are actually moving. |
 | **F** | Swap weapon (classes with two, e.g. Archer bow ↔ dagger). |
 | **B** | Class select. |
+| **E** | Take a weapon from a rack (one stand per weapon at each home spawn). |
+
+Your weapon comes from your class and is built at spawn — there is nothing to
+pick up off the ground and nothing weapon-shaped in the Explorer. To try the
+others quickly, use the **weapon racks** beside each team's home spawn: a stand
+per weapon, labelled with damage, windup and reach, press **E** to take it.
 
 The mouse is locked to the centre of the screen and your body follows the
 camera. Both are load-bearing: swing direction is read from the mouse *delta*

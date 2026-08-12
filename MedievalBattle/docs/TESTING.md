@@ -42,6 +42,19 @@ Handy while iterating:
    they respawn after ~6s at their own team's spawn pad.
 4. A third client joining lands on the smaller team.
 
+## 1b. Weapon racks (the fastest way to try everything)
+
+Each team's home spawn has a rack with one stand per weapon — Sword, Mace,
+Spear, Greatsword, Dagger, Bow — labelled with its damage, windup and reach.
+Walk up and press **E** to take it, no class change and no dying required.
+
+The rack is generated from `WeaponConfig.Ids`, so a weapon you add to the config
+appears there automatically with its real numbers on the label.
+
+This is a testing tool, not a design decision: picking up a greatsword as an
+Archer ignores the class system entirely. Turn it off with
+`CombatConfig.WeaponRacks = false` when the game gets closer to real.
+
 ## 2. Melee: the four attacks
 
 With the mouse locked (it is, by default), flick and click:

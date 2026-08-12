@@ -31,6 +31,7 @@ local RangedService = require(script.Parent.Combat.RangedService)
 local RoundService = require(script.Parent.Rounds.RoundService)
 local SpawnService = require(script.Parent.Spawning.SpawnService)
 local TeamService = require(script.Parent.Rounds.TeamService)
+local WeaponRack = require(script.Parent.Classes.WeaponRack)
 
 local START = os.clock()
 
@@ -46,6 +47,8 @@ CombatService.init()
 RangedService.init()
 ClassService.init()
 SpawnService.init()
+-- Needs ClassService, and parents its stands into the map folder.
+WeaponRack.build(map)
 -- Last: the round loop drives spawning and objectives, so both must exist.
 RoundService.init()
 

@@ -126,7 +126,12 @@ function ClassService.applyLoadout(player: Player, character: Model)
 
 	local weaponId = def.Weapons[1]
 	local weapon = WeaponFactory.build(weaponId)
-	WeaponFactory.attach(character, weapon)
+	if not WeaponFactory.attach(character, weapon) then
+		-- Loud on purpose: a silent failure here means a player spawns
+		-- empty-handed and combat looks broken for reasons nothing else
+		-- explains.
+		warn(`ClassService: could not attach {weaponId} to {player.Name} - spawning unarmed`)
+	end
 
 	if def.HasShield then
 		local shield = WeaponFactory.buildShield()
@@ -174,6 +179,48 @@ function ClassService.cycleWeapon(player: Player)
 	applyLivery(character, TeamService.getTeamId(player))
 
 	CombatService.setWeapon(player, nextId)
+end
+
+--[[
+	Puts a specific weapon in a player's hands, regardless of their class.
+
+	Used by the weapon racks so every weapon can be tried without dying and
+	switching class first. Deliberately not exposed on a remote - the client
+	cannot ask for a weapon, it can only walk to a rack and trigger a
+	ProximityPrompt, which the server validates by proximity itself.
+]]
+function ClassService.equipWeapon(player: Player, weaponId: string): boolean
+	local character = player.Character
+	if not character then
+		return false
+	end
+	if not WeaponConfig.find(weaponId) then
+		warn(`ClassService.equipWeapon: unknown weapon "{weaponId}"`)
+		return false
+	end
+
+	local state = CombatService.getState(player)
+	if not state or not state.alive then
+		return false
+	end
+
+	local def = ClassConfig.get(ClassService.getSelected(player))
+
+	WeaponFactory.clear(character)
+	local model = WeaponFactory.build(weaponId)
+	if not WeaponFactory.attach(character, model) then
+		warn(`ClassService.equipWeapon: failed to attach "{weaponId}" to {player.Name}`)
+		model:Destroy()
+		return false
+	end
+	if def.HasShield then
+		WeaponFactory.attachShield(character, WeaponFactory.buildShield())
+	end
+	applyLivery(character, TeamService.getTeamId(player))
+
+	CombatService.setWeapon(player, weaponId)
+	Remotes.get("Notify"):FireClient(player, `Picked up {WeaponConfig.get(weaponId).Name}`, 2.5)
+	return true
 end
 
 local function onSelectClass(player: Player, classId: unknown)

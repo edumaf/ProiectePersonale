@@ -125,4 +125,16 @@ CombatConfig.FriendlyFire = false
 ]]
 CombatConfig.PlayerCollisions = true
 
+--[[
+	Weapon racks at each home spawn: a stand per weapon with a "press E to take
+	it" prompt.
+
+	Purely a testing affordance. The weapons are built procedurally from your
+	class at spawn, so without this there is no way to try a greatsword without
+	switching class and waiting to die. Turn it off as the game gets closer to
+	real - picking up a greatsword as an Archer bypasses the class system
+	entirely.
+]]
+CombatConfig.WeaponRacks = true
+
 return table.freeze(CombatConfig)
