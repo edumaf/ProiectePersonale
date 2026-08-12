@@ -21,25 +21,24 @@ folder.
 
 ### Step 1 — get the code
 
+The game lives on `main`, so there is no branch to switch to.
+
 ```sh
 git clone https://github.com/edumaf/ProiectePersonale.git
-cd ProiectePersonale
-git checkout claude/medieval-50v50-roblox-dnkcay
-cd MedievalBattle
+cd ProiectePersonale/MedievalBattle
 ```
 
-Already cloned? Just:
+Already cloned? Just pull:
 
 ```sh
-git fetch origin
-git checkout claude/medieval-50v50-roblox-dnkcay
+git checkout main
+git pull origin main
 cd MedievalBattle
 ```
 
-In GitHub Desktop: **Fetch origin**, then pick
-`claude/medieval-50v50-roblox-dnkcay` from the branch dropdown, then open the
-`MedievalBattle` folder in a terminal (*Repository → Open in Command Prompt* /
-*Open in Terminal*).
+In GitHub Desktop: make sure the branch dropdown says **main**, click **Fetch
+origin** / **Pull origin**, then *Repository → Open in Command Prompt* (or
+*Open in Terminal*) and `cd MedievalBattle`.
 
 ### Step 2 — install Rojo
 
