@@ -68,11 +68,26 @@ so it will never be committed.
 **Windows** — paste into **PowerShell** (not cmd):
 
 ```powershell
+# Must print True - if it prints False you are in the wrong folder, stop here
+Test-Path .\default.project.json
+
+# Windows PowerShell 5.1 defaults to a TLS version GitHub refuses. Without this
+# the download fails, often without an obvious error, and you end up with no
+# rojo.exe and a confusing "not recognized" message later.
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+
 Invoke-WebRequest -Uri "https://github.com/rojo-rbx/rojo/releases/download/v7.4.4/rojo-7.4.4-windows-x86_64.zip" -OutFile "rojo.zip"
-Expand-Archive -Path "rojo.zip" -DestinationPath "." -Force
-Remove-Item "rojo.zip"
-.\rojo.exe --version
+Expand-Archive -Path ".\rojo.zip" -DestinationPath "." -Force
+Remove-Item .\rojo.zip
+
+Get-ChildItem .\rojo.exe      # must list the file
+.\rojo.exe --version          # must print Rojo 7.4.4
 ```
+
+If the download will not work at all, fetch
+[the zip](https://github.com/rojo-rbx/rojo/releases/download/v7.4.4/rojo-7.4.4-windows-x86_64.zip)
+in a browser, extract it, and drag `rojo.exe` into this folder by hand. Exactly
+the same result.
 
 **macOS, Apple Silicon** (M1/M2/M3/M4) — paste into **Terminal**:
 
@@ -205,7 +220,8 @@ Windows form shown; on macOS use `./rojo` in place of `.\rojo.exe`.
 | Symptom | Cause |
 | --- | --- |
 | `The term 'rojo' is not recognized...` | Missing `.\` prefix — PowerShell does not run programs from the current folder. Use `.\rojo.exe`. |
-| `.\rojo.exe : ...cannot find the path` | The binary is not in this folder. Re-run Step 2 from inside `MedievalBattle`. |
+| `.\rojo.exe` also "not recognized" | The file really is missing — the download failed. Usually the TLS default: run the `SecurityProtocol` line, then Step 2 again. `Get-ChildItem .\rojo.exe` tells you whether it is there. |
+| `Invoke-WebRequest` fails or hangs | Same TLS cause, or a proxy. Download the zip in a browser and drag `rojo.exe` into this folder instead. |
 | `Rojo: found no project file` | You are in the wrong folder. `ls` should show `default.project.json`. |
 | macOS: *"rojo cannot be opened"* | Gatekeeper quarantine — run the `xattr -d com.apple.quarantine rojo` line. |
 | Studio opens but the map is empty | You opened a blank baseplate instead of the built `.rbxlx`, or the Rojo plugin is not *Connect*ed. |
