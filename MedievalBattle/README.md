@@ -164,6 +164,31 @@ solo *Play* only tells you things load, never that they work. The server window
 should print `[MedievalBattle] server ready in Nms` — if that line is missing,
 something failed at boot and the Output window says what.
 
+### Working in VS Code (recommended)
+
+Every command above works in VS Code's integrated terminal, and this is the
+easiest way to run them: **File → Open Folder →** select `MedievalBattle`
+(the folder, not the repo root), then **Ctrl + `** opens a terminal already in
+the right place. No `cd`, and the wrong-folder mistake becomes impossible.
+
+The terminal is PowerShell on Windows, so the `.\rojo.exe` prefix still applies.
+`rojo serve` runs until you stop it, so give it its own tab
+(**Ctrl + Shift + `**) and keep working in the first one.
+
+Two extensions worth having, both configured by files already in this repo:
+
+| Extension | Why |
+| --- | --- |
+| `JohnnyMorganz.luau-lsp` | Luau autocomplete, inline type errors, go-to-definition. Reads the `.luaurc` here, so strict mode is on automatically. |
+| `JohnnyMorganz.stylua` | Formats on save from `stylua.toml`, so four people produce identical formatting and reviews never fill up with whitespace diffs. |
+
+There is also a Rojo extension in the marketplace that can start and stop the
+sync server from the VS Code UI, if you would rather not keep a terminal tab
+open for it.
+
+VS Code's Source Control panel covers commits, pulls and branches, so you do not
+need GitHub Desktop as well.
+
 ### Command reference
 
 Windows form shown; on macOS use `./rojo` in place of `.\rojo.exe`.
